@@ -1,7 +1,7 @@
 # Equipo2_Lugavix
 
 # Instalar Express, Mongoose y ejecutar 
-´´´ javascript 
+´´´javascript 
 npm i express
 npm i mongose
 ´´´
