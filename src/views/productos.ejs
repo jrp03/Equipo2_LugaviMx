@@ -1,0 +1,26 @@
+<% layout('layout/layout.ejs') %>
+
+<div class="container mt-5">
+  <h1 class="mb-4">Productos</h1>
+
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+    <% productos.forEach(producto => { %>
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <img src="<%= producto.imagen %>" class="card-img-top" alt="<%= producto.nombre %>">
+          <div class="card-body">
+            <h5 class="card-title"><%= producto.nombre %></h5>
+            <p class="card-text"><%= producto.descripcion %></p>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Precio:</strong> $<%= producto.precio %></li>
+            <li class="list-group-item"><strong>Stock:</strong> <%= producto.stock %></li>
+          </ul>
+          <div class="card-body">
+            <a href="#" class="btn btn-primary w-100">Agregar al carrito</a>
+          </div>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+</div>
