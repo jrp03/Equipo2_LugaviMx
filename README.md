@@ -1,12 +1,16 @@
 # Equipo2_Lugavix
 
-# Instalar Express, Mongoose y ejecutar 
-´´´javascript 
+# Instalar Express, Mongoose 
+
+```javascript 
 npm i express
 npm i mongose
-´´´
+```
 
 # Iniciar la aplicacion
-npm run dev
 
-Abrir en el navegador y poner la url: localhost:3000
+```javascript
+npm run dev
+```
+
+Abrir en el navegador e ingresar en el buscador la url: http://localhost:3000
