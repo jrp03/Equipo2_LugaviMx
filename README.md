@@ -1,4 +1,4 @@
-# Equipo2_Lugavix
+# Equipo2_LugaviMX
 
 # Instalar Express, Mongoose 
 
