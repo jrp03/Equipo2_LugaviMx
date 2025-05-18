@@ -1,3 +1,22 @@
+# **Documentación del Sistema** 
+  
+## Información del Producto  
+  
+**Nombre del Producto:** Lugavi MX  
+  
+**Descripción:** Plataforma de comercio electrónico para la compra de vestidos de gala y cocktail.  
+  
+## Integrantes del Equipo  
+  
+* Barraza Hernández, Henrry Josué  
+* Cabanillas Pacheco, María Jose  
+* Ortiz Burgueño, Linda Faviola  
+* Ortiz Ortiz, Jesús Manuel  
+* Pérez Melgoza, Jorge Román  
+* Quintero Andrade, Álvaro Gabriel  
+* Rivera García, Blanca Angélica  
+* Santoyo Terrazas, Nadia Guadalupe  
+
 # **1. Introducción**
 
 **Descripción general:** Lugavi MX es una plataforma de comercio electrónico desarrollada para ofrecer una experiencia de compra de vestidos de gala y cocktail. Representa una solución digital moderna y elegante, orientada a posicionar a la marca a nivel nacional e internacional. El sitio web incluye funcionalidades como catálogo de productos, carrito de compras, sistema de pagos seguros, panel de administración y gestión de pedidos.
