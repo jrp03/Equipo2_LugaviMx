@@ -344,7 +344,8 @@ El flujo de uso para el usuario final dentro del sistema Lugavi MX se divide en 
 ## **Capturas de pantalla (del prototipo Figma):**  
   
 -   **Página Principal (Inicio):**
-![](src/public/asset/Página Principal.png)  
+
+![](src/public/asset/Página%20Principal.png)  
   
 **Descripción:**
  Carrusel de imágenes destacadas de vestidos.
@@ -363,16 +364,16 @@ Lista de productos seleccionados.
 **Opciones para:** Aumentar/disminuir cantidad, Eliminar producto, Ver total actualizado. Botón “Proceder al pago”.
         
 -   **Proceso de Pago:**
- ![](src/public/asset/Metodos de pago.png) 
- ![](src/public/asset/Direccion de envio.png)
- ![](src/public/asset/Revision de productos.png)
+ ![](src/public/asset/Metodos%20de%20pago.png) 
+ ![](src/public/asset/Direccion%20de%20envio.png)
+ ![](src/public/asset/Revision%20de%20productos.png)
 **Descripción:** 
 Selección de dirección de envío (puede editarla o agregar nueva).
 Selección de método de pago: tarjeta o PayPal. 
 Revisión de productos y total final. Botón “Finalizar compra”.
         
 -   **Perfil del Usuario:**
- ![](src/public/asset/Perfil del Usuario.png) 
+ ![](src/public/asset/Perfil%20del%20Usuario.png) 
      **Descripción:** 
      Visualización de datos personales. 
      Botones para modificar información y cambiar contraseña. 
