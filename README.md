@@ -396,17 +396,88 @@ El flujo de uso para el usuario final dentro del sistema Lugavi MX se divide en 
           
 # **6. Base de Datos**  
   
-**Modelo de datos:** Implementado en MongoDB con las siguientes colecciones:  
+**Modelo de datos:**
+El modelo de datos se implementa en MongoDB, utilizando su estructura flexible de colecciones y documentos embebidos.
   
-* clientes: datos personales, carrito y pedidos  
-* articulos: productos en venta  
-* categorias: clasificación de artículos  
-* pedidos: historial con detalles y estado  
-* administradores: control de sistema  
-* pagos: información de transacciones  
+* **Clientes:** Datos personales, carrito y pedidos.
+* **Artículos:** Productos en venta.
+* **Categorías:** Clasificación de artículos.  
+* **Pedidos:** Historial con detalles y estado.  
+* **Administradores:** Control de sistema.  
+* **Pagos:** Información de transacciones.
   
-**Diagrama entidad-relación:** (Insertar "modelo\_datos.png")  
-  
+**Diagrama entidad-relación:** 
+
+ ![](src/public/asset/diagrama%20entidad%20relacion.png)
+
+Las entidades clave incluyen:
+
+-   Cliente
+-   Administrador
+-   Carrito de Compras
+-   Pedido
+-   Detalle de Pedido
+-   Método de Pago (con especializaciones PagoConTarjeta y PagoConPayPal)
+-   Artículo
+-   Categoría
+-   Dirección de Envío
+-   Notificaciones
+
+**Diagrama de clases:** 
+
+   ![](src/public/asset/Diagrama%20de%20clases.png)
+
+   
+   **Descripción de las Entidades y Relaciones:**
+
+-   **Cliente:**
+    -   Atributos: Información personal del cliente.
+        
+    -   Relaciones: Carrito de Compras (composición 1:1), Pedido (asociación 1:N).
+        
+-   **Carrito de Compras:**
+    -   Atributos: Identificador del carrito.
+    -   Relaciones: Cliente (composición 1:1), Artículo (asociación N:M), Pedido (asociación 1:1).
+        
+-   **Pedido:**
+    -   Atributos: Fecha, estado del pedido.
+    -   Relaciones: Cliente (asociación 1:N), Detalle de Pedido (composición 1:1), Carrito de Compras (asociación 1:1), Dirección de Envío (composición 1:1), Notificaciones (dependencia).
+        
+-   **Artículo:**
+    -   Atributos: Información del producto (vestido).
+        
+    -   Relaciones: Categoría (asociación 1:N), Carrito de Compras (asociación N:M), Detalle de Pedido (asociación 1:N).
+        
+-   **Administrador:**
+    -   Atributos: Información del usuario administrador.
+        
+    -   Relaciones: Cliente (asociación 1:1), Pedido (asociación 1:1).
+        
+-   **Detalle de Pedido:**
+    -   Atributos: Cantidad, precio, subtotal del artículo en un pedido.
+        
+    -   Relaciones: Pedido (composición 1:1), Artículo (asociación 1:N).
+        
+-   **Método de Pago:**
+    -   Atributos: Información del método de pago.
+        
+    -   Relaciones: Pedido (asociación 1:N).
+        
+-   **Dirección de Envío:**
+    -   Atributos: Datos de la dirección del cliente.
+        
+    -   Relaciones: Cliente (asociación 1:N), Pedido (composición 1:1).
+        
+-   **Categoría:**
+    -   Atributos: Tipo de artículo.
+        
+    -   Relaciones: Artículo (asociación 1:N).
+        
+-   **Notificaciones:**
+    -   Atributos: Mensajes del sistema.
+        
+    -   Relaciones: Pedido (dependencia)
+
 **Ejemplo de consultas:**  
   
 ```javascript  
@@ -417,4 +488,5 @@ Pedido.find({ clienteId: 'ID_CLIENTE' });
 Articulo.find({ categoriaId: 'ID_CATEGORIA', stock: { $gt: 0 } });  
   
 // Validar usuario por correo  
-Cliente.findOne({ correo: 'correo@correo.com' }).then(validarPassword);   
+Cliente.findOne({ correo: 'correo@correo.com' }).then(validarPassword);  
+  
