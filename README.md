@@ -145,8 +145,8 @@ Esta guía explica paso a paso cómo un cliente puede navegar y utilizar todas l
 **Paso 1: Ingresar al sitio web**  
   
 Abre el navegador y escribe la URL del sitio web de Lugavi MX. 
-https://lugavi-mx.github.io/Web/
-Verás la página de inicio con opciones para iniciar sesión o registrarte.  
+* https://lugavi-mx.github.io/Web/
+* Verás la página de inicio con opciones para iniciar sesión o registrarte.  
   
 **Paso 2: Registro de nuevo usuario**  
   
@@ -268,6 +268,7 @@ Esta guía proporciona al administrador una ruta clara para el uso eficiente del
   
 ## **Flujo de procesos:**  
 **Flujo de Procesos General**
+
 El flujo de uso para el usuario final dentro del sistema Lugavi MX se divide en dos perfiles principales: Cliente y Administrador.
 
 -   **Cliente:**
@@ -344,37 +345,49 @@ El flujo de uso para el usuario final dentro del sistema Lugavi MX se divide en 
 ## **Capturas de pantalla (del prototipo Figma):**  
   
 -   **Página Principal (Inicio):**
-
 ![](src/public/asset/Página%20Principal.png)  
   
 **Descripción:**
- Carrusel de imágenes destacadas de vestidos.
- Menú superior fijo con accesos a: Catálogo, Mi Perfil, Mis Pedidos, Carrito, Cerrar sesión.
+
+      Carrusel de imágenes destacadas de vestidos.
+      Menú superior fijo con accesos a: Catálogo, Mi Perfil, Mis Pedidos, Carrito, Cerrar sesión.
         
 -   **Catálogo de Productos:**
- ![](src/public/asset/Catalogo.png)    
+ ![](src/public/asset/Catalogo.png) 
+    
 **Descripción:** 
-Vista en cuadrícula con: Imagen del producto, Nombre, precio, talla, colores, Botón “Agregar al carrito”. 
-Filtros laterales por: Categoría, Precio, Color, Talla.
+
+     Vista en cuadrícula con: Imagen del producto, Nombre, precio, talla, colores, Botón “Agregar al carrito”. 
+     Filtros laterales por: Categoría, Precio, Color, Talla.
         
 -   **Carrito de Compras:**
  ![](ssrc/public/asset/Carrito.png)
+ 
  **Descripción:**
-Lista de productos seleccionados.
-**Opciones para:** Aumentar/disminuir cantidad, Eliminar producto, Ver total actualizado. Botón “Proceder al pago”.
+
+     Lista de productos seleccionados.
+     Opciones para:
+     Aumentar/disminuir cantidad, Eliminar producto, Ver total actualizado. Botón “Proceder al pago”.
         
 -   **Proceso de Pago:**
+
  ![](src/public/asset/Metodos%20de%20pago.png) 
+ 
+      Descripción: Selección de dirección de envío (puede editarla o agregar nueva).
+      
  ![](src/public/asset/Direccion%20de%20envio.png)
+ 
+      Descripción: Selección de método de pago: tarjeta o PayPal.
+      
  ![](src/public/asset/Revision%20de%20productos.png)
-**Descripción:** 
-Selección de dirección de envío (puede editarla o agregar nueva).
-Selección de método de pago: tarjeta o PayPal. 
-Revisión de productos y total final. Botón “Finalizar compra”.
+
+     Descripción: Revisión de productos y total final. Botón “Finalizar compra”.
         
 -   **Perfil del Usuario:**
  ![](src/public/asset/Perfil%20del%20Usuario.png) 
-     **Descripción:** 
+
+   **Descripción:** 
+   
      Visualización de datos personales. 
      Botones para modificar información y cambiar contraseña. 
      Sección de direcciones de envío (añadir, modificar, eliminar).
@@ -402,5 +415,4 @@ Pedido.find({ clienteId: 'ID_CLIENTE' });
 Articulo.find({ categoriaId: 'ID_CATEGORIA', stock: { $gt: 0 } });  
   
 // Validar usuario por correo  
-Cliente.findOne({ correo: 'correo@correo.com' }).then(validarPassword);  
-  
+Cliente.findOne({ correo: 'correo@correo.com' }).then(validarPassword);   
