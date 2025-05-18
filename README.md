@@ -8,14 +8,14 @@
   
 ## Integrantes del Equipo  
   
-* Barraza Hernández, Henrry Josué  
-* Cabanillas Pacheco, María Jose  
-* Ortiz Burgueño, Linda Faviola  
-* Ortiz Ortiz, Jesús Manuel  
-* Pérez Melgoza, Jorge Román  
-* Quintero Andrade, Álvaro Gabriel  
-* Rivera García, Blanca Angélica  
-* Santoyo Terrazas, Nadia Guadalupe  
+* Barraza Hernández Henrry Josué  
+* Cabanillas Pacheco María Jose  
+* Ortiz Burgueño Linda Faviola  
+* Ortiz Ortiz Jesús Manuel  
+* Pérez Melgoza Jorge Román  
+* Quintero Andrade Álvaro Gabriel  
+* Rivera García Blanca Angélica  
+* Santoyo Terrazas Nadia Guadalupe  
 
 # **1. Introducción**
 
@@ -46,7 +46,8 @@
 * Capa de aplicación: Node.js + Express (REST API)
 * Capa de datos: MongoDB (NoSQL) con Mongoose
 
-**Diagrama de arquitectura:** (Insertar imagen "diagrama\_arquitectura.png")
+**Diagrama de arquitectura:** 
+![](src/public/asset/Diagrama%20de%20arquitectura%20lugavi.jpg)
 
 # **3. Requisitos**
 
