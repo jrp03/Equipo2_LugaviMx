@@ -361,7 +361,8 @@ El flujo de uso para el usuario final dentro del sistema Lugavi MX se divide en 
      Filtros laterales por: Categoría, Precio, Color, Talla.
         
 -   **Carrito de Compras:**
- ![](ssrc/public/asset/Carrito.png)
+-   
+ ![](ssrc/public/asset/Carrito%20%20de%20compra.png)
  
  **Descripción:**
 
