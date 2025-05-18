@@ -385,6 +385,7 @@ El flujo de uso para el usuario final dentro del sistema Lugavi MX se divide en 
      Descripción: Revisión de productos y total final. Botón “Finalizar compra”.
         
 -   **Perfil del Usuario:**
+
  ![](src/public/asset/Perfil%20del%20Usuario.png) 
 
    **Descripción:** 
