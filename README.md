@@ -362,7 +362,7 @@ El flujo de uso para el usuario final dentro del sistema Lugavi MX se divide en 
         
 -   **Carrito de Compras:**
 -   
- ![](ssrc/public/asset/Carrito%20%20de%20compra.png)
+ ![](src/public/asset/Carrito%20%20de%20compra.png)
  
  **Descripción:**
 
