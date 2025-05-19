@@ -130,7 +130,7 @@ Los principales requisitos funcionales de la plataforma de comercio electrónico
 1.  Clona el repositorio de GitHub:
 
     \`\`\`
-    git clone https://github.com/tu-usuario/lugavi-mx.git
+    git clone [https://github.com/tu-usuario/lugavi-mx.git](https://github.com/jrp03/Equipo2_LugaviMx)
     cd lugavi-mx
     \`\`\`
 2.  Instala las dependencias del backend, incluyendo Express.js:
@@ -382,7 +382,12 @@ El flujo de uso para el usuario final dentro del sistema Lugavi MX se divide en 
   
 * Visualiza informes de ventas, productos más vendidos, comportamiento de usuarios.  
   
-## **Capturas de pantalla (del prototipo Figma):**  
+## **Capturas de pantalla (Prototipo Figma):**  
+
+**Link de prototipo en Figma** 
+
+https://www.figma.com/design/ADwX8H0A2Rza4qLYJAlc0n/DESARROLLO--IMPLEMENTACION--SISTEMAS?node-id=2-2&t=3SwVMCX2I30e7ssr-0   
+
   
  -   **Página Principal (Inicio):**
 
