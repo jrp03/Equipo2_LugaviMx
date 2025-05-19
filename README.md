@@ -479,16 +479,23 @@ Las entidades clave incluyen:
     -   Relaciones: Pedido (dependencia)
 
 **Consultas Principales a Base de Datos:**  
+
  
 
  - Consulta de administradores
+ 
 ![](src/public/asset/Consulta%20de%20administradores.jpg) 
 
+
  - Consulta de artículos
+ 
 ![](src/public/asset/Consulta%20de%20articulos.jpg)  
 
+
  - Consulta de cliente Carlos Pérez.
+ 
 ![](src/public/asset/Consulta%20de%20cliente%20carlos%20perez.jpg)  
+
  
 **Código Ejemplo de Consultas:** 
 ```javascript  
@@ -498,5 +505,8 @@ db.administradores.find()
 // Consulta de artículos, muestra todos los artículos con formato legible
 db.articulos.find().pretty()
 
-// Consulta de artículos, muestra todos los artículos con formato legible
+// Consulta de cliente, esta consulta busca al cliente cuyo nombre es "Carlos Pérez".
 db.clientes.findOne({nombre: "Carlos Pérez"})
+
+
+
