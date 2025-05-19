@@ -345,6 +345,7 @@ El flujo de uso para el usuario final dentro del sistema Lugavi MX se divide en 
 ## **Capturas de pantalla (del prototipo Figma):**  
   
  -   **Página Principal (Inicio):**
+
 ![](src/public/asset/Página%20Principal.png)  
   
 **Descripción:**
@@ -352,6 +353,7 @@ El flujo de uso para el usuario final dentro del sistema Lugavi MX se divide en 
   Menú superior fijo con accesos a: Catálogo, Mi Perfil, Mis Pedidos, Carrito, Cerrar sesión.
 
  -   **Iniciar Sesión**
+
  ![](src/public/asset/Iniciar%20sesion.png) 
 
 **Descripción:** 
@@ -360,7 +362,9 @@ El proceso de inicio de sesión que se muestra en la imagen consta de los siguie
  - Ingresar Contraseña
  
 Para acceder a su cuenta existente, el usuario debe hacer clic en el botón verde brillante que dice "Iniciar Sesión".
- -   **Registrar**
+
+ -   **Registrarse**
+
  ![](src/public/asset/Registrar.png) 
 
 **Descripción:** 
@@ -373,6 +377,7 @@ El proceso de registro que se visualiza en la imagen consta de los siguientes pa
 **Registrar:** Para completar el proceso de creación de la nueva cuenta, el usuario debe hacer clic en el botón verde brillante que dice "Registrar". Al hacer clic en este botón, se enviarán los datos proporcionados (correo electrónico y contraseña) al servidor para crear la nueva cuenta de usuario.
 
 -   **Catálogo de Productos:**
+
  ![](src/public/asset/Catalogo.png) 
     
 **Descripción:** 
@@ -393,13 +398,17 @@ Filtros laterales por: Categoría, Precio, Color, Talla.
  ![](src/public/asset/Metodos%20de%20pago.png) 
  
   **Descripción:** 
-  Selección de dirección de envío (puede editarla o agregar nueva).
-      
+    Selección de método de pago: tarjeta o PayPal.
+  
+  -   **Dirección de Envio:**    
  ![](src/public/asset/Direccion%20de%20envio.png)
  
   **Descripción:** 
-  Selección de método de pago: tarjeta o PayPal.
-      
+ Selección de dirección de envío (puede editarla o agregar nueva).
+
+
+ - **Resumen de la Compra:**
+     
  ![](src/public/asset/Revision%20de%20productos.png)
 
   **Descripción:** 
