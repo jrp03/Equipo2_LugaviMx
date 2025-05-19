@@ -344,55 +344,75 @@ El flujo de uso para el usuario final dentro del sistema Lugavi MX se divide en 
   
 ## **Capturas de pantalla (del prototipo Figma):**  
   
--   **Página Principal (Inicio):**
+ -   **Página Principal (Inicio):**
 ![](src/public/asset/Página%20Principal.png)  
   
 **Descripción:**
+  Carrusel de imágenes destacadas de vestidos.
+  Menú superior fijo con accesos a: Catálogo, Mi Perfil, Mis Pedidos, Carrito, Cerrar sesión.
 
-      Carrusel de imágenes destacadas de vestidos.
-      Menú superior fijo con accesos a: Catálogo, Mi Perfil, Mis Pedidos, Carrito, Cerrar sesión.
-        
+ -   **Iniciar Sesión**
+ ![](src/public/asset/Iniciar%20sesion.png) 
+
+**Descripción:** 
+El proceso de inicio de sesión que se muestra en la imagen consta de los siguientes pasos que el usuario debe seguir:
+ - Ingresar Correo Electrónico
+ - Ingresar Contraseña
+ 
+Para acceder a su cuenta existente, el usuario debe hacer clic en el botón verde brillante que dice "Iniciar Sesión".
+ -   **Registrar**
+ ![](src/public/asset/Registrar.png) 
+
+**Descripción:** 
+El proceso de registro que se visualiza en la imagen consta de los siguientes pasos, tal como el usuario los completaría:
+
+ - Ingresar Correo Electrónico
+ - Crear Contraseña
+ - Confirmar Contraseña
+ 
+**Registrar:** Para completar el proceso de creación de la nueva cuenta, el usuario debe hacer clic en el botón verde brillante que dice "Registrar". Al hacer clic en este botón, se enviarán los datos proporcionados (correo electrónico y contraseña) al servidor para crear la nueva cuenta de usuario.
+
 -   **Catálogo de Productos:**
  ![](src/public/asset/Catalogo.png) 
     
 **Descripción:** 
-
-     Vista en cuadrícula con: Imagen del producto, Nombre, precio, talla, colores, Botón “Agregar al carrito”. 
-     Filtros laterales por: Categoría, Precio, Color, Talla.
+Vista en cuadrícula con: Imagen del producto, Nombre, precio, talla, colores, Botón “Agregar al carrito”. 
+Filtros laterales por: Categoría, Precio, Color, Talla.
         
 -   **Carrito de Compras:**
  
  ![](src/public/asset/Carrito.png)
  
  **Descripción:**
-
-     Lista de productos seleccionados.
-     Opciones para:
-     Aumentar/disminuir cantidad, Eliminar producto, Ver total actualizado. Botón “Proceder al pago”.
+  Lista de productos seleccionados.
+  Opciones para:
+  Aumentar/disminuir cantidad, Eliminar producto, Ver total actualizado. Botón “Proceder al pago”.
         
 -   **Proceso de Pago:**
 
  ![](src/public/asset/Metodos%20de%20pago.png) 
  
-      Descripción: Selección de dirección de envío (puede editarla o agregar nueva).
+  **Descripción:** 
+  Selección de dirección de envío (puede editarla o agregar nueva).
       
  ![](src/public/asset/Direccion%20de%20envio.png)
  
-      Descripción: Selección de método de pago: tarjeta o PayPal.
+  **Descripción:** 
+  Selección de método de pago: tarjeta o PayPal.
       
  ![](src/public/asset/Revision%20de%20productos.png)
 
-     Descripción: Revisión de productos y total final. Botón “Finalizar compra”.
+  **Descripción:** 
+  Revisión de productos y total final. Botón “Finalizar compra”.
         
 -   **Perfil del Usuario:**
 
  ![](src/public/asset/Perfil%20del%20Usuario.png) 
 
    **Descripción:** 
-   
-     Visualización de datos personales. 
-     Botones para modificar información y cambiar contraseña. 
-     Sección de direcciones de envío (añadir, modificar, eliminar).
+ Visualización de datos personales. 
+ Botones para modificar información y cambiar contraseña. 
+ Sección de direcciones de envío (añadir, modificar, eliminar).
           
 # **6. Base de Datos**  
   
@@ -497,16 +517,39 @@ Las entidades clave incluyen:
 ![](src/public/asset/Consulta%20de%20cliente%20carlos%20perez.jpg)  
 
  
+  - Consulta de Categorías.
+ 
+![](src/public/asset/Consulta%20de%20categorias.jpg)  
+
+
+  - Consulta de pedidos por cliente
+ 
+![](src/public/asset/Consulta%20de%20pedidos%20por%20cliente.jpg)  
+
+
+  - Consulta de pagos
+ 
+![](src/public/asset/Consulta%20de%20pagos.jpg)  
+
+
 **Código Ejemplo de Consultas:** 
 ```javascript  
-// Consulta de administradores, obtiene todos los administradores
+// Consulta de administradores, obtiene todos los administradores.
 db.administradores.find()
   
-// Consulta de artículos, muestra todos los artículos con formato legible
+// Consulta de artículos, muestra todos los artículos con formato legible.
 db.articulos.find().pretty()
 
 // Consulta de cliente, esta consulta busca al cliente cuyo nombre es "Carlos Pérez".
 db.clientes.findOne({nombre: "Carlos Pérez"})
 
+// Consulta de categorías, esta consulta recupera todos los documentos de la colección "categorías".
+db.categorias.find()
+
+// Consulta de pedidos por cliente, esta consulta encuentra todos los pedidos realizados por un cliente en específico.
+db.pedidos.find({clienteId: Object ("682a6405ce995e6863cf5482"}))
+
+// Consulta de pagos.
+db.pagos.find()
 
 
