@@ -478,16 +478,25 @@ Las entidades clave incluyen:
         
     -   Relaciones: Pedido (dependencia)
 
-**Ejemplo de consultas:**  
- ![Consulta de administradores](src/public/asset/Consulta%20de%20administradores.jpg) 
+**Consultas Principales a Base de Datos:**  
  
+
+ - Consulta de administradores
+![](src/public/asset/Consulta%20de%20administradores.jpg) 
+
+ - Consulta de artículos
+![](src/public/asset/Consulta%20de%20articulos.jpg)  
+
+ - Consulta de cliente Carlos Pérez.
+![](src/public/asset/Consulta%20de%20cliente%20carlos%20perez.jpg)  
+ 
+**Código Ejemplo de Consultas:** 
 ```javascript  
-// Obtener pedidos por cliente  
-Pedido.find({ clienteId: 'ID_CLIENTE' });  
+// Consulta de administradores, obtiene todos los administradores
+db.administradores.find()
   
-// Buscar artículos en stock de cierta categoría  
-Articulo.find({ categoriaId: 'ID_CATEGORIA', stock: { $gt: 0 } });  
-  
-// Validar usuario por correo  
-Cliente.findOne({ correo: 'correo@correo.com' }).then(validarPassword);  
-  
+// Consulta de artículos, muestra todos los artículos con formato legible
+db.articulos.find().pretty()
+
+// Consulta de artículos, muestra todos los artículos con formato legible
+db.clientes.findOne({nombre: "Carlos Pérez"})
