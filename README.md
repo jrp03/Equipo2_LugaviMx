@@ -479,7 +479,8 @@ Las entidades clave incluyen:
     -   Relaciones: Pedido (dependencia)
 
 **Ejemplo de consultas:**  
-  
+ ![Consulta de administradores](src/public/asset/Consulta%20de%20administradores.jpg) 
+ 
 ```javascript  
 // Obtener pedidos por cliente  
 Pedido.find({ clienteId: 'ID_CLIENTE' });  
