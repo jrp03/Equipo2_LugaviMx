@@ -110,22 +110,62 @@ Los principales requisitos funcionales de la plataforma de comercio electrónico
 * 1GB de espacio libre  
   
 **Pasos detallados para instalación:**  
-  - **Requisitos de Software:**
     
-    -   **Node.js:** Asegúrate de tener Node.js versión 18 o superior instalado en tu sistema.
-        -   Puedes verificar la versión con el comando `node -v` en la terminal.
-        -   Si no lo tienes, descárgalo e instálalo desde el sitio web oficial de Node.js.
-    -   **Express.js:** Express.js se instalará posteriormente usando npm (Node Package Manager), que viene con Node.js. No es una instalación separada inicialmente, pero es una dependencia del proyecto.
-    -   **MongoDB:** Decide si usarás MongoDB localmente o MongoDB Atlas (en la nube).
-        -   **Local:** Si es local, descarga e instala MongoDB Community Server en tu sistema. Asegúrate de que el servicio de MongoDB esté en ejecución.
-        -   **Atlas:** Si es Atlas, crea una cuenta en MongoDB Atlas y configura un clúster. Obtén la cadena de conexión.
-    -   **Navegador:** Utiliza un navegador actualizado como Chrome o Firefox para las pruebas y el uso.
--   **Requisitos de Hardware:**
-    
-    -   **RAM:** Tu sistema debe tener al menos 4GB de RAM.
-    -   **Procesador:** Se recomienda un procesador con una velocidad de 2 GHz o superior.
-    -   **Espacio Libre:** Asegúrate de tener al menos 1GB de espacio libre en disco. Esto es para los archivos del proyecto, la base de datos (si es local) y otros archivos temporales.
+* **Requisitos de Software:**
+    * **Node.js:** Asegúrate de tener Node.js versión 18 o superior instalado en tu sistema.
+        * Puedes verificar la versión con el comando `node -v` en la terminal.
+        * Si no lo tienes, descárgalo e instálalo desde el [sitio web oficial de Node.js](https://nodejs.org/).
+    * **Express.js:** Express.js se instalará posteriormente usando npm (Node Package Manager), que viene con Node.js. No es una instalación separada inicialmente, pero es una dependencia del proyecto.
+    * **MongoDB:** Decide si usarás MongoDB localmente o MongoDB Atlas (en la nube).
+        * **Local:** Si es local, descarga e instala MongoDB Community Server en tu sistema. Asegúrate de que el servicio de MongoDB esté en ejecución.
+        * **Atlas:** Si es Atlas, crea una cuenta en [MongoDB Atlas](https://www.mongodb.com/) y configura un clúster. Obtén la cadena de conexión.
+    * **Navegador:** Utiliza un navegador actualizado como Chrome o Firefox para las pruebas y el uso.
+* **Requisitos de Hardware:**
+    * **RAM:** Tu sistema debe tener al menos 4GB de RAM.
+    * **Procesador:** Se recomienda un procesador con una velocidad de 2 GHz o superior.
+    * **Espacio Libre:** Asegúrate de tener al menos 1GB de espacio libre en disco. Esto es para los archivos del proyecto, la base de datos (si es local) y otros archivos temporales.
 
+**Pasos para la instalación:**
+
+1.  Clona el repositorio de GitHub:
+
+    \`\`\`
+    git clone https://github.com/tu-usuario/lugavi-mx.git
+    cd lugavi-mx
+    \`\`\`
+2.  Instala las dependencias del backend, incluyendo Express.js:
+
+    \`\`\`
+    cd backend
+    npm install
+    \`\`\`
+
+    * Este comando instalará todas las dependencias listadas en el archivo `package.json`, incluyendo Express.js.
+3.  Crea el archivo de configuración de las variables de entorno:
+
+    \`\`\`
+    cp .env.example .env
+    \`\`\`
+4.  Edita el archivo `.env` y configura las variables de entorno:
+
+    \`\`\`
+    MONGO_URI=mongodb://localhost:27017/lugavi # o tu cadena de conexión de Atlas
+    PORT=3000
+    \`\`\`
+5.  Inicia la base de datos MongoDB. Si estás usando MongoDB local, asegúrate de que el servicio esté en ejecución. Si estás usando MongoDB Atlas, asegúrate de que tu clúster esté activo y la cadena de conexión sea correcta.
+6.  Inicia el servidor de Node.js:
+
+    \`\`\`
+    npm start
+    \`\`\`
+7.  Abre la aplicación en tu navegador web:
+
+    \`\`\`
+    frontend/index.html
+    \`\`\`
+    O, si tienes un servidor configurado para servir los archivos estáticos del frontend, accede a la URL correspondiente.
+
+    
 **Estructura de carpetas:**  
    
 Equipo2_LugaviMx
