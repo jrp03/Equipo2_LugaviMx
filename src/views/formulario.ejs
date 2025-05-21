@@ -1,20 +1,62 @@
 <!-- filepath: c:\Users\Maria Cabanillas\Desktop\Proyecto_lugavix\Equipo2_LugaviMx\src\views\formulario.ejs -->
 <% layout('layout/layout.ejs') %>
 
-<div class="container">
+<link rel="stylesheet" href="css/productos.css">
 
-<!-- Agregar producto-->
-    <form action="/formulario" method="POST">
-        <input type="text" name="nombre" placeholder="Nombre">
-        <input type="text" name="descripcion" placeholder="Descripción del producto">
-        <input type="number" name="precio" placeholder="Precio">
-        <input type="number" name="stock" placeholder="Stock">
-        <button type="submit">Agregar Producto</button>     
-    </form>
-    <h2>Otras acciones</h2>
-    <a href="/Guardar"><button>Editar</button></a>
-    <a href="/Guardar"><button>Eliminar</button></a>
-    <a href="/Guardar"><button>Productos guardados</button></a>
+<div class="container container-form">
+
+    <div class="formulario">
+        <h1 class="form-title">REGISTRO DE PRODUCTOS</h1>
+        <!-- Agregar producto-->
+        <form action="/formulario" method="POST">
+            <div>
+                <span>Nombre del producto</span>
+                <input type="text" name="nombre" placeholder="Nombre">
+            </div>
+            <div>
+                <span>Descripción del producto</span>
+                <textarea name="descripcion" id="" placeholder="Descripción del producto"></textarea>
+                </textarea>
+            </div>
+
+            <!-- <input type="text" name="descripcion" placeholder="Descripción del producto"> -->
+            <div class="form-group">
+                <div class="form-group-1">
+                    <span>Precio del producto</span>
+                    <input type="number" name="precio" placeholder="Precio" step="0.01" min="0">
+                </div>
+                <div class="form-group-1">
+                    <span>Existencia</span>
+                    <input type="number" name="stock" placeholder="Stock">
+                </div>
+            </div>
+            <div>
+                <span>Categoria</span>
+                <select name="categoria" id="">
+                    <option value="Ropa">Ropa Invierno</option>
+                    <option value="Calzado">Ropa verano</option>
+                    <option value="Accesorios">Ropa Casual</option>
+                    <option value="Tecnologia">Ropa de Vestir</option>
+                    <option value="Otros">Otros</option>
+                </select>
+            </div>
+            <div>
+                <span>Imagen del producto</span>
+                <input type="file" name="imagen" accept="image/*">
+            </div>
+            <!-- <button type="submit">Agregar Producto</button>   -->
+            <input type="submit" value="Guardar Producto">   
+        </form>
+        <div class="form-actions">
+            <h2>Otras acciones</h2>
+            <div class="form-op">
+                <a style="background-color: #d5910f;" href="/Guardar">Editar</a>
+                <a style="background-color: #c8351a;" href="/Guardar">Eliminar</a>
+                <a style="background-color: #004bbf;" href="/Guardar">Productos guardados</a>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 
