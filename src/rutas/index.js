@@ -12,9 +12,13 @@ router.get('/registro', (req, res, next) =>{
 router.get('/Login', (req, res, next) =>{
     res.render('login')
 })
-router.get('/index', (req, res, next) =>{
+router.get('/', (req, res, next) =>{
     res.render('index')
 })
+
+router.get('/Perfil', (req, res, next) =>{
+    res.render('perfil');
+});
 
 router.get('/index', (req, res, next) =>{
     res.render('index')
