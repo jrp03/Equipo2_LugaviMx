@@ -1,0 +1,35 @@
+<% layout('layout/layout.ejs') %>
+
+<!-- Buscar producto-->
+ <h2>Productos</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        <% if (productos && productos.length > 0) { %>
+            <% productos.forEach(function(producto, i) { %>
+                <tr>
+                    <td><%= i + 1 %></td>
+                    <td>Nombre:<%= producto.nombre %></td> <br>
+                    <td>Precio:<%= producto.precio %> </td> 
+                    <td>
+                        <a href="/Editar/<%= producto._id %>"><button>Editar</button></a>
+                        <a href="/Eliminar/<%= producto._id %>"><button>Eliminar</button></a>
+                    </td>
+                </tr>    
+                </>
+            <% }); %>
+        <% } else { %>
+        <tr>
+            <td colspan="4">No hay productos registrados.</td>
+        </tr>
+        <% } %>
+        </tbody>
+</table>

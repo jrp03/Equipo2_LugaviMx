@@ -1,0 +1,21 @@
+<!-- filepath: c:\Users\Maria Cabanillas\Desktop\Proyecto_lugavix\Equipo2_LugaviMx\src\views\formulario.ejs -->
+<% layout('layout/layout.ejs') %>
+
+<div class="container">
+
+<!-- Agregar producto-->
+    <form action="/formulario" method="POST">
+        <input type="text" name="nombre" placeholder="Nombre">
+        <input type="text" name="descripcion" placeholder="Descripción del producto">
+        <input type="number" name="precio" placeholder="Precio">
+        <input type="number" name="stock" placeholder="Stock">
+        <button type="submit">Agregar Producto</button>     
+    </form>
+    <h2>Otras acciones</h2>
+    <a href="/Guardar"><button>Editar</button></a>
+    <a href="/Guardar"><button>Eliminar</button></a>
+    <a href="/Guardar"><button>Productos guardados</button></a>
+</div>
+
+
+
