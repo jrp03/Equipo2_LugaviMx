@@ -613,7 +613,7 @@ En esta sección se muestra el formulario en el cual el admid puede realizar la 
 
 ### **Formulario**
 
-
+![](src/public/asset/Vista_formulario.png)
 
 Los campos del formulario se enlista nombre de producto, descripcion del producto, precio y stock. Se observa una lista desplegable de la categoria del producto y un botón para añadir la imagen del producto. Debajo se muestran los botones para agregar el producto, editar uno existe o eliminar.
 
