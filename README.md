@@ -609,25 +609,25 @@ db.pagos.find()
 
 # **7. Vista formulario actualización de productos**  
 
-En esta sección se muestra el formulario en el cual el admid puede realizar la consulta para la manipulacion de los datos de la clase Productos.
+En esta sección se muestra el formulario en el cual el admid puede realizar la consulta para la manipulación de los datos de la clase Productos.
 
 ### **Formulario**
 
 
 
-Los campos del formulario se enlista nombre de producto, descripcion del producto, precio y stock. Se observa una lista desplegable de la categoria del producto y un boton para añadir la imagen del producto. Debajo se muestran los botones para agregar el producto, editar uno existe o eliminar.
+Los campos del formulario se enlista nombre de producto, descripcion del producto, precio y stock. Se observa una lista desplegable de la categoria del producto y un botón para añadir la imagen del producto. Debajo se muestran los botones para agregar el producto, editar uno existe o eliminar.
 
 ### **Lista de Producto**
 
 ![](src/public/asset/Vista_Guardar.png)
 
-En la siguiente vista se enlistan los productos que se han almacenado en la base de datos. De lado derecho se añaden los botones para actualizar o eliminar el producto de la lista. Si se selecciona Editar, se redirecciona a la pagina de actualizacion. Si se selecciona eliminar, el producto será eliminado de la lista automáticame. 
+En la siguiente vista se enlistan los productos que se han almacenado en la base de datos. De lado derecho se añaden los botones para actualizar o eliminar el producto de la lista. Si se selecciona Editar, se re direcciona a la página de actualización. Si se selecciona eliminar, el producto será eliminado de la lista automáticamente. 
 
 ### **Lista de Producto**
 
 ![](src/public/asset/Vista_Editar.png)
 
-En la funcion editar se mostrará el nombre y precio del articulo seleccionado. Para actualizar, se llena los campos con la nueva informacion y los datos se sobreescribirán con los viejos. 
+En la funcion editar se mostrará el nombre y precio del articulo seleccionado. Para actualizar, se llena los campos con la nueva informacion y los datos se sobrescribirán con los viejos. 
 
 
 
