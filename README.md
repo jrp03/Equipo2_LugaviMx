@@ -757,14 +757,13 @@ Se realizaron 22 casos de prueba enfocados en validaciones, experiencia de usuar
 
 #### Logs de errores
 
-```json
 {
   "error": "Contraseña demasiado corta",
   "input": "abc",
   "endpoint": "/signup",
   "timestamp": "2025-05-23T18:42:10Z"
 }
-```json
+
 
 ---
 
