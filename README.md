@@ -764,10 +764,9 @@ Se realizaron 22 casos de prueba enfocados en validaciones, experiencia de usuar
   "endpoint": "/signup",
   "timestamp": "2025-05-23T18:42:10Z"
 }
+```json
 
 ---
-
-
 
 ## 5. Análisis y Recomendaciones
 
@@ -805,12 +804,12 @@ Esto demuestra una mejora en la calidad del código y del proceso de validación
 
 ### ¿Cumple el software con los requisitos de calidad?
 
-- **Requisitos funcionales:** Cumplidos en los módulos principales (login, catálogo, pagos, perfil, administración).
-- **Requisitos no funcionales:** Parcialmente cumplidos. Se requieren mejoras en validación, diseño móvil y mensajes de error.
+- ✅ **Requisitos funcionales:** Cumplidos en los módulos principales (login, catálogo, pagos, perfil, administración).
+- ⚠️ **Requisitos no funcionales:** Parcialmente cumplidos. Se requieren mejoras en validación, diseño móvil y mensajes de error.
 
 El sistema fue desarrollado bajo una arquitectura modular y organizada, facilitando su mantenimiento y escalabilidad futura.
 
 ### ¿Es apto para pasar a producción?
 
-- El sistema es **apto para una prueba piloto controlada**.
-- Aún **no se recomienda su despliegue en entorno productivo final**, hasta corregir los detalles pendientes relacionados con validación, usabilidad móvil y retroalimentación visual.
+- 🔄 El sistema es **apto para una prueba piloto controlada**.
+- 🚫 Aún **no se recomienda su despliegue en entorno productivo final**, hasta corregir los detalles pendientes relacionados con validación, usabilidad móvil y retroalimentación visual.
