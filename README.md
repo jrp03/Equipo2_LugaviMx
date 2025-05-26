@@ -629,5 +629,183 @@ En la siguiente vista se enlistan los productos que se han almacenado en la base
 
 En la funcion editar se mostrará el nombre y precio del articulo seleccionado. Para actualizar, se llena los campos con la nueva informacion y los datos se sobrescribirán con los viejos. 
 
+# Informe de Pruebas y Evaluación de Código y Métricas de Calidad
 
+## 1. Portada
 
+- **Nombre del Proyecto:** Plataforma de Comercio Electrónico para Lugavi MX  
+- **Fecha de Elaboración del Informe:** 25 de Mayo de 2025  
+- **Integrantes del Equipo:**
+  - Barraza Hernández Henrry Josué
+  - Cabanillas Pacheco María Jose
+  - Ortiz Burgueño Linda Faviola
+  - Ortiz Ortiz Jesús Manuel
+  - Pérez Melgoza Jorge Román
+  - Quintero Andrade Álvaro Gabriel
+  - Rivera García Blanca Angélica
+  - Santoyo Terrazas Nadia Guadalupe
+
+---
+
+## 2. Resumen
+
+### Objetivo del informe
+
+Documentar el proceso de pruebas, evaluación de código y análisis de métricas de calidad del sistema **Lugavi MX**, una plataforma web de comercio electrónico para venta de vestidos de gala y cocktail.
+
+### Alcance de las pruebas
+
+Se evaluaron los siguientes módulos:
+- Registro e inicio de sesión
+- Catálogo de productos y filtros
+- Carrito de compras
+- Proceso de pago (tarjeta/PayPal)
+- Perfil del usuario
+- Gestión de pedidos (cliente y administrador)
+- Panel administrativo
+
+Se realizaron 22 casos de prueba enfocados en validaciones, experiencia de usuario y seguridad.
+
+### Conclusiones clave
+
+- Estructura funcional sólida y flujos completos.
+- 7 defectos detectados; 5 corregidos.
+- Riesgos críticos: validaciones incompletas, errores poco visibles, problemas responsive.
+- Listo para piloto controlado, no aún para entorno productivo final.
+
+---
+
+## 3. Pruebas Realizadas
+
+### 3.1 Tipos de Pruebas Ejecutadas
+
+| Tipo de Prueba  | Descripción |
+|-----------------|-------------|
+| Unitaria        | Validación de funciones como `calcularSubtotal()`, `validarSesion()`. |
+| Integración     | Flujo desde login hasta confirmación de pedido. |
+| Sistema         | Evaluación end-to-end con roles de cliente y administrador. |
+| Rendimiento     | Evaluación del tiempo de respuesta bajo múltiples acciones. |
+| Usabilidad      | Claridad visual, navegación, experiencia móvil. |
+| Seguridad       | Validación de accesos protegidos y autenticación. |
+
+### Herramientas utilizadas
+
+- Postman
+- DevTools (Chrome y Firefox)
+- MongoDB Compass
+- VS Code + consola de Node.js
+- Flatpickr
+
+### 3.2 Cobertura de Pruebas
+
+- **Cobertura estimada:** 90%
+- Funcionalidades probadas:
+  - Login y registro
+  - Catálogo y filtros
+  - Carrito y pagos
+  - Perfil y pedidos
+  - Administración
+
+| Estado de la Prueba | Cantidad | Descripción |
+|---------------------|----------|-------------|
+| ✅ Exitosas          | 18       | El sistema respondió conforme a los requisitos esperados |
+| ❌ Fallidas          | 3        | Validaciones débiles, feedback inexistente |
+| ⚠️ Omitidas          | 1        | Prueba en pantallas ≤ 320px (limitación técnica) |
+
+---
+
+## 4. Resultados de las Pruebas
+
+### 4.1 Defectos Encontrados
+
+- **Total de defectos:** 7  
+  - Corregidos: 5  
+  - Pendientes: 2
+
+#### Por severidad:
+
+| Severidad | Descripción del Error                                           | Cantidad |
+|-----------|------------------------------------------------------------------|----------|
+| Crítico   | Botón “Reservar ahora” no responde al primer clic               | 1        |
+| Alto      | Contraseñas débiles aceptadas sin validación                    | 1        |
+| Medio     | Falta mensaje en login fallido / Inputs permiten caracteres no válidos | 2        |
+| Bajo      | Problemas de visualización responsive (footer, imagen perfil)   | 3        |
+
+#### Por módulo:
+
+| Módulo               | Nº Errores | Descripción                            |
+|----------------------|------------|----------------------------------------|
+| Carrito / Pago       | 1          | Botón de reserva inactivo              |
+| Registro             | 2          | Validaciones incompletas               |
+| Inicio de Sesión     | 1          | Falta de mensajes de error             |
+| Diseño responsive    | 2          | Problemas visuales en móvil            |
+| Perfil de Usuario    | 1          | Imagen de perfil no actualizable       |
+
+#### Tiempo promedio de resolución
+
+- **Promedio general:** 1.5 horas
+- Mínimo: 45 minutos (CSS)
+- Máximo: 3 horas (lógica de botón)
+
+### 4.2 Evidencias
+
+#### Capturas de pantalla
+
+1. **Botón “Reservar ahora”** no responde.
+2. **Validación fallida en registro**, acepta contraseñas inseguras.
+3. **Diseño descuadrado** en vista móvil.
+
+#### Logs de errores
+
+```json
+{
+  "error": "Contraseña demasiado corta",
+  "input": "abc",
+  "endpoint": "/signup",
+  "timestamp": "2025-05-23T18:42:10Z"
+}
+## 5. Análisis y Recomendaciones
+
+### Tendencias
+
+Durante las diferentes iteraciones de desarrollo y pruebas del sistema **Lugavi MX**, se evidenció una disminución progresiva en la cantidad y gravedad de los defectos detectados:
+
+- En la primera ronda de pruebas se registraron errores estructurales y de validación básica.
+- En iteraciones posteriores, las fallas más comunes se redujeron, especialmente en flujos como registro, login y carrito de compras.
+- Las últimas pruebas se enfocaron en ajustes de estilo, accesibilidad y experiencia del usuario (UX).
+
+Esto demuestra una mejora en la calidad del código y del proceso de validación, aunque se identifican oportunidades de mejora para el entorno móvil.
+
+### Riesgos identificados
+
+| Riesgo                                 | Impacto Potencial                         |
+|----------------------------------------|-------------------------------------------|
+| Falta de validación robusta            | Ingreso de datos incorrectos o no seguros |
+| Ausencia de mensajes de error claros   | Confusión del usuario ante fallos         |
+| Inconsistencia visual en móviles       | Mala presentación, abandono del sitio     |
+| Botones sin retroalimentación visual   | Percepción de lentitud o fallo            |
+
+### Acciones correctivas
+
+1. Implementar validación de formularios con **Express Validator** o **Joi**.
+2. Incluir retroalimentación visual clara (alertas, mensajes, iconos).
+3. Revisar y ajustar la visualización móvil mediante diseño **responsive**.
+4. Establecer **pruebas automatizadas** con herramientas como **Jest** o **Mocha**.
+5. Refactorizar funciones redundantes en controladores y middlewares.
+6. Mantener logs detallados en el servidor y base de datos para facilitar la depuración.
+
+---
+
+## 6. Conclusiones
+
+### ¿Cumple el software con los requisitos de calidad?
+
+- ✅ **Requisitos funcionales:** Cumplidos en los módulos principales (login, catálogo, pagos, perfil, administración).
+- ⚠️ **Requisitos no funcionales:** Parcialmente cumplidos. Se requieren mejoras en validación, diseño móvil y mensajes de error.
+
+El sistema fue desarrollado bajo una arquitectura modular y organizada, facilitando su mantenimiento y escalabilidad futura.
+
+### ¿Es apto para pasar a producción?
+
+- 🔄 El sistema es **apto para una prueba piloto controlada**.
+- 🚫 Aún **no se recomienda su despliegue en entorno productivo final**, hasta corregir los detalles pendientes relacionados con validación, usabilidad móvil y retroalimentación visual.
