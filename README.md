@@ -766,6 +766,9 @@ Se realizaron 22 casos de prueba enfocados en validaciones, experiencia de usuar
 }
 
 ---
+
+
+
 ## 5. Análisis y Recomendaciones
 
 ### Tendencias
