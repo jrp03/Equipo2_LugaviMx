@@ -764,6 +764,9 @@ Se realizaron 22 casos de prueba enfocados en validaciones, experiencia de usuar
   "endpoint": "/signup",
   "timestamp": "2025-05-23T18:42:10Z"
 }
+
+---
+
 ## 5. Análisis y Recomendaciones
 
 ### Tendencias
