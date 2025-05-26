@@ -1,63 +1,94 @@
-<!-- filepath: c:\Users\Maria Cabanillas\Desktop\Proyecto_lugavix\Equipo2_LugaviMx\src\views\formulario.ejs -->
+<!-- filepath: src/views/formulario.ejs -->
 <% layout('layout/layout.ejs') %>
 
 <link rel="stylesheet" href="css/productos.css">
 
 <div class="container container-form">
+  <div class="formulario">
+    <h1 class="form-title">REGISTRO DE PRODUCTOS</h1>
 
-    <div class="formulario">
-        <h1 class="form-title">REGISTRO DE PRODUCTOS</h1>
-        <!-- Agregar producto-->
-        <form action="/formulario" method="POST">
-            <div>
-                <span>Nombre del producto</span>
-                <input type="text" name="nombre" placeholder="Nombre">
-            </div>
-            <div>
-                <span>Descripción del producto</span>
-                <textarea name="descripcion" id="" placeholder="Descripción del producto"></textarea>
-                </textarea>
-            </div>
+    <form action="/formulario" method="POST" enctype="multipart/form-data">
+      <div>
+        <span>Nombre del producto</span>
+        <input type="text" name="nombre" placeholder="Nombre" required maxlength="200">
+      </div>
+      <div>
+        <span>Descripción del producto</span>
+        <textarea name="descripcion" placeholder="Descripción del producto" maxlength="1000"></textarea>
+      </div>
 
-            <!-- <input type="text" name="descripcion" placeholder="Descripción del producto"> -->
-            <div class="form-group">
-                <div class="form-group-1">
-                    <span>Precio del producto</span>
-                    <input type="number" name="precio" placeholder="Precio" step="0.01" min="0">
-                </div>
-                <div class="form-group-1">
-                    <span>Existencia</span>
-                    <input type="number" name="stock" placeholder="Stock">
-                </div>
-            </div>
-            <div>
-                <span>Categoria</span>
-                <select name="categoria" id="">
-                    <option value="Ropa">Ropa Invierno</option>
-                    <option value="Calzado">Ropa verano</option>
-                    <option value="Accesorios">Ropa Casual</option>
-                    <option value="Tecnologia">Ropa de Vestir</option>
-                    <option value="Otros">Otros</option>
-                </select>
-            </div>
-            <div>
-                <span>Imagen del producto</span>
-                <input type="file" name="imagen" accept="image/*">
-            </div>
-            <!-- <button type="submit">Agregar Producto</button>   -->
-            <input type="submit" value="Guardar Producto">   
-        </form>
-        <div class="form-actions">
-            <h2>Otras acciones</h2>
-            <div class="form-op">
-                <a style="background-color: #d5910f;" href="/Guardar">Editar</a>
-                <a style="background-color: #c8351a;" href="/Guardar">Eliminar</a>
-                <a style="background-color: #004bbf;" href="/Guardar">Productos guardados</a>
-            </div>
+      <div class="form-group">
+        <div class="form-group-1">
+          <span>Precio del producto</span>
+          <input type="number" name="precio" placeholder="Precio" step="0.01" min="0" required>
         </div>
+        <div class="form-group-1">
+          <span>Existencia</span>
+          <input type="number" name="stock" placeholder="Stock" min="0" value="0">
+        </div>
+      </div>
+
+      <div>
+        <span>Categoría</span>
+        <select name="categoria" required>
+          <option value="" disabled selected>Selecciona una categoría</option>
+          <option value="Vestidos Midi">Vestidos Midi</option>
+          <option value="Vestidos Maxi">Vestidos Maxi</option>
+          <option value="Vestidos Mini">Vestidos Mini</option>
+          <option value="Vestidos de Fiesta">Vestidos de Fiesta</option>
+          <option value="Vestidos de Noche">Vestidos de Noche</option>
+          <option value="Vestidos de Cóctel">Vestidos de Cóctel</option>
+          <option value="Vestidos de Día">Vestidos de Día</option>
+          <option value="Vestidos con Encaje">Vestidos con Encaje</option>
+          <option value="Vestidos Estampados">Vestidos Estampados</option>
+          <option value="Vestidos Lisos">Vestidos Lisos</option>
+          <option value="Vestidos de Algodón">Vestidos de Algodón</option>
+          <option value="Vestidos de Seda">Vestidos de Seda</option>
+          <option value="Vestidos de novia">Vestidos de novia</option>
+          <option value="Otros">Otros</option>
+        </select>
+      </div>
+
+      <div>
+        <span>Color del producto</span>
+        <select name="color" required>
+          <option value="" disabled selected>Selecciona un color</option>
+          <option value="Rojo">Rojo</option>
+          <option value="Azul">Azul</option>
+          <option value="Verde">Verde</option>
+          <option value="Negro">Negro</option>
+          <option value="Blanco">Blanco</option>
+          <option value="Otro">Otro</option>
+        </select>
+      </div>
+
+      <div>
+        <span>Tallas</span>
+        <% const tallasDisponibles = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'Unitalla']; %>
+        <% tallasDisponibles.forEach(talla => { %>
+          <label>
+            <input type="checkbox" name="tallas" value="<%= talla %>">
+            <%= talla %>
+          </label>
+        <% }); %>
+      </div>
+
+      <div>
+        <span>Imagen del producto</span>
+        <input type="file" name="imagen" accept="image/*" required multiple>
+        <small>Puedes seleccionar varias imágenes.</small>
+      </div>
+
+      <input type="submit" value="Guardar Producto">
+    </form>
+
+    <div class="form-actions">
+      <h2>Otras acciones</h2>
+      <div class="form-op">
+        <a style="background-color: #d5910f;" href="/Guardar">Editar</a>
+        <a style="background-color: #c8351a;" href="/Guardar">Eliminar</a>
+        <a style="background-color: #004bbf;" href="/Guardar">Productos guardados</a>
+      </div>
     </div>
-
+  </div>
 </div>
-
-
-
