@@ -766,7 +766,6 @@ Se realizaron 22 casos de prueba enfocados en validaciones, experiencia de usuar
 }
 
 ---
-
 ## 5. Análisis y Recomendaciones
 
 ### Tendencias
@@ -812,3 +811,5 @@ El sistema fue desarrollado bajo una arquitectura modular y organizada, facilita
 
 - 🔄 El sistema es **apto para una prueba piloto controlada**.
 - 🚫 Aún **no se recomienda su despliegue en entorno productivo final**, hasta corregir los detalles pendientes relacionados con validación, usabilidad móvil y retroalimentación visual.
+
+
