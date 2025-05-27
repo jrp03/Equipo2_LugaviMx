@@ -6,30 +6,97 @@
     <title>Login con Node</title>
     <link rel="stylesheet" href="https://bootswatch.com/5/pulse/bootstrap.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        /* Estilos para los iconos del navbar */
+        .navbar-icons {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-icons a {
+            position: relative; /* Para posicionar el badge */
+            display: inline-block;
+            margin-left: 15px; /* Espacio entre los iconos */
+            color: white; /* Color de los iconos */
+            text-decoration: none; /* Quita el subrayado de los enlaces */
+            transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out; /* Transición suave */
+        }
+
+        .navbar-icons i {
+            font-size: 1.5rem; /* Tamaño de los iconos */
+            display: block; /* Asegura que el icono ocupe todo el espacio disponible */
+        }
+
+        /* Badge para el carrito de compras */
+        .cart-badge {
+            position: absolute;
+            top: -8px; /* Ajusta la posición vertical */
+            right: -8px; /* Ajusta la posición horizontal */
+            background-color: #dc3545; /* Rojo (puedes cambiarlo) */
+            color: white;
+            font-size: 0.75rem;
+            padding: 2px 5px;
+            border-radius: 50%; /* Hace que el badge sea circular */
+        }
+
+        /* Efecto Hover */
+        .navbar-icons a:hover {
+            transform: scale(1.1); /* Aumenta ligeramente el tamaño al pasar el mouse */
+            opacity: 0.8; /* Reduce ligeramente la opacidad */
+        }
+
+        .navbar-icons a:active {
+            transform: scale(0.95); /* Reduce ligeramente el tamaño al hacer click */
+            opacity: 0.6; /* Reduce ligeramente la opacidad */
+        }
+    </style>
 
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg" style="background-color: #333333;" data-bs-theme="dark">
-        <div class="container position-relative">
-            <!-- SVG centrado -->
-            <div class="position-absolute top-50 start-50 translate-middle">
-                <a class="navbar-brand text-center" href="/">
-                    <!-- Reemplaza este SVG con el tuyo -->
-                    <img src="asset/Logo.svg" alt="Logo" height="40">
-                </a>
+<nav class="navbar bg-body-tertiary fixed-top" style="background-color: #333333;" data-bs-theme="dark">
+    <div class="container-fluid">
+
+        <!-- Botón Hamburguesa a la izquierda -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Logo Centrado -->
+        <a class="navbar-brand mx-auto" href="/">
+            <img src="asset/Logo.svg" alt="Logo" height="40">
+        </a>
+
+        <!-- Iconos a la Derecha -->
+        <div class="navbar-icons">
+            <a href="/carrito">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-badge"><%= cartItemCount %></span>
+            </a>
+            <a href="<% if (user) { %>/perfil<% } else { %>/login<% } %>">
+                <i class="fas fa-user"></i>
+            </a>
+        </div>
+
+
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
+             aria-labelledby="offcanvasNavbarLabel" style="background-color: #333333; color: white;">
+            <!-- Estilo para el offcanvas y offcanvas-start -->
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel" style="color: white;">Menú</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button> <!-- btn-close-white para el tema oscuro -->
             </div>
-    
-            <!-- Botón hamburguesa y enlaces -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-    
-            <div class="collapse navbar-collapse justify-content-end" id="navbarColor01">
-                <% if (user) { %>
-                    <ul class="navbar-nav">
-                         <li class="nav-item">
+            <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
+                    <!-- alineación a la izquierda dentro del offcanvas -->
+                    <% if (user) { %>
+                        <li class="nav-item">
                             <a class="nav-link" href="/formulario">Agregar Productos</a>
                         </li>
                         <li class="nav-item">
@@ -38,52 +105,58 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/Salir">Salir</a>
                         </li>
-                    </ul>
-                <% } else { %>
-                    <ul class="navbar-nav">
+                    <% } else { %>
                         <li class="nav-item">
                             <a class="nav-link" href="/login">Ingresar</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/registro">Registro</a>
                         </li>
-                    </ul>
-                <% } %>
+                    <% } %>
+                </ul>
+                <!-- Opcional: Puedes añadir un formulario de búsqueda aquí si lo necesitas -->
+                <!-- <form class="d-flex mt-3" role="search">
+                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                  <button class="btn btn-outline-success" type="submit">Search</button>
+                </form> -->
             </div>
         </div>
-    </nav>
-    
-
-    <div style="position: fixed; top: 20px; right: 20px; z-index: 1050; width: auto;">
-        <% if (mensajeLogin.length > 0) { %>
-            <div class="alert alert-dismissible alert-primary alert-fade show" role="alert">
-                <strong>¡Vaya!</strong> <%= mensajeLogin %> intente nuevamente.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <% } %>
-        <% if (mensajeRegistro.length > 0) { %>
-            <div class="alert alert-dismissible alert-primary alert-fade show" role="alert">
-                <strong>¡Vaya!</strong> <%= mensajeRegistro %> intente nuevamente.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <% } %>
+        <!-- Espacio reservado para que el logo no se pegue al botón -->
+        <div></div>
     </div>
+</nav>
 
-    <div class="container">
-        <%- body %>
-    </div>
+<div style="position: fixed; top: 20px; right: 20px; z-index: 1050; width: auto;">
+    <% if (mensajeLogin.length > 0) { %>
+        <div class="alert alert-dismissible alert-primary alert-fade show" role="alert">
+            <strong>¡Vaya!</strong> <%= mensajeLogin %> intente nuevamente.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% } %>
+    <% if (mensajeRegistro.length > 0) { %>
+        <div class="alert alert-dismissible alert-primary alert-fade show" role="alert">
+            <strong>¡Vaya!</strong> <%= mensajeRegistro %> intente nuevamente.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% } %>
+</div>
 
-    <script>
-        // Animación de salida automática después de 5 segundos
-        setTimeout(() => {
-            const alerts = document.querySelectorAll('.alert-fade.show');
-            alerts.forEach(alert => {
-                alert.classList.remove('show');
-                alert.classList.add('hide');
-                setTimeout(() => alert.remove(), 600);
-            });
-        }, 4000);
-    </script>
+<div class="container" style="margin-top: 80px;">
+    <!-- Ajuste para evitar la superposición del navbar fijo -->
+    <%- body %>
+</div>
+
+<script>
+    // Animación de salida automática después de 5 segundos
+    setTimeout(() => {
+        const alerts = document.querySelectorAll('.alert-fade.show');
+        alerts.forEach(alert => {
+            alert.classList.remove('show');
+            alert.classList.add('hide');
+            setTimeout(() => alert.remove(), 600);
+        });
+    }, 4000);
+</script>
 
 </body>
 </html>
