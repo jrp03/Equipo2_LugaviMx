@@ -1,57 +1,177 @@
 <% layout('layout/layout.ejs') %>
 
 <div class="container mt-5">
-  <div class="card">
-    <div class="card-header">
-      <h3>Editar Perfil</h3>
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+      <h3 class="mb-0">Editar Perfil</h3>
     </div>
     <div class="card-body">
       <form action="/perfil/editar" method="POST">
-        <!-- Nombre -->
-        <div class="mb-3">
-          <label for="name" class="form-label">Nombre</label>
-          <input type="text" class="form-control" id="name" name="name" value="<%= usuario.name %>" required>
+        
+        <!-- Sección Información Personal -->
+        <div class="mb-4">
+          <h5 class="mb-3 border-bottom pb-2">Información Personal</h5>
+          
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="name" class="form-label">Nombre completo</label>
+              <input type="text" class="form-control" id="name" name="name" 
+                     value="<%= usuario.name %>" 
+                     placeholder="Ej: Juan Pérez García" required>
+            </div>
+            
+            <div class="col-md-6 mb-3">
+              <label for="phoneNumber" class="form-label">Teléfono</label>
+              <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" 
+                     value="<%= usuario.phoneNumber %>"
+                     placeholder="Ej: +52 55 1234 5678">
+            </div>
+          </div>
+        </div>
+        <!-- Sección Dirección -->
+        <div class="mb-4">
+          <h5 class="mb-3 border-bottom pb-2">Dirección</h5>
+          
+          <% if (usuario.shippingAddresses && usuario.shippingAddresses.length > 0) { %>
+            <% const dir = usuario.shippingAddresses[0]; %>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Calle y número</label>
+                <input type="text" class="form-control" name="addressLine1" value="<%= dir.addressLine1 %>">
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Depto, piso, etc.</label>
+                <input type="text" class="form-control" name="addressLine2" value="<%= dir.addressLine2 %>">
+              </div>
+              
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Ciudad</label>
+                <input type="text" class="form-control" name="city" value="<%= dir.city %>">
+              </div>
+              
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Estado</label>
+                <input type="text" class="form-control" name="state" value="<%= dir.state %>">
+              </div>
+              
+              <div class="col-md-2 mb-3">
+                <label class="form-label">Código postal</label>
+                <input type="text" class="form-control" name="postalCode" value="<%= dir.postalCode %>">
+              </div>
+              
+              <div class="col-md-2 mb-3">
+                <label class="form-label">País</label>
+                <input type="text" class="form-control" name="country" value="<%= dir.country %>">
+              </div>
+            </div>
+          <% } else { %>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Calle y número</label>
+                <input type="text" class="form-control" name="addressLine1" placeholder="Calle y número">
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Depto, piso, etc.</label>
+                <input type="text" class="form-control" name="addressLine2" placeholder="Depto, piso, etc.">
+              </div>
+              
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Ciudad</label>
+                <input type="text" class="form-control" name="city" placeholder="Ciudad">
+              </div>
+              
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Estado</label>
+                <input type="text" class="form-control" name="state" placeholder="Estado">
+              </div>
+              
+              <div class="col-md-2 mb-3">
+                <label class="form-label">Código postal</label>
+                <input type="text" class="form-control" name="postalCode" placeholder="Código postal">
+              </div>
+              
+              <div class="col-md-2 mb-3">
+                <label class="form-label">País</label>
+                <input type="text" class="form-control" name="country" placeholder="País">
+              </div>
+            </div>
+          <% } %>
         </div>
 
-        <!-- Teléfono -->
-        <div class="mb-3">
-          <label for="phoneNumber" class="form-label">Teléfono</label>
-          <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" value="<%= usuario.phoneNumber || '' %>">
-        </div>
-
-        <!-- Dirección (solo una para simplificar inicialmente) -->
-        <h5 class="mt-4">Dirección</h5>
-        <% const dir = usuario.shippingAddresses[0] || {}; %>
-        <div class="mb-3">
-          <label for="addressLine1" class="form-label">Dirección línea 1</label>
-          <input type="text" class="form-control" id="addressLine1" name="addressLine1" value="<%= dir.addressLine1 || '' %>">
-        </div>
-        <div class="mb-3">
-          <label for="addressLine2" class="form-label">Dirección línea 2</label>
-          <input type="text" class="form-control" id="addressLine2" name="addressLine2" value="<%= dir.addressLine2 || '' %>">
-        </div>
-        <div class="row">
-          <div class="col-md-4 mb-3">
-            <label for="city" class="form-label">Ciudad</label>
-            <input type="text" class="form-control" id="city" name="city" value="<%= dir.city || '' %>">
-          </div>
-          <div class="col-md-4 mb-3">
-            <label for="state" class="form-label">Estado</label>
-            <input type="text" class="form-control" id="state" name="state" value="<%= dir.state || '' %>">
-          </div>
-          <div class="col-md-4 mb-3">
-            <label for="postalCode" class="form-label">Código Postal</label>
-            <input type="text" class="form-control" id="postalCode" name="postalCode" value="<%= dir.postalCode || '' %>">
-          </div>
-        </div>
-        <div class="mb-3">
-          <label for="country" class="form-label">País</label>
-          <input type="text" class="form-control" id="country" name="country" value="<%= dir.country || '' %>">
+        <!-- Sección Métodos de Pago -->
+        <div class="mb-4">
+          <h5 class="mb-3 border-bottom pb-2">Métodos de Pago</h5>
+          
+          <% if (usuario.paymentMethods && usuario.paymentMethods.length > 0) { %>
+            <% usuario.paymentMethods.forEach(function (pm, index) { %>
+              <div class="mb-3 border rounded p-3 bg-light">
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Tipo de tarjeta</label>
+                    <input type="text" class="form-control" name="paymentMethods[<%= index %>][cardType]" value="<%= pm.cardType %>">
+                  </div>
+                  
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Número de tarjeta</label>
+                    <input type="text" class="form-control" name="paymentMethods[<%= index %>][cardNumber]" value="<%= pm.cardNumber %>">
+                  </div>
+                  
+                  <div class="col-md-3 mb-3">
+                    <label class="form-label">Fecha expiración (MM/AA)</label>
+                    <input type="text" class="form-control" name="paymentMethods[<%= index %>][expiryDate]" value="<%= pm.expiryDate %>">
+                  </div>
+                  
+                  <div class="col-md-3 mb-3">
+                    <label class="form-label">CVV</label>
+                    <input type="text" class="form-control" name="paymentMethods[<%= index %>][cvv]" value="<%= pm.cvv %>">
+                  </div>
+                  
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Nombre en la tarjeta</label>
+                    <input type="text" class="form-control" name="paymentMethods[<%= index %>][cardholderName]" value="<%= pm.cardholderName %>">
+                  </div>
+                </div>
+              </div>
+            <% }) %>
+          <% } else { %>
+            <div class="mb-3 border rounded p-3 bg-light">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Tipo de tarjeta</label>
+                  <input type="text" class="form-control" name="paymentMethods[0][cardType]" placeholder="Visa, Mastercard, etc.">
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Número de tarjeta</label>
+                  <input type="text" class="form-control" name="paymentMethods[0][cardNumber]" placeholder="1234 5678 9012 3456">
+                </div>
+                
+                <div class="col-md-3 mb-3">
+                  <label class="form-label">Fecha expiración (MM/AA)</label>
+                  <input type="text" class="form-control" name="paymentMethods[0][expiryDate]" placeholder="MM/AA">
+                </div>
+                
+                <div class="col-md-3 mb-3">
+                  <label class="form-label">CVV</label>
+                  <input type="text" class="form-control" name="paymentMethods[0][cvv]" placeholder="123">
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Nombre en la tarjeta</label>
+                  <input type="text" class="form-control" name="paymentMethods[0][cardholderName]" placeholder="Nombre como aparece en la tarjeta">
+                </div>
+              </div>
+            </div>
+          <% } %>
         </div>
 
         <!-- Botones -->
-        <button type="submit" class="btn btn-success">Guardar Cambios</button>
-        <a href="/perfil" class="btn btn-secondary">Cancelar</a>
+        <div class="d-flex justify-content-between mt-4">
+          <a href="/perfil" class="btn btn-outline-secondary">Cancelar</a>
+          <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        </div>
       </form>
     </div>
   </div>
