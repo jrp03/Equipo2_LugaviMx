@@ -1,36 +1,160 @@
 <% layout('layout/layout.ejs') %>
 
-<h1>Mi Carrito</h1>
+<style>
+  .carrito-container {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* Habilita el scroll vertical */
+    max-height: 600px; /* Establece una altura máxima para el contenedor */
+    margin-bottom: 70px; /* Espacio para que el footer fixed no tape el contenido */
+  }
 
-<% if (productos.length > 0) { %>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Imagen</th>
-        <th>Producto</th>
-        <th>Cantidad</th>
-        <th>Precio Unitario</th>
-        <th>Subtotal</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% productos.forEach(item => { %>
-        <tr>
-          <td>
-            <img src="<%= item.producto.imagenes[0] %>" alt="<%= item.producto.nombre %>" style="width: 50px;">
-          </td>
-          <td><%= item.producto.nombre %></td>
-          <td><%= item.cantidad %></td>
-          <td>$<%= item.producto.precio %></td>
-          <td>$<%= item.producto.precio * item.cantidad %></td>
-        </tr>
-      <% }); %>
-    </tbody>
-  </table>
+  .tabla-carrito th {
+    background-color: #fff7e6;
+    color: #444;
+    font-weight: bold;
+    text-align: left; /* Alinea los encabezados a la izquierda */
+  }
 
-  <p><strong>Total:</strong> $<%= total %></p>
+  .tabla-carrito td {
+    vertical-align: middle;
+    text-align: left; /* Alinea las celdas a la izquierda */
+  }
 
-  <a href="/checkout" class="btn btn-primary">Pagar</a>
-<% } else { %>
-  <p>No hay productos en el carrito.</p>
-<% } %>
+  .btn-quitar {
+    border: 1px solid #f8c291;
+    color: #d63031;
+    background-color: #fff0e6;
+    transition: all 0.2s ease;
+  }
+
+  .btn-quitar:hover {
+    background-color: #fab1a0;
+    color: white;
+  }
+
+  .btn-checkout {
+    background-color: #00b894;
+    color: white;
+    font-size: 14px; /* Reducir el tamaño de la fuente del botón */
+    border-radius: 6px; /* Reducir el radio del borde */
+    padding: 6px 12px; /* Reducir el padding del botón */
+    transition: all 0.2s ease;
+  }
+
+  .btn-checkout:hover {
+    background-color: #019875;
+  }
+
+  .total-box {
+    background-color: white;
+    border-radius: 8px; /* Reducir el radio del borde */
+    padding: 8px; /* Reducir el padding del total box */
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.08); /* Reducir la intensidad de la sombra */
+  }
+
+  .total-box h4 {
+    font-weight: 400; /* Reducir el peso de la fuente del total */
+    font-size: 16px; /* Reducir el tamaño de la fuente del total */
+    color: #444;
+    margin-bottom: 0; /* Eliminar el margen inferior del h4 */
+  }
+
+  .checkout-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    padding: 8px; /* Reducir el padding del footer */
+    box-shadow: 0px -1px 6px rgba(0, 0, 0, 0.1); /* Reducir la intensidad de la sombra */
+    z-index: 100; /* Asegura que esté encima de otros elementos */
+  }
+
+  .checkout-footer .total-box {
+    margin-bottom: 0; /* Elimina el margen inferior */
+  }
+</style>
+
+<div class="container my-5" style="padding-top: 30px;">
+  <h1 class="text-left mb-5" style="color: #444;"><i class="bi bi-bag-heart-fill text-warning"></i> Mi Carrito</h1>
+
+  <% if (productos.length > 0) { %>
+    <div class="carrito-container">
+      <div class="table-responsive">
+        <table class="table tabla-carrito align-middle">
+          <thead>
+            <tr class="text-center">
+              <th style="text-align:center;">Imagen</th>
+              <th style="text-align:left;">Producto</th>
+              <th style="text-align:left;">Cantidad</th>
+              <th style="text-align:left;">Precio</th>
+              <th style="text-align:left;">Subtotal</th>
+              <th style="text-align:left;">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% productos.forEach(item => { %>
+              <tr class="text-left">
+                <td style="text-align:center;">
+                  <img src="<%= item.producto.imagenes[0] %>" class="img-thumbnail" style="width: 90px; height: auto; border-radius: 10px;">
+                </td>
+                <td class="text-start fw-semibold" style="color: #6c5ce7;">
+                  <%= item.producto.nombre %>
+                </td>
+                <td>
+                  <input type="number" class="form-control text-center cantidad-input" value="<%= item.cantidad %>" min="1" data-product-id="<%= item.producto._id %>" style="width: 70px;">
+                </td>
+                <td>$<%= item.producto.precio.toFixed(2) %></td>
+                <td>$<%= (item.producto.precio * item.cantidad).toFixed(2) %></td>
+                <td>
+                  <button class="btn btn-quitar btn-sm eliminar-producto" data-product-id="<%= item.producto._id %>">
+                    <i class="bi bi-trash-fill"></i> Quitar
+                  </button>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="checkout-footer">
+      <div class="d-flex justify-content-between align-items-center total-box">
+        <h4>Total: $<%= Number(total || 0).toFixed(2) %></h4>
+        <a href="/checkout" class="btn btn-checkout">
+          <i class="bi bi-credit-card-2-front"></i> Proceder al Pago
+        </a>
+      </div>
+    </div>
+
+  <% } else { %>
+    <div class="alert alert-warning text-center mt-5">
+      Tu carrito está vacío. <a href="/productos" class="alert-link">Explora nuestros vestidos 💃</a>
+    </div>
+  <% } %>
+</div>
+
+<!-- Bootstrap Icons CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+<script>
+  document.querySelectorAll('.eliminar-producto').forEach(button => {
+    button.addEventListener('click', function () {
+      const productId = this.dataset.productId;
+      alert('Eliminar producto con ID: ' + productId);
+      // Aquí puedes hacer fetch o redireccionar
+    });
+  });
+
+  document.querySelectorAll('.cantidad-input').forEach(input => {
+    input.addEventListener('change', function () {
+      const productId = this.dataset.productId;
+      const cantidad = this.value;
+      console.log('Actualizar producto con ID: ' + productId + ' a cantidad: ' + cantidad);
+      // Aquí puedes hacer fetch para actualizar en backend
+    });
+  });
+</script>
