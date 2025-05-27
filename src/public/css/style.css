@@ -78,3 +78,6 @@
         margin-left: 40px;
         margin-right: 40px;
     }
+    .navbar.bg-body-tertiary.fixed-top {
+  background-color: #333333 !important; /* Usando !important */
+}

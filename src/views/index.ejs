@@ -1,343 +1,373 @@
 <% layout('layout/layout.ejs')%>
 
 <style>
-/* Estilos generales para la página */
+/* Estilos generales para la página (Sin Cambios) */
 body {
   font-family: 'Arial', sans-serif;
   background-color: #f4f4f4;
   margin: 0;
   padding: 0;
 }
-#cerrarModalBtn{
+#cerrarModalBtn {
     display: none;
 }
 h1 {
-  text-align: center;
-  color: #333;
-  margin-top: 20px;
+    text-align: center;
+    color: #333;
+    margin-top: 20px;
 }
 
-/* Estilos para el contenedor de las tarjetas de producto */
+/* Estilos para el contenedor de las tarjetas de producto (Sin Cambios) */
 .card-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
 }
 
-/* Estilos para la tarjeta de producto */
+/* Estilos para la tarjeta de producto (Sin Cambios) */
 .card {
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 15px;
-  margin: 10px;
-  width: 280px; /* Aumenta un poco el ancho de la tarjeta */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-  text-align: left;
-  background-color: white;
-  transition: transform 0.3s ease-in-out; /* Animación más suave */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px;
+    width: 280px; /* Aumenta un poco el ancho de la tarjeta */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    text-align: left;
+    background-color: white;
+    transition: transform 0.3s ease-in-out; /* Animación más suave */
 }
 
 .card:hover {
-  transform: translateY(-5px); /* Eleva la tarjeta al pasar el mouse */
+    transform: translateY(-5px); /* Eleva la tarjeta al pasar el mouse */
 }
 
 .card img {
-  max-width: 100%;
-  height: 220px; /* Ajusta la altura de la imagen */
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 10px;
+    max-width: 100%;
+    height: 220px; /* Ajusta la altura de la imagen */
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
 }
 
 .card h2 {
-  font-size: 1.2em;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: #333;
-  text-align: center;
+    font-size: 1.2em;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
 }
 
 .card p {
-  font-size: 0.95em;
-  margin-bottom: 8px;
-  color: #666;
+    font-size: 0.95em;
+    margin-bottom: 8px;
+    color: #666;
 }
 
 .precio {
-  color: #28a745;
-  font-weight: bold;
-  font-size: 1.1em;
+    color: #28a745;
+    font-weight: bold;
+    font-size: 1.1em;
 }
 
-/* Estilos para la sección de cantidad */
+/* Estilos para la sección de cantidad (Sin Cambios) */
 .cantidad {
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .cantidad label {
-  margin-right: 8px;
-  font-size: 0.9em;
-  color: #555;
+    margin-right: 8px;
+    font-size: 0.9em;
+    color: #555;
 }
 
 .cantidad input {
-  width: 50px;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  text-align: center;
+    width: 50px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
 }
 
-/* Estilos para los botones */
+/* Estilos para los botones (Sin Cambios) */
 .btn {
-  display: block;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 0.95em;
-  margin-top: 10px;
-  width: 100%;
-  text-align: center;
-  transition: background-color 0.3s ease;
+    display: block;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.95em;
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+    transition: background-color 0.3s ease;
 }
 
 .btn-carrito {
-  background-color: #007bff;
-  color: white;
+    background-color: #007bff;
+    color: white;
 }
 
 .btn-carrito:hover {
-  background-color: #0056b3;
+    background-color: #0056b3;
 }
 
 .btn-ver-detalles {
-  background-color: #6c757d;
-  color: white;
+    background-color: #6c757d;
+    color: white;
 }
 
 .btn-ver-detalles:hover {
-  background-color: #5a6268;
+    background-color: #5a6268;
 }
 
-/* Estilos para el modal */
+/* Estilos para el modal (Sin Cambios)*/
 .modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-  overflow-y: auto;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    overflow-y: auto;
 }
 
 .modal-content {
-  position: relative;
-  background-color: #fefefe;
-  margin: 3% auto; /* Reduced top margin */
-  padding: 0px;
-  border: 1px solid #888;
-  width: 30%; /* Adjusted width to 50% */
-  max-height: 90vh;  /*Adjusted max height to 80% */
-  overflow-y: auto; /* Make content scrollable within the modal*/
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  animation-name: animatetop;
-  animation-duration: 0.4s;
-  border-radius: 10px;
+    position: relative;
+    background-color: #fefefe;
+    margin: 3% auto; /* Reduced top margin */
+    padding: 0px;
+    border: 1px solid #888;
+    width: 30%; /* Adjusted width to 50% */
+    max-height: 90vh;  /*Adjusted max height to 80% */
+    overflow-y: auto; /* Make content scrollable within the modal*/
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+    border-radius: 10px;
 }
 
-/* Animación del modal */
+/* Animación del modal (Sin Cambios)*/
 @keyframes animatetop {
-  from {
-    top: -300px;
-    opacity: 0;
-  }
-  to {
-    top: 0;
-    opacity: 1;
-  }
+    from {
+        top: -300px;
+        opacity: 0;
+    }
+    to {
+        top: 0;
+        opacity: 1;
+    }
 }
 
 .modal-header {
-  padding: 15px;
-  border-bottom: 1px solid #e5e5e5;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .modal-title {
-  margin: 0;
-  font-size: 1.4em;
-  color: #333;
+    margin: 0;
+    font-size: 1.4em;
+    color: #333;
 }
 
 .close {
-  color: #aaa;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .close:hover,
 .close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 .modal-body {
-  padding: 15px;
+    padding: 15px;
 }
 
-/* Estilos para el carrusel */
+/* Estilos para el carrusel (Sin Cambios)*/
 #carouselImagenes {
-  margin-bottom: 15px; /* Añade un margen inferior */
+    margin-bottom: 15px; /* Añade un margen inferior */
 }
 
 #carouselImagenes img {
-  height: 250px; /* Reduced image height for smaller modal */
-  border-radius: 10px;
-  width: auto;
+    height: 250px; /* Reduced image height for smaller modal */
+    border-radius: 10px;
+    width: auto;
 }
 
 .carousel-control-prev,
 .carousel-control-next {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: auto;
-  padding: 16px;
-  color: white;
-  text-align: center;
-  opacity: 0.5;
-  transition: opacity 0.15s ease;
-  cursor: pointer;
-  border: none;
-  background: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: auto;
+    padding: 16px;
+    color: white;
+    text-align: center;
+    opacity: 0.5;
+    transition: opacity 0.15s ease;
+    cursor: pointer;
+    border: none;
+    background: none;
 }
 
-/* Estilos para mejorar la visibilidad de las flechas del carrusel */
+/* Estilos para mejorar la visibilidad de las flechas del carrusel (Sin Cambios)*/
 .carousel-control-prev,
 .carousel-control-next {
-  color: #fff; /* Flechas blancas */
-  font-size: 2em; /* Aumenta el tamaño de las flechas */
-  text-shadow: 2px 2px 4px #000000; /* Sombra para mayor contraste */
+    color: #fff; /* Flechas blancas */
+    font-size: 2em; /* Aumenta el tamaño de las flechas */
+    text-shadow: 2px 2px 4px #000000; /* Sombra para mayor contraste */
 }
 
 .carousel-control-prev:hover,
 .carousel-control-next:hover {
-  opacity: 0.9;
+    opacity: 0.9;
 }
 
 .carousel-control-prev {
-  left: 0;
+    left: 0;
 }
 
 .carousel-control-next {
-  right: 0;
+    right: 0;
 }
 
 .carousel-inner {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
 }
 
 .carousel-item {
-  position: relative;
-  display: none;
-  width: 100%;
-  backface-visibility: hidden;
-  text-align: center;
+    position: relative;
+    display: none;
+    width: 100%;
+    backface-visibility: hidden;
+    text-align: center;
 }
 
 .carousel-item.active {
-  display: block;
+    display: block;
 }
 
-/* Estilos para el footer del modal */
+/* Estilos para el footer del modal (Sin Cambios)*/
 .modal-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px;
-  border-top: 1px solid #e5e5e5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-top: 1px solid #e5e5e5;
 }
 
 .modal-footer .btn {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1em;
-  transition: background-color 0.3s ease;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
 }
 
 .modal-footer .btn-secondary {
-  background-color: #6c757d;
-  color: white;
+    background-color: #6c757d;
+    color: white;
 }
 
 .modal-footer .btn-secondary:hover {
-  background-color: #5a6268;
+    background-color: #5a6268;
 }
 
 .modal-footer .btn-primary {
-  background-color: #007bff;
-  color: white;
+    background-color: #007bff;
+    color: white;
 }
 
 .modal-footer .btn-primary:hover {
-  background-color: #0056b3;
+    background-color: #0056b3;
 }
 
-/* Estilos para el grid de detalles adicionales */
+/* Estilos para el grid de detalles adicionales (Sin Cambios)*/
 .detalle-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 0.5rem 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.5rem 1rem;
 }
 
 .detalle-grid p {
-  margin: 0;
-  padding: 0.25rem 0;
-  font-size: 0.9em;
+    margin: 0;
+    padding: 0.25rem 0;
+    font-size: 0.9em;
 }
 
 .detalle-extra-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 10px;
-  margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 10px;
+    margin-top: 1rem;
 }
 
 .detalle-extra-card {
-  background-color: #f4f0fb;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 8px 10px;
-  font-size: 0.8rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    background-color: #f4f0fb;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 0.8rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .detalle-extra-card strong {
-  display: block;
-  font-weight: 600;
-  color: #5e3db0;
-  font-size: 0.75rem;
-  margin-bottom: 2px;
+    display: block;
+    font-weight: 600;
+    color: #5e3db0;
+    font-size: 0.75rem;
+    margin-bottom: 2px;
 }
 
 .detalle-extra-card span {
-  color: #333;
-  font-size: 0.75rem;
+    color: #333;
+    font-size: 0.75rem;
+}
+
+/* Nuevos Estilos para el Carrito */
+.cart-modal-body {
+    padding: 15px;
+}
+
+.cart-item {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+}
+
+.cart-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.cart-item-details {
+    flex-grow: 1;
+}
+
+.cart-total {
+    padding-top: 10px;
+    font-weight: bold;
+    text-align: right;
 }
 </style>
 
@@ -354,9 +384,9 @@ h1 {
 
       <div class="cantidad">
         <label for="cantidad">Cantidad:</label>
-        <input type="number" id="cantidad" value="1" min="1">
+        <input type="number" id="cantidad-<%= producto._id %>" value="1" min="1">
       </div>
-      <button class="btn btn-carrito">Añadir al carrito</button>
+      <button class="btn btn-carrito" data-id="<%= producto._id %>">Añadir al carrito</button>
       <button class="btn btn-ver-detalles" data-producto='<%= JSON.stringify(producto) %>'>
         Ver Detalles
       </button>
@@ -405,94 +435,128 @@ h1 {
   </div>
 </div>
 
+<!-- Modal del Carrito -->
+<div id="modalCarrito" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Mi Carrito</h5>
+            <span class="close" id="cerrarModalCarrito">×</span>
+        </div>
+        <div class="modal-body cart-modal-body">
+            <!-- Aquí se mostrarán los productos del carrito -->
+        </div>
+        <div class="modal-footer">
+            <p class="cart-total">Total: $0.00</p>
+            <button type="button" class="btn btn-secondary" id="cerrarModalCarritoBtn">Cerrar</button>
+            <button type="button" class="btn btn-primary">Pagar</button>
+        </div>
+    </div>
+</div>
+
 <script>
+console.log("Script cargado");
 document.addEventListener('DOMContentLoaded', function() {
-  const modal = document.getElementById('modalDetalles');
+  console.log("DOMContentLoaded");
+
+  // **MODAL DETALLES**
+  const modalDetalles = document.getElementById('modalDetalles');
   const cerrarModalBtn = document.getElementById('cerrarModalBtn');
   const cerrarModal = document.getElementById('cerrarModal');
   const carouselInner = document.querySelector('#carouselImagenes .carousel-inner');
   let imagenes = [];
   let currentImageIndex = 0;
 
-  // Función para mostrar el modal con los detalles del producto
-  document.querySelectorAll('.btn-ver-detalles').forEach(button => {
-    button.addEventListener('click', function() {
-      const producto = JSON.parse(this.dataset.producto);
+    // **MODAL CARRITO**
+  const modalCarrito = document.getElementById('modalCarrito');
+  const cerrarModalCarritoBtn = document.getElementById('cerrarModalCarritoBtn');
+  const cerrarModalCarrito = document.getElementById('cerrarModalCarrito');
+  const cartModalBody = document.querySelector('#modalCarrito .cart-modal-body');
 
-      // Llena los campos del modal con los datos del producto
-      document.getElementById('modalNombre').textContent = producto.nombre;
-      document.getElementById('modalDescripcion').textContent = producto.descripcion;
-      document.getElementById('modalColor').textContent = producto.color;
-      document.getElementById('modalPrecio').textContent = producto.precio;
-      document.getElementById('modalStock').textContent = producto.stock;
-      document.getElementById('modalDestacado').textContent = producto.destacado ? 'Sí' : 'No';
-      document.getElementById('modalEnvio').textContent = producto.envioGratis ? 'Sí' : 'No';
-      document.getElementById('modalTallas').textContent = producto.tallas.join(', ') || 'No especificado';
 
-      // Carga las imágenes en el carrusel
-      imagenes = producto.imagenes;
-      cargarImagenesCarousel(imagenes);
-      currentImageIndex = 0;
-      showSlide(currentImageIndex);
-
-      // Muestra el modal
-      modal.style.display = "block";
-    });
+  const carritoIcono = document.querySelector('.navbar-icons a[href="/carrito"]');
+  carritoIcono.addEventListener('click', function(event) {
+    event.preventDefault(); // Evita que el enlace te lleve a otra página
+    window.location.href = '/carrito'; // Redirige a la ruta /carrito
   });
 
-  // Función para cerrar el modal
+
+ // Al hacer clic en "Añadir al carrito"
+    document.querySelectorAll('.btn-carrito').forEach(button => {
+        console.log("Botón encontrado");
+        button.addEventListener('click', async function() {
+            console.log("Añadir al carrito clickeado");
+            const productoId = this.dataset.id;
+            const cantidadInput = document.getElementById(`cantidad-${productoId}`);
+            if (!cantidadInput) {
+                console.error('No se encontró el input de cantidad para el producto con ID:', productoId);
+                alert('Error al añadir al carrito. Por favor, inténtalo de nuevo.');
+                return;
+            }
+            const cantidad = parseInt(cantidadInput.value);
+
+            // Verifica que la cantidad sea válida
+            if (isNaN(cantidad) || cantidad <= 0) {
+                alert("Cantidad inválida");
+                return;
+            }
+            console.log("Datos a enviar:", JSON.stringify({ productoId: productoId, cantidad: cantidad }));
+            // Realiza una solicitud POST a la ruta /carrito/agregar
+            try {
+                  const response = await fetch('/carrito/agregar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        productoId: productoId,
+                        cantidad: cantidad
+                    })
+                })
+          
+                if (response.ok) {
+                    const updatedCartCount = await response.json();
+
+                    const cartBadge = document.querySelector('.cart-badge');
+                    cartBadge.textContent = updatedCartCount.cartItemCount;
+                } else {
+                    console.error('Error al añadir al carrito:', response.status);
+                    alert('Error al añadir al carrito. Por favor, inténtalo de nuevo.');
+                }
+               } catch (error) {
+                   console.error('Error al añadir al carrito:', error);
+                    alert('Error al añadir al carrito. Por favor, inténtalo de nuevo.');
+                }
+        });
+    });
+
+  document.querySelectorAll('.btn-ver-detalles').forEach(button => {
+    button.addEventListener('click', function() {
+        });
+  });
+
   function closeTheModal() {
-    modal.style.display = "none";
   }
 
   cerrarModalBtn.addEventListener('click', closeTheModal);
   cerrarModal.addEventListener('click', closeTheModal);
 
-  // Cierra el modal al hacer clic fuera del contenido
   window.addEventListener('click', function(event) {
-    if (event.target == modal) {
-      closeTheModal();
-    }
   });
 
-  // Función para cargar las imágenes en el carrusel
+    function closeModalCarrito() {
+    }
+
+    cerrarModalCarritoBtn.addEventListener('click', closeModalCarrito);
+    cerrarModalCarrito.addEventListener('click', closeModalCarrito);
+
+
   function cargarImagenesCarousel(imagenes) {
-    carouselInner.innerHTML = ''; // Limpia el carrusel
-    imagenes.forEach((imagen, index) => {
-      const item = document.createElement('div');
-      item.classList.add('carousel-item');
-      if (index === 0) {
-        item.classList.add('active'); // Activa la primera imagen
-      }
-      const img = document.createElement('img');
-      img.src = imagen;
-      img.alt = `Imagen ${index + 1}`;
-      item.appendChild(img);
-      carouselInner.appendChild(item);
-    });
   }
 
-  // Funciones para cambiar de slide en el carrusel
   window.cambiarSlide = function(n) {
-    showSlide(currentImageIndex += n);
   }
 
   function showSlide(n) {
-    let slides = document.getElementsByClassName("carousel-item");
-    if (slides.length === 0) return;
-
-    if (n >= slides.length) {
-      currentImageIndex = 0;
-    }
-    if (n < 0) {
-      currentImageIndex = slides.length - 1;
-    }
-
-    for (let i = 0; i < slides.length; i++) {
-      slides[i].classList.remove('active');
-    }
-
-    slides[currentImageIndex].classList.add('active');
   }
 });
 </script>

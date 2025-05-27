@@ -1,0 +1,36 @@
+<% layout('layout/layout.ejs') %>
+
+<h1>Mi Carrito</h1>
+
+<% if (productos.length > 0) { %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Imagen</th>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Precio Unitario</th>
+        <th>Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% productos.forEach(item => { %>
+        <tr>
+          <td>
+            <img src="<%= item.producto.imagenes[0] %>" alt="<%= item.producto.nombre %>" style="width: 50px;">
+          </td>
+          <td><%= item.producto.nombre %></td>
+          <td><%= item.cantidad %></td>
+          <td>$<%= item.producto.precio %></td>
+          <td>$<%= item.producto.precio * item.cantidad %></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <p><strong>Total:</strong> $<%= total %></p>
+
+  <a href="/checkout" class="btn btn-primary">Pagar</a>
+<% } else { %>
+  <p>No hay productos en el carrito.</p>
+<% } %>
