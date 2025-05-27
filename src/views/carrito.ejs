@@ -35,6 +35,18 @@
     color: white;
   }
 
+    .btn-actualizar {
+    border: 1px solid #81ecec;
+    color: #00cec9;
+    background-color: #e6fff9;
+    transition: all 0.2s ease;
+  }
+
+  .btn-actualizar:hover {
+    background-color: #74b9ff;
+    color: white;
+  }
+
   .btn-checkout {
     background-color: #00b894;
     color: white;
@@ -113,6 +125,9 @@
                   <button class="btn btn-quitar btn-sm eliminar-producto" data-product-id="<%= item.producto._id %>">
                     <i class="bi bi-trash-fill"></i> Quitar
                   </button>
+                  <button class="btn btn-actualizar btn-sm actualizar-producto" data-product-id="<%= item.producto._id %>">
+                    <i class="bi bi-arrow-clockwise"></i> Actualizar
+                  </button>
                 </td>
               </tr>
             <% }); %>
@@ -124,15 +139,15 @@
     <div class="checkout-footer">
       <div class="d-flex justify-content-between align-items-center total-box">
         <h4>Total: $<%= Number(total || 0).toFixed(2) %></h4>
-        <a href="/checkout" class="btn btn-checkout">
-          <i class="bi bi-credit-card-2-front"></i> Proceder al Pago
-        </a>
+<a href="/carrito/checkout" class="btn btn-checkout">
+    <i class="bi bi-credit-card-2-front"></i> Proceder al Pago
+</a>
       </div>
     </div>
 
   <% } else { %>
     <div class="alert alert-warning text-center mt-5">
-      Tu carrito está vacío. <a href="/productos" class="alert-link">Explora nuestros vestidos 💃</a>
+      Tu carrito está vacío. <a href="/" class="alert-link">Explora nuestros vestidos 💃</a>
     </div>
   <% } %>
 </div>
@@ -144,8 +159,59 @@
   document.querySelectorAll('.eliminar-producto').forEach(button => {
     button.addEventListener('click', function () {
       const productId = this.dataset.productId;
-      alert('Eliminar producto con ID: ' + productId);
       // Aquí puedes hacer fetch o redireccionar
+       fetch(`/carrito/eliminar/${productId}`, {
+            method: 'POST', // o 'DELETE' si prefieres usar ese método
+        })
+        .then(response => {
+            if (response.ok) {
+                // Recargar la página o actualizar la tabla dinámicamente
+                window.location.reload();
+            } else {
+                console.error('Error al eliminar el producto');
+                alert('Hubo un error al eliminar el producto.');
+            }
+        })
+        .catch(error => {
+            console.error('Error de red:', error);
+            alert('Error de red al eliminar el producto.');
+        });
+    });
+  });
+
+   document.querySelectorAll('.actualizar-producto').forEach(button => {
+    button.addEventListener('click', function () {
+      const productId = this.dataset.productId;
+      const cantidadInput = this.closest('tr').querySelector('.cantidad-input');
+      const cantidad = cantidadInput.value;
+
+      // Validar que la cantidad sea un número y mayor que cero
+      if (isNaN(cantidad) || cantidad <= 0) {
+          alert('Por favor, introduce una cantidad válida.');
+          return;
+      }
+
+      // Aquí puedes hacer fetch para actualizar en backend
+      fetch(`/carrito/actualizar/${productId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ cantidad: cantidad }),
+        })
+        .then(response => {
+            if (response.ok) {
+                // Recargar la página o actualizar la tabla dinámicamente
+                window.location.reload();
+            } else {
+                console.error('Error al actualizar la cantidad');
+                alert('Hubo un error al actualizar la cantidad.');
+            }
+        })
+        .catch(error => {
+            console.error('Error de red:', error);
+            alert('Error de red al actualizar la cantidad.');
+        });
     });
   });
 

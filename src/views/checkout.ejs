@@ -1,0 +1,409 @@
+<!-- checkout.ejs -->
+<% layout('layout/layout.ejs') %>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+<style>
+    /* Estilos generales (adaptados para concordancia visual) */
+    .container {
+        background-color: #fffdf5; /* Fondo general similar al carrito */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+        margin-top: 20px;
+    }
+
+    h2 {
+        color: #555;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* Estilos para el Stepper */
+    .bs-stepper {
+        border: none; /* Quitar el borde */
+        padding: 0; /* Quitar el padding */
+        background-color: transparent; /* Fondo transparente para que se vea el fondo del contenedor */
+    }
+
+    .bs-stepper .step-trigger {
+        padding: 10px 20px;
+        border-radius: 20px;
+        font-weight: 500;
+        color: #6c757d;
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+    }
+
+    .bs-stepper .step-trigger:hover {
+        background-color: #e9ecef;
+    }
+
+    .bs-stepper .step-trigger:not(:disabled):not(.disabled).active {
+        background-color: #0d6efd;
+        color: white;
+        border-color: #0d6efd;
+    }
+
+    .bs-stepper .bs-stepper-circle {
+        width: 30px;
+        height: 30px;
+        font-size: 0.8rem;
+        background-color: #adb5bd;
+        color: white;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+    }
+
+    .bs-stepper .step-trigger:not(:disabled):not(.disabled).active .bs-stepper-circle {
+        background-color: white;
+        color: #0d6efd;
+    }
+
+    .bs-stepper .line {
+        background-color: #dee2e6;
+        height: 2px;
+        margin: 0 1rem;
+    }
+
+    /* Contenido del Stepper (bordes y fondo) */
+    .bs-stepper-content {
+        padding: 20px;
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+        margin-top: 1rem;
+        background-color: #fff; /* Fondo blanco para el contenido */
+    }
+
+    /* Diseño horizontal del Stepper */
+    .bs-stepper.horizontal .bs-stepper-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+
+    .bs-stepper.horizontal .line {
+        flex: 1;
+    }
+
+    .bs-stepper.horizontal .step {
+        flex: 0 0 auto;
+        text-align: center;
+    }
+
+    /* Estilo para las tablas */
+    .table {
+        background-color: #fff; /* Fondo blanco para las tablas */
+        border: 1px solid #dee2e6;
+    }
+
+    .table thead th {
+        background-color: #f8f9fa;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    /* Estilos para los botones */
+    .btn-primary, .btn-danger {
+        background-color: #007bff; /* Azul estándar, cambiar si es diferente */
+        border-color: #007bff;
+        color: white;
+    }
+
+    .btn-primary:hover, .btn-danger:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background-color: #545b62;
+        border-color: #545b62;
+    }
+
+    /* Estilos para el Modal */
+    .modal-content {
+      background-color: #fff;
+    }
+
+    .modal-header {
+      background-color: #f8f9fa;
+    }
+
+    .modal-footer {
+      background-color: #f8f9fa;
+    }
+</style>
+
+<div class="container mt-5">
+    <h2 class="mb-4">Finalizar su Compra</h2>
+
+    <div id="stepper" class="bs-stepper horizontal">
+        <div class="bs-stepper-header" role="tablist">
+            <!-- Paso 1 -->
+            <div class="step" data-target="#step-1">
+                <button type="button" class="step-trigger" role="tab" id="step-1-trigger" aria-controls="step-1">
+                    <span class="bs-stepper-circle">1</span>
+                    <span class="bs-stepper-label">Resumen del Carrito</span>
+                </button>
+            </div>
+            <div class="line"></div>
+            <!-- Paso 2 -->
+            <div class="step" data-target="#step-2">
+                <button type="button" class="step-trigger" role="tab" id="step-2-trigger" aria-controls="step-2">
+                    <span class="bs-stepper-circle">2</span>
+                    <span class="bs-stepper-label">Información Personal</span>
+                </button>
+            </div>
+            <div class="line"></div>
+            <!-- Paso 3 -->
+            <div class="step" data-target="#step-3">
+                <button type="button" class="step-trigger" role="tab" id="step-3-trigger" aria-controls="step-3">
+                    <span class="bs-stepper-circle">3</span>
+                    <span class="bs-stepper-label">Información de Pago</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="bs-stepper-content">
+            <form action="/carrito/confirmar-compra" method="POST">
+                <!-- Paso 1: Resumen del Carrito -->
+                <div id="step-1" class="content" role="tabpanel" aria-labelledby="step-1-trigger">
+                    <h4 class="mb-3">Artículos en su Carrito</h4>
+
+                    <% if (productos.length > 0) { %>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio Unitario</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% productos.forEach(item => { %>
+                                    <tr>
+                                        <td><%= item.producto.nombre %></td>
+                                        <td><%= item.cantidad %></td>
+                                        <td>$<%= item.producto.precio.toFixed(2) %></td>
+                                        <td>$<%= (item.producto.precio * item.cantidad).toFixed(2) %></td>
+                                         <!-- Campos ocultos para enviar la información de los productos -->
+                                        <input type="hidden" name="productos[<%= item.producto._id %>][id]" value="<%= item.producto._id %>">
+                                        <input type="hidden" name="productos[<%= item.producto._id %>][cantidad]" value="<%= item.cantidad %>">
+                                        <input type="hidden" name="productos[<%= item.producto._id %>][precio]" value="<%= item.producto.precio %>">
+                                        <input type="hidden" name="productos[<%= item.producto._id %>][nombre]" value="<%= item.producto.nombre %>">
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                        <p><strong>Total:</strong> $<%= Number(total || 0).toFixed(2) %></p>
+                        <input type="hidden" name="total" value="<%= Number(total || 0).toFixed(2) %>">
+                    <% } else { %>
+                        <p>Su carrito está vacío.</p>
+                    <% } %>
+
+                    <!-- Botones de navegación -->
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-primary" onclick="stepper.next()">Siguiente</button>
+                    </div>
+                </div>
+
+<!-- Paso 2: Información Personal -->
+<div id="step-2" class="content" role="tabpanel" aria-labelledby="step-2-trigger">
+    <h4 class="mb-3">Información Personal</h4>
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <label for="nombre" class="form-label">Nombre Completo</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" value="<%= user ? user.name : '' %>" required>
+        </div>
+        <div class="col-md-6">
+            <label for="email" class="form-label">Correo Electrónico</label>
+            <input type="email" class="form-control" id="email" name="email" value="<%= user ? user.email : '' %>" required>
+        </div>
+        <div class="col-md-6">
+            <label for="telefono" class="form-label">Teléfono</label>
+            <input type="tel" class="form-control" id="telefono" name="telefono" required>
+        </div>
+
+        <div class="col-12">
+            <label for="selectDireccion" class="form-label">Seleccionar Dirección</label>
+            <select class="form-select" id="selectDireccion" name="selectDireccion">
+                <option value="">Seleccionar Dirección</option>
+                <option value="new">Nueva Dirección</option>
+                <% if (user && user.shippingAddresses && user.shippingAddresses.length > 0) { %>
+                    <% user.shippingAddresses.forEach((address, index) => { %>
+                        <option value="<%= address._id %>">
+                             <%= address.addressLine1 %>, <%= address.city %>, <%= address.state %>, <%= address.postalCode %>, <%= address.country %>
+                        </option>
+                    <% }); %>
+                <% } %>
+            </select>
+        </div>
+
+    </div>
+    <!-- Botones de navegación -->
+    <div class="d-flex justify-content-between">
+        <button class="btn btn-secondary" onclick="stepper.previous()">Anterior</button>
+        <button class="btn btn-primary" onclick="stepper.next()">Siguiente</button>
+    </div>
+</div>
+
+
+                <!-- Paso 3: Información de Pago -->
+                <div id="step-3" class="content" role="tabpanel" aria-labelledby="step-3-trigger">
+                    <h4 class="mb-3">Información de Pago</h4>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label for="tarjeta" class="form-label">Número de Tarjeta</label>
+                            <input type="text" class="form-control" id="tarjeta" name="tarjeta" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="vencimiento" class="form-label">Fecha de Vencimiento</label>
+                            <input type="text" class="form-control" id="vencimiento" name="vencimiento" placeholder="MM/AA" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="cvv" class="form-label">CVV</label>
+                            <input type="text" class="form-control" id="cvv" name="cvv" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="titular" class="form-label">Nombre del Titular</label>
+                            <input type="text" class="form-control" id="titular" name="titular" required>
+                        </div>
+                    </div>
+                     <!-- Botones de navegación -->
+                    <div class="d-flex justify-content-between">
+                        <button class="btn btn-secondary" onclick="stepper.previous()">Anterior</button>
+                        <button type="submit" class="btn btn-danger btn-lg">Confirmar Compra</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Nueva Dirección -->
+<div class="modal fade" id="nuevaDireccionModal" tabindex="-1" aria-labelledby="nuevaDireccionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="nuevaDireccionModalLabel">Nueva Dirección</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="nuevaDireccionForm">
+          <div class="mb-3">
+            <label for="direccion" class="form-label">Dirección</label>
+            <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Calle y número" required>
+          </div>
+          <div class="mb-3">
+            <label for="ciudad" class="form-label">Ciudad</label>
+            <input type="text" class="form-control" id="ciudad" name="ciudad" required>
+          </div>
+           <div class="mb-3">
+            <label for="estado" class="form-label">Estado/Provincia</label>
+            <input type="text" class="form-control" id="estado" name="estado" required>
+          </div>
+          <div class="mb-3">
+            <label for="codigoPostal" class="form-label">Código Postal</label>
+            <input type="text" class="form-control" id="codigoPostal" name="codigoPostal" required>
+          </div>
+          <div class="mb-3">
+            <label for="pais" class="form-label">País</label>
+            <select class="form-select" id="pais" name="pais" required>
+              <option value="">Seleccionar País</option>
+              <option value="Argentina">Argentina</option>
+              <option value="Colombia">Colombia</option>
+              <option value="España">España</option>
+              <option value="México">México</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="guardarDireccion">Guardar Dirección</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    var stepper = new Stepper(document.querySelector('#stepper'), {
+        linear: false,
+        animation: true
+    });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const selectDireccion = document.getElementById('selectDireccion');
+    const nuevaDireccionModal = new bootstrap.Modal(document.getElementById('nuevaDireccionModal'));
+    const guardarDireccionBtn = document.getElementById('guardarDireccion');
+    const nuevaDireccionForm = document.getElementById('nuevaDireccionForm');
+
+    selectDireccion.addEventListener('change', function () {
+      if (this.value === 'new') {
+        nuevaDireccionModal.show();
+      }
+    });
+
+    guardarDireccionBtn.addEventListener('click', function () {
+  if (nuevaDireccionForm.checkValidity()) {
+    // Aquí puedes enviar los datos del formulario al servidor para guardar la dirección
+    const formData = new FormData(nuevaDireccionForm);
+    const nuevaDireccion = {};
+    formData.forEach((value, key) => {
+      nuevaDireccion[key] = value;
+    });
+
+    fetch('/carrito/guardar-direccion', { // Asegúrate de que la ruta coincide
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(nuevaDireccion)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Error al guardar la dirección');
+      }
+      return response.json();
+    })
+    .then(data => {
+      // Recargar la página
+      window.location.reload();
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('Ocurrió un error al guardar la dirección. Por favor, inténtalo de nuevo.');
+    });
+
+  } else {
+    nuevaDireccionForm.classList.add('was-validated'); // Mostrar errores de validación
+  }
+});
+
+    // Limpiar el formulario al cerrar el modal
+    nuevaDireccionModal._element.addEventListener('hidden.bs.modal', function () {
+      nuevaDireccionForm.reset();
+      nuevaDireccionForm.classList.remove('was-validated');
+      selectDireccion.value = "";
+    });
+  });
+</script>

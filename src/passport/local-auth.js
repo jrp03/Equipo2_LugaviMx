@@ -15,20 +15,25 @@ passport.deserializeUser(async (id, done) =>{
 passport.use('registro-local', new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password',
-    passReqToCallback: true
-}, async (req, email, password, done)=>{
-    const user = await User.findOne({email:email})
+    passReqToCallback: true  // Habilita el acceso a req
+}, async (req, email, password, done) => {
+    const { name, phoneNumber } = req.body; // Extrae name y phoneNumber desde req.body
+
+    const user = await User.findOne({ email: email });
+
     if (user) {
-        done(null, false, req.flash('mensajeRegistro', 'El usuario ya existe'))
-    }else{
-        const newUser = User();
+        return done(null, false, req.flash('mensajeRegistro', 'El usuario ya existe'));
+    } else {
+        const newUser = new User();
         newUser.email = email;
         newUser.password = newUser.encriptarContraseña(password);
-        await newUser.save();
-        done(null, newUser)
-    }
+        newUser.name = name;       // Guarda el nombre
+        newUser.phoneNumber = phoneNumber; // Guarda el número de teléfono
 
-}))
+        await newUser.save();
+        return done(null, newUser);
+    }
+}));
 
 passport.use('inicio-local', new LocalStrategy({
     usernameField: 'email',
@@ -45,3 +50,5 @@ passport.use('inicio-local', new LocalStrategy({
     done(null, user)
 
 }))
+
+

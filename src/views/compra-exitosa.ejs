@@ -1,0 +1,158 @@
+<!-- compra-exitosa.ejs -->
+<% layout('layout/layout.ejs') %>
+
+<style>
+.confirmacion-container {
+    width: 80%;
+    max-width: 800px;
+    padding: 20px;
+    background-color: #fffdf5;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    font-family: sans-serif;
+    color: #333;
+
+    /* Posicionamiento absoluto */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    /* Asegurar que haya márgenes para pantallas pequeñas */
+    margin: 0; /* Eliminar los márgenes predeterminados */
+}
+
+    .confirmacion-container h2 {
+        color: #555;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .info-section {
+        margin-bottom: 15px;
+        padding: 10px;
+        border: 1px solid #eee;  /* Borde más sutil */
+        border-radius: 5px;
+        background-color: #fff;  /* Fondo blanco para las secciones */
+    }
+
+    .confirmacion-container h5 {
+        color: #444;
+        margin-bottom: 8px;
+    }
+
+    .confirmacion-container p {
+        margin: 5px 0;
+    }
+
+    .confirmacion-container ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .confirmacion-container li {
+        margin-bottom: 5px;
+        padding: 5px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .confirmacion-container li:last-child {
+        border-bottom: none;
+    }
+
+    /* Estilos para los botones (similares a 'Quitar' y 'Actualizar') */
+    .confirmacion-container .btn-custom {
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.9em; /* Tamaño de fuente más pequeño */
+        margin-right: 5px;
+    }
+
+    .confirmacion-container .btn-primary { /* "Página Principal" */
+        background-color: #007bff;
+        color: white;
+    }
+
+    .confirmacion-container .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .confirmacion-container .btn-secondary { /* "Ver Mis Pedidos" */
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .confirmacion-container .btn-secondary:hover {
+        background-color: #545b62;
+    }
+
+    /* Estilo para simular el botón "Quitar" */
+    .confirmacion-container .btn-remove {
+        background-color: #f8d7da; /* Fondo rojizo claro */
+        color: #721c24;         /* Texto rojizo oscuro */
+    }
+
+    .confirmacion-container .btn-remove:hover {
+        background-color: #f5c6cb; /* Un poco más oscuro al pasar el ratón */
+    }
+
+    /* Estilo para simular el botón "Actualizar" */
+    .confirmacion-container .btn-update {
+        background-color: #d1ecf1; /* Fondo azulado claro */
+        color: #0c5460;         /* Texto azulado oscuro */
+    }
+
+    .confirmacion-container .btn-update:hover {
+        background-color: #bee5eb; /* Un poco más oscuro al pasar el ratón */
+    }
+</style>
+
+<div class="confirmacion-container">
+    <h2>¡Compra confirmada!</h2>
+    <p>Gracias por su compra. Aquí están los detalles de su pedido:</p>
+
+    <div class="info-section">
+        <h5>Número de Pedido: <%= pedido._id %></h5>
+    </div>
+
+    <div class="info-section">
+        <% if (pedido.usuario) { %>
+            <p><strong>Nombre:</strong> <%= pedido.usuario.name %></p>
+            <p><strong>Email:</strong> <%= pedido.usuario.email %></p>
+        <% } else { %>
+            <p>Usuario: No disponible</p>
+        <% } %>
+    </div>
+
+    <div class="info-section">
+        <p>
+            <strong>Dirección:</strong> <%= pedido.direccionEnvio.addressLine1 %>, <%= pedido.direccionEnvio.city %>,
+            <%= pedido.direccionEnvio.state %>, <%= pedido.direccionEnvio.postalCode %>, <%= pedido.direccionEnvio.country %>
+        </p>
+    </div>
+
+    <div class="info-section">
+        <p><strong>Total:</strong> $<%= pedido.total.toFixed(2) %></p>
+        <p><strong>Estado:</strong> <%= pedido.estado %></p>
+    </div>
+
+    <div class="info-section">
+        <h6>Productos:</h6>
+        <ul>
+            <% pedido.productos.forEach(producto => { %>
+                <li>
+                    <% if (producto.producto) { %>
+                        <%= producto.producto.nombre %> - Cantidad: <%= producto.cantidad %> - Precio Unitario: $<%= producto.precioUnitario.toFixed(2) %>
+                    <% } else { %>
+                        Producto no disponible
+                    <% } %>
+                </li>
+            <% }); %>
+        </ul>
+    </div>
+
+    <a href="/" class="btn btn-primary">Página Principal</a>
+    <a href="/perfil" class="btn btn-secondary">Ver Mis Pedidos</a>
+</div>
