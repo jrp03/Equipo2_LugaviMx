@@ -128,20 +128,27 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.get('/Perfil',async (req, res, next) => {
- try {
+const User = require('../models/user'); // Asegúrate de importar el modelo
+
+router.get('/Perfil', async (req, res, next) => {
+    try {
         let cartItemCount = 0;
-    if (req.isAuthenticated()) {
-        const usuarioId = req.user.id;
-        const carrito = await Carrito.findOne({ usuario: usuarioId });
-        if (carrito) {
-          cartItemCount = carrito.productos.reduce((total, item) => total + item.cantidad, 0); // Calcula la cantidad total
+        let usuario = null;
+
+        if (req.isAuthenticated()) {
+            const usuarioId = req.user.id;
+            usuario = await User.findById(usuarioId).lean();
+
+            const carrito = await Carrito.findOne({ usuario: usuarioId });
+            if (carrito) {
+                cartItemCount = carrito.productos.reduce((total, item) => total + item.cantidad, 0);
+            }
         }
-    }
-    res.render('perfil', {cartItemCount});
-  } catch (error) {
-    console.error('Error al cargar el producto', error);
-        res.status(500).send('error al obtener los productos');
+
+        res.render('perfil', { cartItemCount, usuario });
+    } catch (error) {
+        console.error('Error al cargar el perfil', error);
+        res.status(500).send('Error al obtener los datos del perfil');
     }
 });
 
