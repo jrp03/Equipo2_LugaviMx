@@ -3,14 +3,16 @@
 <style>
 /* Estilos generales para la página (Sin Cambios) */
 body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f4f4f4;
-  margin: 0;
-  padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
 }
+
 #cerrarModalBtn {
     display: none;
 }
+
 h1 {
     text-align: center;
     color: #333;
@@ -31,20 +33,22 @@ h1 {
     border-radius: 10px;
     padding: 15px;
     margin: 10px;
-    width: 280px; /* Aumenta un poco el ancho de la tarjeta */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    width: 280px;
+    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  QUITANDO SOMBRA*/
     text-align: left;
     background-color: white;
-    transition: transform 0.3s ease-in-out; /* Animación más suave */
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
 }
 
 .card:hover {
-    transform: translateY(-5px); /* Eleva la tarjeta al pasar el mouse */
+    transform: translateY(-5px);
 }
 
 .card img {
     max-width: 100%;
-    height: 220px; /* Ajusta la altura de la imagen */
+    height: 220px;
     object-fit: cover;
     border-radius: 8px;
     margin-bottom: 10px;
@@ -62,6 +66,10 @@ h1 {
     font-size: 0.95em;
     margin-bottom: 8px;
     color: #666;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
 .precio {
@@ -72,21 +80,21 @@ h1 {
 
 /* Estilos para la sección de cantidad (Sin Cambios) */
 .cantidad {
-    margin-top: 10px;
+    margin-top: 0;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start; /* Alineando al lado izquierdo */
 }
 
 .cantidad label {
-    margin-right: 8px;
+    margin-right: 4px;
     font-size: 0.9em;
     color: #555;
 }
 
 .cantidad input {
-    width: 50px;
-    padding: 8px;
+    width: 40px;
+    padding: 4px;
     border: 1px solid #ccc;
     border-radius: 5px;
     text-align: center;
@@ -118,6 +126,8 @@ h1 {
 .btn-ver-detalles {
     background-color: #6c757d;
     color: white;
+    padding: 4px 8px; /* Reduce padding */
+    font-size: 0.8em;   /* Reduce font size */
 }
 
 .btn-ver-detalles:hover {
@@ -133,19 +143,19 @@ h1 {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
+    z-index: 2500;
     overflow-y: auto;
 }
 
 .modal-content {
     position: relative;
     background-color: #fefefe;
-    margin: 3% auto; /* Reduced top margin */
+    margin: 3% auto;
     padding: 0px;
     border: 1px solid #888;
-    width: 30%; /* Adjusted width to 50% */
-    max-height: 90vh;  /*Adjusted max height to 80% */
-    overflow-y: auto; /* Make content scrollable within the modal*/
+    width: 30%;
+    max-height: 90vh;
+    overflow-y: auto;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     animation-name: animatetop;
     animation-duration: 0.4s;
@@ -158,6 +168,7 @@ h1 {
         top: -300px;
         opacity: 0;
     }
+
     to {
         top: 0;
         opacity: 1;
@@ -198,11 +209,11 @@ h1 {
 
 /* Estilos para el carrusel (Sin Cambios)*/
 #carouselImagenes {
-    margin-bottom: 15px; /* Añade un margen inferior */
+    margin-bottom: 15px;
 }
 
 #carouselImagenes img {
-    height: 250px; /* Reduced image height for smaller modal */
+    height: 250px;
     border-radius: 10px;
     width: auto;
 }
@@ -226,9 +237,9 @@ h1 {
 /* Estilos para mejorar la visibilidad de las flechas del carrusel (Sin Cambios)*/
 .carousel-control-prev,
 .carousel-control-next {
-    color: #fff; /* Flechas blancas */
-    font-size: 2em; /* Aumenta el tamaño de las flechas */
-    text-shadow: 2px 2px 4px #000000; /* Sombra para mayor contraste */
+    color: #fff;
+    font-size: 2em;
+    text-shadow: 2px 2px 4px #000000;
 }
 
 .carousel-control-prev:hover,
@@ -369,70 +380,104 @@ h1 {
     font-weight: bold;
     text-align: right;
 }
+
+/* Nuevos estilos para el footer de la tarjeta y la cantidad */
+.card-footer {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+}
+
+.cantidad-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px; /* Agregando margen inferior para la separación */
+}
+
+.cantidad-container .btn-ver-detalles {
+    width: auto;
+    order: 2; /* Pone el boton ver detalles a la derecha */
+    margin-left: auto;  /* Empuja el botón a la derecha */
+}
+
+.cantidad-container .cantidad {
+    margin-top: 0;
+    width: auto; /* Ajusta el ancho de la cantidad */
+    order: 1; /* Pone la cantidad a la izquierda */
+    white-space: nowrap;
+}
+
 </style>
 
 <h1>Nuestros Productos</h1>
 
 <div class="card-container">
-  <% productos.forEach(producto => { %>
+    <% productos.forEach(producto => { %>
     <div class="card">
-      <img src="<%= producto.imagenes[0] %>" alt="<%= producto.nombre %>">
-      <h2><%= producto.nombre %></h2>
-      <p><%= producto.descripcion %></p>
-      <p>Color: <%= producto.color %></p>
-      <p class="precio">$<%= producto.precio %></p>
+        <img src="<%= producto.imagenes[0] %>" alt="<%= producto.nombre %>">
+        <h2><%= producto.nombre %></h2>
+        <p><%= producto.descripcion %></p>
+        <p>Color: <%= producto.color %></p>
+        <p class="precio">$<%= producto.precio %></p>
 
-      <div class="cantidad">
-        <label for="cantidad">Cantidad:</label>
-        <input type="number" id="cantidad-<%= producto._id %>" value="1" min="1">
-      </div>
-      <button class="btn btn-carrito" data-id="<%= producto._id %>">Añadir al carrito</button>
-      <button class="btn btn-ver-detalles" data-producto='<%= JSON.stringify(producto) %>'>
-        Ver Detalles
-      </button>
+        <div class="card-footer">
+            <div class="cantidad-container">
+                <div class="cantidad">
+                    <label for="cantidad">Cantidad:</label>
+                    <input type="number" id="cantidad-<%= producto._id %>" value="1" min="1">
+                </div>
+                <button class="btn btn-ver-detalles" data-producto='<%= JSON.stringify(producto) %>'>
+                    Ver Detalles
+                </button>
+            </div>
+            <button class="btn btn-carrito" data-id="<%= producto._id %>">Añadir al carrito</button>
+        </div>
     </div>
-  <% }); %>
+    <% }); %>
 </div>
 
 <!-- Modales -->
 <div id="modalDetalles" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="modalDetallesLabel">Detalles del Producto</h5>
-      <span class="close" id="cerrarModal">×</span>
-    </div>
-    <div class="modal-body">
-      <!-- Carrusel de imágenes -->
-      <div id="carouselImagenes" class="carousel">
-        <div class="carousel-inner">
-          <!-- Aquí se insertan las imágenes dinámicamente -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modalDetallesLabel">Detalles del Producto</h5>
+            <span class="close" id="cerrarModal">×</span>
         </div>
-        <button class="carousel-control-prev" onclick="cambiarSlide(-1)">❮</button>
-        <button class="carousel-control-next" onclick="cambiarSlide(1)">❯</button>
-      </div>
+        <div class="modal-body">
+            <!-- Carrusel de imágenes -->
+            <div id="carouselImagenes" class="carousel">
+                <div class="carousel-inner">
+                    <!-- Aquí se insertan las imágenes dinámicamente -->
+                </div>
+                <button class="carousel-control-prev" onclick="cambiarSlide(-1)">❮</button>
+                <button class="carousel-control-next" onclick="cambiarSlide(1)">❯</button>
+            </div>
 
-      <div class="detalle-grid mb-3">
-        <p><strong>Nombre:</strong> <span id="modalNombre"></span></p>
-        <p><strong>Color:</strong> <span id="modalColor"></span></p>
-        <p><strong>Precio:</strong> $<span id="modalPrecio"></span></p>
-        <p><strong>Stock:</strong> <span id="modalStock"></span></p>
-      </div>
+            <div class="detalle-grid mb-3">
+                <p><strong>Nombre:</strong> <span id="modalNombre"></span></p>
+                <p><strong>Color:</strong> <span id="modalColor"></span></p>
+                <p><strong>Precio:</strong> $<span id="modalPrecio"></span></p>
+                <p><strong>Stock:</strong> <span id="modalStock"></span></p>
+            </div>
 
-      <p><strong>Descripción:</strong> <span id="modalDescripcion"></span></p>
-       <hr>
-<h6 class="mb-2">Detalles adicionales:</h6>
-<div class="detalle-extra-grid">
-  <div class="detalle-extra-card"><strong>Destacado</strong><span id="modalDestacado"></span></div>
-  <div class="detalle-extra-card"><strong>Envío Gratis</strong><span id="modalEnvio"></span></div>
-  <div class="detalle-extra-card"><strong>Tallas</strong><span id="modalTallas"></span></div>
+            <p><strong>Descripción:</strong> <span id="modalDescripcion"></span></p>
+            <hr>
+            <h6 class="mb-2">Detalles adicionales:</h6>
+            <div class="detalle-extra-grid">
+                <div class="detalle-extra-card"><strong>Destacado</strong><span id="modalDestacado"></span></div>
+                <div class="detalle-extra-card"><strong>Envío Gratis</strong><span id="modalEnvio"></span></div>
+                <div class="detalle-extra-card"><strong>Tallas</strong><span id="modalTallas"></span></div>
 
-</div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="cerrarModalBtn">Cerrar</button>
+            <!-- Botón de añadir al carrito dentro del modal -->
+            <button type="button" class="btn btn-primary modal-agregar-carrito-btn" data-id="">Añadir al carrito</button>
+        </div>
     </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" id="cerrarModalBtn">Cerrar</button>
-      <button type="button" class="btn btn-primary">Añadir al carrito</button>
-    </div>
-  </div>
 </div>
 
 <!-- Modal del Carrito -->
@@ -454,109 +499,187 @@ h1 {
 </div>
 
 <script>
-console.log("Script cargado");
 document.addEventListener('DOMContentLoaded', function() {
-  console.log("DOMContentLoaded");
+    console.log("DOMContentLoaded");
 
-  // **MODAL DETALLES**
-  const modalDetalles = document.getElementById('modalDetalles');
-  const cerrarModalBtn = document.getElementById('cerrarModalBtn');
-  const cerrarModal = document.getElementById('cerrarModal');
-  const carouselInner = document.querySelector('#carouselImagenes .carousel-inner');
-  let imagenes = [];
-  let currentImageIndex = 0;
+    // **MODAL DETALLES**
+    const modalDetalles = document.getElementById('modalDetalles');
+    const cerrarModalBtn = document.getElementById('cerrarModalBtn');
+    const cerrarModal = document.getElementById('cerrarModal');
+    const carouselInner = document.querySelector('#carouselImagenes .carousel-inner');
+    let imagenes = [];
+    let currentImageIndex = 0;
 
     // **MODAL CARRITO**
-  const modalCarrito = document.getElementById('modalCarrito');
-  const cerrarModalCarritoBtn = document.getElementById('cerrarModalCarritoBtn');
-  const cerrarModalCarrito = document.getElementById('cerrarModalCarrito');
-  const cartModalBody = document.querySelector('#modalCarrito .cart-modal-body');
+    const modalCarrito = document.getElementById('modalCarrito');
+    const cerrarModalCarritoBtn = document.getElementById('cerrarModalCarritoBtn');
+    const cerrarModalCarrito = document.getElementById('cerrarModalCarrito');
+    const cartModalBody = document.querySelector('#modalCarrito .cart-modal-body');
 
+    const carritoIcono = document.querySelector('.navbar-icons a[href="/carrito"]');
+    carritoIcono.addEventListener('click', function(event) {
+        event.preventDefault(); // Evita que el enlace te lleve a otra página
+        window.location.href = '/carrito'; // Redirige a la ruta /carrito
+    });
 
-  const carritoIcono = document.querySelector('.navbar-icons a[href="/carrito"]');
-  carritoIcono.addEventListener('click', function(event) {
-    event.preventDefault(); // Evita que el enlace te lleve a otra página
-    window.location.href = '/carrito'; // Redirige a la ruta /carrito
-  });
+    // Función genérica para añadir al carrito
+    async function agregarAlCarrito(productoId) {
+        const cantidadInput = document.getElementById(`cantidad-${productoId}`);
+        if (!cantidadInput) {
+            console.error('No se encontró el input de cantidad para el producto con ID:', productoId);
+            alert('Error al añadir al carrito. Por favor, inténtalo de nuevo.');
+            return;
+        }
+        const cantidad = parseInt(cantidadInput.value);
 
+        // Verifica que la cantidad sea válida
+        if (isNaN(cantidad) || cantidad <= 0) {
+            alert("Cantidad inválida");
+            return;
+        }
 
- // Al hacer clic en "Añadir al carrito"
+        try {
+            const response = await fetch('/carrito/agregar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    productoId: productoId,
+                    cantidad: cantidad
+                })
+            })
+
+            if (response.ok) {
+                const updatedCartCount = await response.json();
+
+                const cartBadge = document.querySelector('.cart-badge');
+                cartBadge.textContent = updatedCartCount.cartItemCount;
+                return true; // Indica éxito
+            } else {
+                console.error('Error al añadir al carrito:', response.status);
+                alert('Error al añadir al carrito. Por favor, inténtalo de nuevo.');
+                return false; // Indica fallo
+            }
+        } catch (error) {
+            console.error('Error al añadir al carrito:', error);
+            alert('Error al añadir al carrito. Por favor, inténtalo de nuevo.');
+            return false; // Indica fallo
+        }
+    }
+
+    // Al hacer clic en "Añadir al carrito" (fuera del modal)
     document.querySelectorAll('.btn-carrito').forEach(button => {
         console.log("Botón encontrado");
         button.addEventListener('click', async function() {
             console.log("Añadir al carrito clickeado");
             const productoId = this.dataset.id;
-            const cantidadInput = document.getElementById(`cantidad-${productoId}`);
-            if (!cantidadInput) {
-                console.error('No se encontró el input de cantidad para el producto con ID:', productoId);
-                alert('Error al añadir al carrito. Por favor, inténtalo de nuevo.');
-                return;
-            }
-            const cantidad = parseInt(cantidadInput.value);
-
-            // Verifica que la cantidad sea válida
-            if (isNaN(cantidad) || cantidad <= 0) {
-                alert("Cantidad inválida");
-                return;
-            }
-            console.log("Datos a enviar:", JSON.stringify({ productoId: productoId, cantidad: cantidad }));
-            // Realiza una solicitud POST a la ruta /carrito/agregar
-            try {
-                  const response = await fetch('/carrito/agregar', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        productoId: productoId,
-                        cantidad: cantidad
-                    })
-                })
-          
-                if (response.ok) {
-                    const updatedCartCount = await response.json();
-
-                    const cartBadge = document.querySelector('.cart-badge');
-                    cartBadge.textContent = updatedCartCount.cartItemCount;
-                } else {
-                    console.error('Error al añadir al carrito:', response.status);
-                    alert('Error al añadir al carrito. Por favor, inténtalo de nuevo.');
-                }
-               } catch (error) {
-                   console.error('Error al añadir al carrito:', error);
-                    alert('Error al añadir al carrito. Por favor, inténtalo de nuevo.');
-                }
+            await agregarAlCarrito(productoId);
         });
     });
 
-  document.querySelectorAll('.btn-ver-detalles').forEach(button => {
-    button.addEventListener('click', function() {
+    // Al hacer clic en "Añadir al carrito" (dentro del modal)
+    document.querySelectorAll('.modal-agregar-carrito-btn').forEach(button => {
+        button.addEventListener('click', async function() {
+            const productoId = this.dataset.id;
+            const exito = await agregarAlCarrito(productoId);
+            if (exito) {
+                closeTheModal(); // Cierra el modal solo si se añadió con éxito
+            }
         });
-  });
+    });
 
-  function closeTheModal() {
-  }
+    document.querySelectorAll('.btn-ver-detalles').forEach(button => {
+        button.addEventListener('click', function() {
+            try {
+                const producto = JSON.parse(this.dataset.producto);
+                console.log('Producto seleccionado:', producto);
 
-  cerrarModalBtn.addEventListener('click', closeTheModal);
-  cerrarModal.addEventListener('click', closeTheModal);
+                // Rellenar los campos del modal con la información del producto
+                document.getElementById('modalNombre').textContent = producto.nombre;
+                document.getElementById('modalColor').textContent = producto.color;
+                document.getElementById('modalPrecio').textContent = producto.precio;
+                document.getElementById('modalStock').textContent = producto.stock;
+                document.getElementById('modalDescripcion').textContent = producto.descripcion;
+                document.getElementById('modalDestacado').textContent = producto.destacado ? 'Sí' : 'No';
+                document.getElementById('modalEnvio').textContent = producto.envioGratis ? 'Sí' : 'No';
+                document.getElementById('modalTallas').textContent = producto.tallas ? producto.tallas.join(', ') : 'N/A';
 
-  window.addEventListener('click', function(event) {
-  });
+                // Cargar las imágenes en el carrusel
+                cargarImagenesCarousel(producto.imagenes);
+                currentImageIndex = 0; // Reinicia el índice de la imagen
+                showSlide(currentImageIndex);
+
+                // Establecer el ID del producto en el botón "Añadir al carrito" del modal
+                const modalAgregarCarritoBtn = document.querySelector('.modal-footer .modal-agregar-carrito-btn');
+                modalAgregarCarritoBtn.dataset.id = producto._id;
+
+                // Mostrar el modal
+                modalDetalles.style.display = 'block';
+            } catch (error) {
+                console.error('Error al parsear JSON:', error);
+                alert('Error al cargar los detalles del producto.');
+            }
+        });
+    });
+
+
+    function closeTheModal() {
+        modalDetalles.style.display = 'none';
+    }
+
+    cerrarModalBtn.addEventListener('click', closeTheModal);
+    cerrarModal.addEventListener('click', closeTheModal);
+
+    window.addEventListener('click', function(event) {
+        if (event.target == modalDetalles) {
+            closeTheModal();
+        }
+    });
 
     function closeModalCarrito() {
+        modalCarrito.style.display = 'none';
     }
 
     cerrarModalCarritoBtn.addEventListener('click', closeModalCarrito);
     cerrarModalCarrito.addEventListener('click', closeModalCarrito);
 
 
-  function cargarImagenesCarousel(imagenes) {
-  }
+    function cargarImagenesCarousel(imagenes) {
+        carouselInner.innerHTML = ''; // Limpiar el contenido anterior
 
-  window.cambiarSlide = function(n) {
-  }
+        imagenes.forEach((imagen, index) => {
+            const item = document.createElement('div');
+            item.classList.add('carousel-item');
+            if (index === 0) {
+                item.classList.add('active');
+            }
 
-  function showSlide(n) {
-  }
+            const img = document.createElement('img');
+            img.src = imagen;
+            img.alt = `Imagen ${index + 1}`;
+            item.appendChild(img);
+
+            carouselInner.appendChild(item);
+        });
+    }
+
+    window.cambiarSlide = function(n) {
+        showSlide(currentImageIndex += n);
+    }
+
+    function showSlide(n) {
+        let slides = document.getElementsByClassName("carousel-item");
+        if (n >= slides.length) {
+            currentImageIndex = 0
+        }
+        if (n < 0) {
+            currentImageIndex = slides.length - 1
+        }
+        for (let i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        slides[currentImageIndex].style.display = "block";
+    }
 });
 </script>
