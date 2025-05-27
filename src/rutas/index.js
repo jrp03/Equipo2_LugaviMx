@@ -1,11 +1,12 @@
-const mongoose = require('mongoose');
 const express = require('express');
 const passport = require('passport');
 const router = express.Router();
 const Producto = require('../models/Producto');
 const multer = require('multer');
 const path = require('path');
-const Carrito = require('../models/carrito'); // Importa el modelo de Carrito
+const Carrito = require('../models/carrito');
+const Pedido = require('../models/order'); // Importa el modelo Pedido
+const carritoRoutes = require('./carrito'); // Importa las rutas del carrito
 
 // Configuración del almacenamiento de archivos
 const storage = multer.diskStorage({
@@ -22,110 +23,43 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.get('/registro', (req, res, next) => {
-    res.render('registro');
+    res.render('registro', {layout: 'layout/layout.ejs'});
 });
 
 router.get('/Login', (req, res, next) => {
-    res.render('login');
+    res.render('login', {layout: 'layout/layout.ejs'});
 });
 
-router.post('/carrito/agregar', isAuthenticated, async (req, res) => {
-  try {
-    const usuarioId = req.user.id; // Obtén el ID del usuario autenticado
-    const productoId = req.body.productoId;
-    const cantidad = parseInt(req.body.cantidad) || 1;
-
-    // Verifica que la cantidad sea válida
-    if (isNaN(cantidad) || cantidad <= 0) {
-      return res.status(400).send('Cantidad inválida');
-    }
-
-    // Busca el carrito del usuario
-    let carrito = await Carrito.findOne({ usuario: usuarioId });
-
-    // Si no existe, crea un nuevo carrito
-    if (!carrito) {
-      carrito = new Carrito({ usuario: usuarioId, productos: [] });
-    }
-
-    // Busca si el producto ya está en el carrito
-    let existingItem = carrito.productos.find(item => item.producto == productoId);
-
-    if (existingItem) {
-      existingItem.cantidad += cantidad; // Suma la cantidad
-    } else {
-      carrito.productos.push({ producto: productoId, cantidad: cantidad }); // Agrega un nuevo item
-    }
-
-    await carrito.save();
-    // Calcula la cantidad total de productos en el carrito
-     let cartItemCount = 0;
-
-    if (req.isAuthenticated()) {
-     
-      if (carrito) {
-        cartItemCount = carrito.productos.reduce((total, item) => total + item.cantidad, 0); // Calcula la cantidad total
-      }
-    }
-
-    // Envía la cantidad actualizada al frontend
-    res.status(200).json({cartItemCount:cartItemCount});
-  } catch (error) {
-    console.error('Error al añadir al carrito:', error);
-    res.status(500).send('Error al añadir al carrito');
-  }
-});
-// Ruta para obtener el carrito de un usuario
-router.get('/carrito', isAuthenticated, async (req, res) => {
-  try {
-    const usuarioId = req.user.id; // Obtén el ID del usuario autenticado
-    const carrito = await Carrito.findOne({ usuario: usuarioId }).populate('productos.producto'); // Carga los detalles del producto
-
-    if (!carrito) {
-      return res.render('carrito', { productos: [], total: 0 }); // Renderiza con un carrito vacío
-    }
-
-    // Calcula el total del carrito
-    let total = 0;
-    carrito.productos.forEach(item => {
-      total += item.producto.precio * item.cantidad;
-    });
-
-    res.render('carrito', { productos: carrito.productos, total: total.toFixed(2) }); // Renderiza la vista con los productos y el total
-  } catch (error) {
-    console.error('Error al obtener el carrito:', error);
-    res.status(500).send('Error al obtener el carrito');
-  }
-});
-
+// Monta las rutas del carrito en /carrito
+router.use('/carrito', carritoRoutes);
 
 // Middleware para verificar la autenticación
 function isAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect('/Login'); // Redirige a la página de inicio de sesión si no está autenticado
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/Login'); // Redirige a la página de inicio de sesión si no está autenticado
 }
 
 // Ruta principal (/) - Mostrar productos en cards
 router.get('/', async (req, res, next) => {
-  try {
-    const productos = await Producto.find().lean();
-    let cartItemCount = 0;
+    try {
+        const productos = await Producto.find().lean();
+        let cartItemCount = 0;
 
-    if (req.isAuthenticated()) {
-      const usuarioId = req.user.id;
-      const carrito = await Carrito.findOne({ usuario: usuarioId });
-      if (carrito) {
-        cartItemCount = carrito.productos.reduce((total, item) => total + item.cantidad, 0); // Calcula la cantidad total
-      }
+        if (req.isAuthenticated()) {
+            const usuarioId = req.user.id;
+            const carrito = await Carrito.findOne({ usuario: usuarioId });
+            if (carrito) {
+                cartItemCount = carrito.productos.reduce((total, item) => total + item.cantidad, 0); // Calcula la cantidad total
+            }
+        }
+
+        res.render('index', { productos: productos, cartItemCount: cartItemCount, layout: 'layout/layout.ejs' });
+    } catch (error) {
+        console.error('Error al obtener los productos:', error);
+        res.status(500).send('Error al obtener los productos');
     }
-
-    res.render('index', { productos: productos, cartItemCount: cartItemCount });
-  } catch (error) {
-    console.error('Error al obtener los productos:', error);
-    res.status(500).send('Error al obtener los productos');
-  }
 });
 
 const User = require('../models/user'); // Asegúrate de importar el modelo
@@ -153,35 +87,35 @@ router.get('/Perfil', async (req, res, next) => {
 });
 
 router.get('/index', async (req, res, next) => {
- try {
+    try {
         let cartItemCount = 0;
-    if (req.isAuthenticated()) {
-        const usuarioId = req.user.id;
-        const carrito = await Carrito.findOne({ usuario: usuarioId });
-        if (carrito) {
-          cartItemCount = carrito.productos.reduce((total, item) => total + item.cantidad, 0); // Calcula la cantidad total
+        if (req.isAuthenticated()) {
+            const usuarioId = req.user.id;
+            const carrito = await Carrito.findOne({ usuario: usuarioId });
+            if (carrito) {
+                cartItemCount = carrito.productos.reduce((total, item) => total + item.cantidad, 0); // Calcula la cantidad total
+            }
         }
-    }
-    res.render('index', {cartItemCount});
-  } catch (error) {
-    console.error('Error al cargar el producto', error);
+        res.render('index', { cartItemCount, layout: 'layout/layout.ejs' });
+    } catch (error) {
+        console.error('Error al cargar el producto', error);
         res.status(500).send('error al obtener los productos');
     }
 });
 
 router.get('/formulario', async (req, res, next) => {
- try {
+    try {
         let cartItemCount = 0;
-    if (req.isAuthenticated()) {
-        const usuarioId = req.user.id;
-        const carrito = await Carrito.findOne({ usuario: usuarioId });
-        if (carrito) {
-          cartItemCount = carrito.productos.reduce((total, item) => total + item.cantidad, 0); // Calcula la cantidad total
+        if (req.isAuthenticated()) {
+            const usuarioId = req.user.id;
+            const carrito = await Carrito.findOne({ usuario: usuarioId });
+            if (carrito) {
+                cartItemCount = carrito.productos.reduce((total, item) => total + item.cantidad, 0); // Calcula la cantidad total
+            }
         }
-    }
-    res.render('formulario', {cartItemCount});
-  } catch (error) {
-    console.error('Error al cargar el producto', error);
+        res.render('formulario', { cartItemCount, layout: 'layout/layout.ejs' });
+    } catch (error) {
+        console.error('Error al cargar el producto', error);
         res.status(500).send('error al obtener los productos');
     }
 });
@@ -189,15 +123,15 @@ router.get('/formulario', async (req, res, next) => {
 router.get('/Editar', async (req, res) => {
     try {
         const productos = await Producto.find().lean();
-                let cartItemCount = 0;
-    if (req.isAuthenticated()) {
-        const usuarioId = req.user.id;
-        const carrito = await Carrito.findOne({ usuario: usuarioId });
-        if (carrito) {
-          cartItemCount = carrito.productos.reduce((total, item) => total + item.cantidad, 0); // Calcula la cantidad total
+        let cartItemCount = 0;
+        if (req.isAuthenticated()) {
+            const usuarioId = req.user.id;
+            const carrito = await Carrito.findOne({ usuario: usuarioId });
+            if (carrito) {
+                cartItemCount = carrito.productos.reduce((total, item) => total + item.cantidad, 0); // Calcula la cantidad total
+            }
         }
-    }
-        res.render('Editar', { productos, cartItemCount });
+        res.render('Editar', { productos, cartItemCount, layout: 'layout/layout.ejs' });
     } catch (err) {
         console.error(' ERROR EN LA RUTA GET /:', err);
         res.status(500).send('Error interno del servidor');
@@ -206,16 +140,16 @@ router.get('/Editar', async (req, res) => {
 
 router.get('/Guardar', async (req, res) => {
     try {
-                let cartItemCount = 0;
-    if (req.isAuthenticated()) {
-        const usuarioId = req.user.id;
-        const carrito = await Carrito.findOne({ usuario: usuarioId });
-        if (carrito) {
-          cartItemCount = carrito.productos.reduce((total, item) => total + item.cantidad, 0); // Calcula la cantidad total
+        let cartItemCount = 0;
+        if (req.isAuthenticated()) {
+            const usuarioId = req.user.id;
+            const carrito = await Carrito.findOne({ usuario: usuarioId });
+            if (carrito) {
+                cartItemCount = carrito.productos.reduce((total, item) => total + item.cantidad, 0); // Calcula la cantidad total
+            }
         }
-    }
         const productos = await Producto.find().lean();
-        res.render('Guardar', { productos, cartItemCount });
+        res.render('Guardar', { productos, cartItemCount, layout: 'layout/layout.ejs' });
     } catch (err) {
         console.error(' ERROR EN LA RUTA GET /:', err);
         res.status(500).send('Error interno del servidor');
@@ -225,16 +159,16 @@ router.get('/Guardar', async (req, res) => {
 // Ruta para seleccionar o mostrar el producto a editar
 router.get('/Editar/:id', async (req, res) => {
     try {
-                let cartItemCount = 0;
-    if (req.isAuthenticated()) {
-        const usuarioId = req.user.id;
-        const carrito = await Carrito.findOne({ usuario: usuarioId });
-        if (carrito) {
-          cartItemCount = carrito.productos.reduce((total, item) => total + item.cantidad, 0); // Calcula la cantidad total
+        let cartItemCount = 0;
+        if (req.isAuthenticated()) {
+            const usuarioId = req.user.id;
+            const carrito = await Carrito.findOne({ usuario: usuarioId });
+            if (carrito) {
+                cartItemCount = carrito.productos.reduce((total, item) => total + item.cantidad, 0); // Calcula la cantidad total
+            }
         }
-    }
         const producto = await Producto.findById(req.params.id).lean();
-        res.render('Editar', { producto ,cartItemCount});
+        res.render('Editar', { producto, cartItemCount, layout: 'layout/layout.ejs' });
     } catch (err) {
         res.status(500).send('Error al cargar el producto');
     }
@@ -247,11 +181,38 @@ router.get('/Salir', (req, res, next) => {
     });
 });
 
-router.post('/registro', passport.authenticate('registro-local', {
-    successRedirect: '/Perfil',
-    failureRedirect: '/registro',
-    passReqToCallback: true
-}));
+// Modifica la ruta /registro para guardar los datos adicionales
+router.post('/registro', async (req, res, next) => {
+    passport.authenticate('registro-local', async (err, user, info) => {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            // Autenticación fallida, redirige a la página de registro con el mensaje de error
+            return res.redirect('/registro');
+        }
+
+        // Si la autenticación tiene éxito, actualiza la información del usuario
+        try {
+            // Actualiza la información del usuario
+            user.name = req.body.name;
+            user.phoneNumber = req.body.phoneNumber;
+            await user.save();
+
+            // Inicia sesión al usuario
+            req.logIn(user, (err) => {
+                if (err) {
+                    return next(err);
+                }
+                // Redirige al usuario a la página de perfil
+                return res.redirect('/Perfil');
+            });
+        } catch (error) {
+            console.error('Error al actualizar la información del usuario:', error);
+            return res.status(500).send('Error al actualizar la información del usuario');
+        }
+    })(req, res, next);
+});
 
 router.post('/Login', passport.authenticate('inicio-local', {
     successRedirect: '/Perfil',
@@ -302,11 +263,40 @@ router.get('/Eliminar/:id', async (req, res) => {
     res.redirect('/Guardar'); // Pagina donde se encuentra lista de productos
 });
 
-function isAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/');
-}
+// Ruta para mostrar la página de compra exitosa
+// Ruta para mostrar la página de compra exitosa
+router.get('/compra-exitosa/:id', isAuthenticated, async (req, res) => {
+    try {
+        const pedidoId = req.params.id;
+        const pedido = await Pedido.findById(pedidoId).populate('usuario').populate('productos.producto');
 
+        if (!pedido) {
+            return res.status(404).send('Pedido no encontrado');
+        }
+
+        // Verifica si la dirección está presente
+        if (!pedido.direccionEnvio) {
+            console.warn('Advertencia: La dirección del pedido está ausente.');
+            pedido.direccionEnvio = {
+                addressLine1: 'Dirección no disponible',
+                city: 'Ciudad no disponible',
+                state: 'Estado no disponible',
+                postalCode: 'Código Postal no disponible',
+                country: 'País no disponible'
+            };
+        }
+
+        console.log("Pedido:", JSON.stringify(pedido, null, 2)); // Agrega esto
+
+        res.render('compra-exitosa', {
+            pedido: pedido,
+            usuario: req.user,
+            layout: 'layout/layout.ejs'
+        });
+
+    } catch (error) {
+        console.error('Error al obtener los detalles del pedido:', error);
+        res.status(500).send('Error al obtener los detalles del pedido');
+    }
+});
 module.exports = router;
