@@ -7,6 +7,7 @@ const path = require('path');
 const Carrito = require('../models/carrito');
 const Pedido = require('../models/order'); // Importa el modelo Pedido
 const carritoRoutes = require('./carrito'); // Importa las rutas del carrito
+const perfilRoutes = require('./perfil'); 
 
 // Configuración del almacenamiento de archivos
 const storage = multer.diskStorage({
@@ -264,7 +265,6 @@ router.get('/Eliminar/:id', async (req, res) => {
 });
 
 // Ruta para mostrar la página de compra exitosa
-// Ruta para mostrar la página de compra exitosa
 router.get('/compra-exitosa/:id', isAuthenticated, async (req, res) => {
     try {
         const pedidoId = req.params.id;
@@ -299,4 +299,63 @@ router.get('/compra-exitosa/:id', isAuthenticated, async (req, res) => {
         res.status(500).send('Error al obtener los detalles del pedido');
     }
 });
+
+// Ruta para procesar la edición del perfil
+router.post('/perfil/editar', isAuthenticated, async (req, res) => {
+  try {
+    const userId = req.session.userId; // Asegúrate de que el usuario esté autenticado
+
+    if (!userId) {
+      return res.redirect('/login');
+    }
+
+    const {
+      name,
+      phoneNumber,
+      addressLine1,
+      addressLine2,
+      city,
+      state,
+      postalCode,
+      country
+    } = req.body;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).send('Usuario no encontrado');
+    }
+
+    // Actualizar datos básicos
+    user.name = name;
+    user.phoneNumber = phoneNumber;
+
+    // Actualizar dirección (solo la primera para simplificar)
+    const direccion = {
+      addressLine1,
+      addressLine2,
+      city,
+      state,
+      postalCode,
+      country,
+      isDefault: true
+    };
+
+    if (user.shippingAddresses.length > 0) {
+      user.shippingAddresses[0] = direccion;
+    } else {
+      user.shippingAddresses.push(direccion);
+    }
+
+    await user.save();
+
+    res.redirect('/perfil');
+  } catch (error) {
+    console.error('Error actualizando el perfil:', error);
+    res.status(500).send('Error al actualizar el perfil');
+  }
+});
+
+router.use('/perfil', perfilRoutes);
+
 module.exports = router;

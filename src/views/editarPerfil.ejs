@@ -1,0 +1,58 @@
+<% layout('layout/layout.ejs') %>
+
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-header">
+      <h3>Editar Perfil</h3>
+    </div>
+    <div class="card-body">
+      <form action="/perfil/editar" method="POST">
+        <!-- Nombre -->
+        <div class="mb-3">
+          <label for="name" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="name" name="name" value="<%= usuario.name %>" required>
+        </div>
+
+        <!-- Teléfono -->
+        <div class="mb-3">
+          <label for="phoneNumber" class="form-label">Teléfono</label>
+          <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" value="<%= usuario.phoneNumber || '' %>">
+        </div>
+
+        <!-- Dirección (solo una para simplificar inicialmente) -->
+        <h5 class="mt-4">Dirección</h5>
+        <% const dir = usuario.shippingAddresses[0] || {}; %>
+        <div class="mb-3">
+          <label for="addressLine1" class="form-label">Dirección línea 1</label>
+          <input type="text" class="form-control" id="addressLine1" name="addressLine1" value="<%= dir.addressLine1 || '' %>">
+        </div>
+        <div class="mb-3">
+          <label for="addressLine2" class="form-label">Dirección línea 2</label>
+          <input type="text" class="form-control" id="addressLine2" name="addressLine2" value="<%= dir.addressLine2 || '' %>">
+        </div>
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label for="city" class="form-label">Ciudad</label>
+            <input type="text" class="form-control" id="city" name="city" value="<%= dir.city || '' %>">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="state" class="form-label">Estado</label>
+            <input type="text" class="form-control" id="state" name="state" value="<%= dir.state || '' %>">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="postalCode" class="form-label">Código Postal</label>
+            <input type="text" class="form-control" id="postalCode" name="postalCode" value="<%= dir.postalCode || '' %>">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="country" class="form-label">País</label>
+          <input type="text" class="form-control" id="country" name="country" value="<%= dir.country || '' %>">
+        </div>
+
+        <!-- Botones -->
+        <button type="submit" class="btn btn-success">Guardar Cambios</button>
+        <a href="/perfil" class="btn btn-secondary">Cancelar</a>
+      </form>
+    </div>
+  </div>
+</div>
