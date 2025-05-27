@@ -1,60 +1,70 @@
 <% layout('layout/layout.ejs') %>
 
 <div class="container mt-5">
-  <div class="card">
-    <div class="card-header">
-      <h3>Perfil del Usuario</h3>
-    </div>
-    <div class="card-body">
-      <% if (usuario) { %>
-        <p><strong>Email:</strong> <%= usuario.email %></p>
-        <p><strong>Nombre:</strong> <%= usuario.name %></p>
-        <p><strong>Teléfono:</strong> <%= usuario.phoneNumber || 'No registrado' %></p>
-
-        <% if (usuario.profilePicture) { %>
-          <div>
-            <strong>Foto de perfil:</strong><br>
-            <img src="<%= usuario.profilePicture %>" alt="Foto de perfil" style="max-width: 150px; border-radius: 8px;">
+  <% if (usuario) { %>
+    <div class="card shadow-lg">
+      <div class="card-body">
+        <div class="d-flex align-items-center">
+          <div class="me-4">
+            <% if (usuario.profilePicture) { %>
+              <img src="<%= usuario.profilePicture %>" alt="Foto de perfil" class="rounded-circle" width="120" height="120">
+            <% } else { %>
+              <img src="asset/usuario.png" class="rounded-circle" width="120" height="120">
+            <% } %>
           </div>
-        <% } %>
+          <div>
+            <h3 class="mb-0"><%= usuario.name %></h3>
+            <p class="text-muted mb-1"><%= usuario.email %></p>
+            <% if (usuario.phoneNumber) { %>
+              <p class="mb-0"><strong>Teléfono:</strong> <%= usuario.phoneNumber %></p>
+            <% } %>
+          </div>
+        </div>
 
-        <hr>
+        <hr class="my-4">
 
-        <h5>Direcciones de envío</h5>
-        <% if (usuario.shippingAddresses && usuario.shippingAddresses.length > 0) { %>
-          <ul>
-            <% usuario.shippingAddresses.forEach(function(dir) { %>
-              <li>
-                <%= dir.addressLine1 %>, <%= dir.addressLine2 ? dir.addressLine2 + ',' : '' %> <%= dir.city %>, <%= dir.state %>, <%= dir.postalCode %>, <%= dir.country %> 
-                <% if (dir.isDefault) { %><strong>(Predeterminada)</strong><% } %>
-              </li>
-            <% }) %>
-          </ul>
-        <% } else { %>
-          <p>No hay direcciones registradas.</p>
-        <% } %>
+        <div class="row">
+          <div class="col-md-6">
+            <h5>Direcciones de envío</h5>
+            <% if (usuario.shippingAddresses && usuario.shippingAddresses.length > 0) { %>
+              <% usuario.shippingAddresses.forEach((direccion, index) => { %>
+                <div class="border rounded p-3 mb-3">
+                  <p><%= direccion.addressLine1 %> <%= direccion.addressLine2 || '' %></p>
+                  <p><%= direccion.city %>, <%= direccion.state %>, <%= direccion.postalCode %>, <%= direccion.country %></p>
+                  <% if (direccion.isDefault) { %>
+                    <span class="badge bg-success">Predeterminada</span>
+                  <% } %>
+                </div>
+              <% }) %>
+            <% } else { %>
+              <p class="text-muted">No hay direcciones registradas.</p>
+            <% } %>
+          </div>
 
-        <hr>
+          <div class="col-md-6">
+            <h5>Métodos de pago</h5>
+            <% if (usuario.paymentMethods && usuario.paymentMethods.length > 0) { %>
+              <% usuario.paymentMethods.forEach((pago, index) => { %>
+                <div class="border rounded p-3 mb-3">
+                  <p><strong><%= pago.cardType %></strong> terminada en **** <%= pago.cardNumber.slice(-4) %></p>
+                  <p><strong>Vence:</strong> <%= pago.expiryDate %></p>
+                  <p><strong>Nombre:</strong> <%= pago.cardholderName %></p>
+                  <% if (pago.isDefault) { %>
+                    <span class="badge bg-success">Predeterminado</span>
+                  <% } %>
+                </div>
+              <% }) %>
+            <% } else { %>
+              <p class="text-muted">No hay métodos de pago registrados.</p>
+            <% } %>
+          </div>
+        </div>
 
-        <h5>Métodos de pago</h5>
-        <% if (usuario.paymentMethods && usuario.paymentMethods.length > 0) { %>
-          <ul>
-            <% usuario.paymentMethods.forEach(function(pm) { %>
-              <li>
-                <strong>Tipo:</strong> <%= pm.cardType.toUpperCase() %> - <strong>Titular:</strong> <%= pm.cardholderName %> 
-                <% if (pm.isDefault) { %><strong>(Predeterminado)</strong><% } %>
-              </li>
-            <% }) %>
-          </ul>
-        <% } else { %>
-          <p>No hay métodos de pago registrados.</p>
-        <% } %>
-
-      <% } else { %>
-        <p>No se encontró la información del usuario.</p>
-      <% } %>
-
-      <a href="/" class="btn btn-primary mt-3">Volver al inicio</a>
+        <a href="/" class="btn btn-primary mt-4">Volver al inicio</a>
+      </div>
     </div>
-  </div>
+  <% } else { %>
+    <div class="alert alert-warning">No se encontró la información del usuario.</div>
+    <a href="/" class="btn btn-primary">Volver al inicio</a>
+  <% } %>
 </div>
