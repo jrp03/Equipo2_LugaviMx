@@ -4,6 +4,7 @@
   <% if (usuario) { %>
     <div class="card shadow-lg">
       <div class="card-body">
+        
         <div class="d-flex align-items-center">
           <div class="me-4">
             <% if (usuario.profilePicture) { %>
@@ -59,8 +60,8 @@
             <% } %>
           </div>
         </div>
-
-        <a href="/" class="btn btn-primary mt-4">Volver al inicio</a>
+<a href="/perfil/editar" class="btn btn-warning mt-3">Editar perfil</a>
+<a href="/" class="btn btn-primary mt-3 ms-2">Volver al inicio</a>
       </div>
     </div>
   <% } else { %>
