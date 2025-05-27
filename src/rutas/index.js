@@ -1,3 +1,4 @@
+// routes/index.js
 const express = require('express');
 const passport = require('passport');
 const router = express.Router();
@@ -27,8 +28,15 @@ router.get('/Login', (req, res, next) => {
     res.render('login');
 });
 
-router.get('/', (req, res, next) => {
-    res.render('index');
+// Ruta principal (/) - Mostrar productos en cards
+router.get('/', async (req, res, next) => {
+    try {
+        const productos = await Producto.find().lean();
+        res.render('index', { productos: productos });
+    } catch (error) {
+        console.error('Error al obtener los productos:', error);
+        res.status(500).send('Error al obtener los productos');
+    }
 });
 
 router.get('/Perfil', (req, res, next) => {

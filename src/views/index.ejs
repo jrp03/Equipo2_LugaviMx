@@ -1,2 +1,498 @@
 <% layout('layout/layout.ejs')%>
 
+<style>
+/* Estilos generales para la página */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+#cerrarModalBtn{
+    display: none;
+}
+h1 {
+  text-align: center;
+  color: #333;
+  margin-top: 20px;
+}
+
+/* Estilos para el contenedor de las tarjetas de producto */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Estilos para la tarjeta de producto */
+.card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 10px;
+  width: 280px; /* Aumenta un poco el ancho de la tarjeta */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  text-align: left;
+  background-color: white;
+  transition: transform 0.3s ease-in-out; /* Animación más suave */
+}
+
+.card:hover {
+  transform: translateY(-5px); /* Eleva la tarjeta al pasar el mouse */
+}
+
+.card img {
+  max-width: 100%;
+  height: 220px; /* Ajusta la altura de la imagen */
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.card h2 {
+  font-size: 1.2em;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+}
+
+.card p {
+  font-size: 0.95em;
+  margin-bottom: 8px;
+  color: #666;
+}
+
+.precio {
+  color: #28a745;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+/* Estilos para la sección de cantidad */
+.cantidad {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cantidad label {
+  margin-right: 8px;
+  font-size: 0.9em;
+  color: #555;
+}
+
+.cantidad input {
+  width: 50px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+}
+
+/* Estilos para los botones */
+.btn {
+  display: block;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.95em;
+  margin-top: 10px;
+  width: 100%;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.btn-carrito {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-carrito:hover {
+  background-color: #0056b3;
+}
+
+.btn-ver-detalles {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-ver-detalles:hover {
+  background-color: #5a6268;
+}
+
+/* Estilos para el modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: 3% auto; /* Reduced top margin */
+  padding: 0px;
+  border: 1px solid #888;
+  width: 30%; /* Adjusted width to 50% */
+  max-height: 90vh;  /*Adjusted max height to 80% */
+  overflow-y: auto; /* Make content scrollable within the modal*/
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+  border-radius: 10px;
+}
+
+/* Animación del modal */
+@keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  padding: 15px;
+  border-bottom: 1px solid #e5e5e5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 1.4em;
+  color: #333;
+}
+
+.close {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 15px;
+}
+
+/* Estilos para el carrusel */
+#carouselImagenes {
+  margin-bottom: 15px; /* Añade un margen inferior */
+}
+
+#carouselImagenes img {
+  height: 250px; /* Reduced image height for smaller modal */
+  border-radius: 10px;
+  width: auto;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: auto;
+  padding: 16px;
+  color: white;
+  text-align: center;
+  opacity: 0.5;
+  transition: opacity 0.15s ease;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* Estilos para mejorar la visibilidad de las flechas del carrusel */
+.carousel-control-prev,
+.carousel-control-next {
+  color: #fff; /* Flechas blancas */
+  font-size: 2em; /* Aumenta el tamaño de las flechas */
+  text-shadow: 2px 2px 4px #000000; /* Sombra para mayor contraste */
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+  opacity: 0.9;
+}
+
+.carousel-control-prev {
+  left: 0;
+}
+
+.carousel-control-next {
+  right: 0;
+}
+
+.carousel-inner {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.carousel-item {
+  position: relative;
+  display: none;
+  width: 100%;
+  backface-visibility: hidden;
+  text-align: center;
+}
+
+.carousel-item.active {
+  display: block;
+}
+
+/* Estilos para el footer del modal */
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.modal-footer .btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
+}
+
+.modal-footer .btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.modal-footer .btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.modal-footer .btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.modal-footer .btn-primary:hover {
+  background-color: #0056b3;
+}
+
+/* Estilos para el grid de detalles adicionales */
+.detalle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.5rem 1rem;
+}
+
+.detalle-grid p {
+  margin: 0;
+  padding: 0.25rem 0;
+  font-size: 0.9em;
+}
+
+.detalle-extra-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.detalle-extra-card {
+  background-color: #f4f0fb;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 0.8rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.detalle-extra-card strong {
+  display: block;
+  font-weight: 600;
+  color: #5e3db0;
+  font-size: 0.75rem;
+  margin-bottom: 2px;
+}
+
+.detalle-extra-card span {
+  color: #333;
+  font-size: 0.75rem;
+}
+</style>
+
+<h1>Nuestros Productos</h1>
+
+<div class="card-container">
+  <% productos.forEach(producto => { %>
+    <div class="card">
+      <img src="<%= producto.imagenes[0] %>" alt="<%= producto.nombre %>">
+      <h2><%= producto.nombre %></h2>
+      <p><%= producto.descripcion %></p>
+      <p>Color: <%= producto.color %></p>
+      <p class="precio">$<%= producto.precio %></p>
+
+      <div class="cantidad">
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" id="cantidad" value="1" min="1">
+      </div>
+      <button class="btn btn-carrito">Añadir al carrito</button>
+      <button class="btn btn-ver-detalles" data-producto='<%= JSON.stringify(producto) %>'>
+        Ver Detalles
+      </button>
+    </div>
+  <% }); %>
+</div>
+
+<!-- Modales -->
+<div id="modalDetalles" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="modalDetallesLabel">Detalles del Producto</h5>
+      <span class="close" id="cerrarModal">×</span>
+    </div>
+    <div class="modal-body">
+      <!-- Carrusel de imágenes -->
+      <div id="carouselImagenes" class="carousel">
+        <div class="carousel-inner">
+          <!-- Aquí se insertan las imágenes dinámicamente -->
+        </div>
+        <button class="carousel-control-prev" onclick="cambiarSlide(-1)">❮</button>
+        <button class="carousel-control-next" onclick="cambiarSlide(1)">❯</button>
+      </div>
+
+      <div class="detalle-grid mb-3">
+        <p><strong>Nombre:</strong> <span id="modalNombre"></span></p>
+        <p><strong>Color:</strong> <span id="modalColor"></span></p>
+        <p><strong>Precio:</strong> $<span id="modalPrecio"></span></p>
+        <p><strong>Stock:</strong> <span id="modalStock"></span></p>
+      </div>
+
+      <p><strong>Descripción:</strong> <span id="modalDescripcion"></span></p>
+       <hr>
+<h6 class="mb-2">Detalles adicionales:</h6>
+<div class="detalle-extra-grid">
+  <div class="detalle-extra-card"><strong>Destacado</strong><span id="modalDestacado"></span></div>
+  <div class="detalle-extra-card"><strong>Envío Gratis</strong><span id="modalEnvio"></span></div>
+  <div class="detalle-extra-card"><strong>Tallas</strong><span id="modalTallas"></span></div>
+
+</div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" id="cerrarModalBtn">Cerrar</button>
+      <button type="button" class="btn btn-primary">Añadir al carrito</button>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const modal = document.getElementById('modalDetalles');
+  const cerrarModalBtn = document.getElementById('cerrarModalBtn');
+  const cerrarModal = document.getElementById('cerrarModal');
+  const carouselInner = document.querySelector('#carouselImagenes .carousel-inner');
+  let imagenes = [];
+  let currentImageIndex = 0;
+
+  // Función para mostrar el modal con los detalles del producto
+  document.querySelectorAll('.btn-ver-detalles').forEach(button => {
+    button.addEventListener('click', function() {
+      const producto = JSON.parse(this.dataset.producto);
+
+      // Llena los campos del modal con los datos del producto
+      document.getElementById('modalNombre').textContent = producto.nombre;
+      document.getElementById('modalDescripcion').textContent = producto.descripcion;
+      document.getElementById('modalColor').textContent = producto.color;
+      document.getElementById('modalPrecio').textContent = producto.precio;
+      document.getElementById('modalStock').textContent = producto.stock;
+      document.getElementById('modalDestacado').textContent = producto.destacado ? 'Sí' : 'No';
+      document.getElementById('modalEnvio').textContent = producto.envioGratis ? 'Sí' : 'No';
+      document.getElementById('modalTallas').textContent = producto.tallas.join(', ') || 'No especificado';
+
+      // Carga las imágenes en el carrusel
+      imagenes = producto.imagenes;
+      cargarImagenesCarousel(imagenes);
+      currentImageIndex = 0;
+      showSlide(currentImageIndex);
+
+      // Muestra el modal
+      modal.style.display = "block";
+    });
+  });
+
+  // Función para cerrar el modal
+  function closeTheModal() {
+    modal.style.display = "none";
+  }
+
+  cerrarModalBtn.addEventListener('click', closeTheModal);
+  cerrarModal.addEventListener('click', closeTheModal);
+
+  // Cierra el modal al hacer clic fuera del contenido
+  window.addEventListener('click', function(event) {
+    if (event.target == modal) {
+      closeTheModal();
+    }
+  });
+
+  // Función para cargar las imágenes en el carrusel
+  function cargarImagenesCarousel(imagenes) {
+    carouselInner.innerHTML = ''; // Limpia el carrusel
+    imagenes.forEach((imagen, index) => {
+      const item = document.createElement('div');
+      item.classList.add('carousel-item');
+      if (index === 0) {
+        item.classList.add('active'); // Activa la primera imagen
+      }
+      const img = document.createElement('img');
+      img.src = imagen;
+      img.alt = `Imagen ${index + 1}`;
+      item.appendChild(img);
+      carouselInner.appendChild(item);
+    });
+  }
+
+  // Funciones para cambiar de slide en el carrusel
+  window.cambiarSlide = function(n) {
+    showSlide(currentImageIndex += n);
+  }
+
+  function showSlide(n) {
+    let slides = document.getElementsByClassName("carousel-item");
+    if (slides.length === 0) return;
+
+    if (n >= slides.length) {
+      currentImageIndex = 0;
+    }
+    if (n < 0) {
+      currentImageIndex = slides.length - 1;
+    }
+
+    for (let i = 0; i < slides.length; i++) {
+      slides[i].classList.remove('active');
+    }
+
+    slides[currentImageIndex].classList.add('active');
+  }
+});
+</script>
