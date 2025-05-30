@@ -515,3 +515,13 @@ h1 {
     order: 1; /* Pone la cantidad a la izquierda */
     white-space: nowrap;
 }
+
+
+@media screen and (max-width: 1000px) {
+    .container{
+        margin-left: 0;
+        margin-right: 0;
+        max-width: 100%;
+        padding: 0;
+    }
+}
