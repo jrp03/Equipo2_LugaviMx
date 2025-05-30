@@ -1,0 +1,447 @@
+/* Estilos generales para la página (Sin Cambios) */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+#cerrarModalBtn {
+    display: none;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-top: 20px;
+}
+
+.container{
+    background:#fff;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-bottom: 100px;
+}
+
+
+/* Estilos para el contenedor de las tarjetas de producto (Sin Cambios) */
+.card-container {
+    position: relative;
+    /* display: flex; */
+    /* flex-wrap: wrap; */
+    /* justify-content: center; */
+    display: grid;
+    /* grid-template-columns: auto auto auto auto; */
+     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    padding: 20px;
+    /* gap: 20px; */
+    /* flex-direction: column; */
+}
+.border-bottom{
+    border-bottom: 1px solid #ddd;
+}
+
+/* Estilos para la tarjeta de producto (Sin Cambios) */
+.cards {
+    position: relative;
+    /* border: 1px solid #ddd; */
+    border-radius: 10px;
+    padding: 15px;
+    /* margin: 10px; */
+    width: 100%;
+    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  QUITANDO SOMBRA*/
+    text-align: left;
+    background-color: white;
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 3px 11px 32px -27px #333;
+    
+}
+
+.cards:hover {
+    transform: translateY(-5px);
+}
+
+.cards img {
+    max-width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.cards h2 {
+    font-size: 1.2em;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+}
+
+.cards p {
+    font-size: 0.95em;
+    margin-bottom: 8px;
+    color: #666;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.precio {
+    color: #28a745;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.scroll-container{
+    display: flex;
+    overflow-x: scroll;
+}
+
+.scroll-content{
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+}
+.scroll-content.active {
+    cursor: grabbing;
+    background-color: #f0f0f0; /* Cambia el color de fondo mientras arrastras */
+    /* Puedes agregar más estilos si lo deseas */
+}
+
+/* Estilos para la sección de cantidad (Sin Cambios) */
+.cantidad {
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Alineando al lado izquierdo */
+}
+
+.cantidad label {
+    margin-right: 4px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.cantidad input {
+    width: 40px;
+    padding: 4px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* Estilos para los botones (Sin Cambios) */
+.btn {
+    display: block;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.95em;
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.btn-carrito {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-carrito:hover {
+    background-color: #0056b3;
+}
+
+.btn-ver-detalles {
+    background-color: #6c757d;
+    color: white;
+    padding: 4px 8px; /* Reduce padding */
+    font-size: 0.8em;   /* Reduce font size */
+}
+
+.btn-ver-detalles:hover {
+    background-color: #5a6268;
+}
+
+/* Estilos para el modal (Sin Cambios)*/
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2500;
+    overflow-y: auto;
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: 3% auto;
+    padding: 0px;
+    border: 1px solid #888;
+    width: 30%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+    border-radius: 10px;
+}
+
+/* Animación del modal (Sin Cambios)*/
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0;
+    }
+
+    to {
+        top: 0;
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-title {
+    margin: 0;
+    font-size: 1.4em;
+    color: #333;
+}
+
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 15px;
+}
+
+/* Estilos para el carrusel (Sin Cambios)*/
+#carouselImagenes {
+    margin-bottom: 15px;
+}
+
+#carouselImagenes img {
+    height: 250px;
+    border-radius: 10px;
+    width: auto;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: auto;
+    padding: 16px;
+    color: white;
+    text-align: center;
+    opacity: 0.5;
+    transition: opacity 0.15s ease;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+/* Estilos para mejorar la visibilidad de las flechas del carrusel (Sin Cambios)*/
+.carousel-control-prev,
+.carousel-control-next {
+    color: #fff;
+    font-size: 2em;
+    text-shadow: 2px 2px 4px #000000;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    opacity: 0.9;
+}
+
+.carousel-control-prev {
+    left: 0;
+}
+
+.carousel-control-next {
+    right: 0;
+}
+
+.carousel-inner {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.carousel-item {
+    position: relative;
+    display: none;
+    width: 100%;
+    backface-visibility: hidden;
+    text-align: center;
+}
+
+.carousel-item.active {
+    display: block;
+}
+
+/* Estilos para el footer del modal (Sin Cambios)*/
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-top: 1px solid #e5e5e5;
+}
+
+.modal-footer .btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.modal-footer .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.modal-footer .btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.modal-footer .btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.modal-footer .btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para el grid de detalles adicionales (Sin Cambios)*/
+.detalle-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.5rem 1rem;
+}
+
+.detalle-grid p {
+    margin: 0;
+    padding: 0.25rem 0;
+    font-size: 0.9em;
+}
+
+.detalle-extra-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+.detalle-extra-card {
+    background-color: #f4f0fb;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 0.8rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.detalle-extra-card strong {
+    display: block;
+    font-weight: 600;
+    color: #5e3db0;
+    font-size: 0.75rem;
+    margin-bottom: 2px;
+}
+
+.detalle-extra-card span {
+    color: #333;
+    font-size: 0.75rem;
+}
+
+/* Nuevos Estilos para el Carrito */
+.cart-modal-body {
+    padding: 15px;
+}
+
+.cart-item {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+}
+
+.cart-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.cart-item-details {
+    flex-grow: 1;
+}
+
+.cart-total {
+    padding-top: 10px;
+    font-weight: bold;
+    text-align: right;
+}
+
+/* Nuevos estilos para el footer de la tarjeta y la cantidad */
+.card-footer {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+}
+
+.cantidad-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px; /* Agregando margen inferior para la separación */
+}
+
+.cantidad-container .btn-ver-detalles {
+    width: auto;
+    order: 2; /* Pone el boton ver detalles a la derecha */
+    margin-left: auto;  /* Empuja el botón a la derecha */
+}
+
+.cantidad-container .cantidad {
+    margin-top: 0;
+    width: auto; /* Ajusta el ancho de la cantidad */
+    order: 1; /* Pone la cantidad a la izquierda */
+    white-space: nowrap;
+}

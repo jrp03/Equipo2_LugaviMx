@@ -74,6 +74,7 @@
 
         <!-- Iconos a la Derecha -->
         <div class="navbar-icons">
+           
             <a href="/carrito">
                 <i class="fas fa-shopping-cart"></i>
                 <span class="cart-badge"><%= cartItemCount %></span>
@@ -94,6 +95,9 @@
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Inicio</a>
+                    </li>
                     <!-- alineación a la izquierda dentro del offcanvas -->
                     <% if (user) { %>
                         <li class="nav-item">
