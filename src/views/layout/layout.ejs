@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login con Node</title>
+    <!-- <title>Login con Node</title> -->
     <link rel="stylesheet" href="https://bootswatch.com/5/pulse/bootstrap.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -74,6 +74,7 @@
 
         <!-- Iconos a la Derecha -->
         <div class="navbar-icons">
+           
             <a href="/carrito">
                 <i class="fas fa-shopping-cart"></i>
                 <span class="cart-badge"><%= cartItemCount %></span>
@@ -94,6 +95,9 @@
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Inicio</a>
+                    </li>
                     <!-- alineación a la izquierda dentro del offcanvas -->
                     <% if (user) { %>
                         <li class="nav-item">
