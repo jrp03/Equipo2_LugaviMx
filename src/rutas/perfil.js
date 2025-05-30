@@ -1,58 +1,84 @@
+// src/rutas/perfil.js
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user'); // Asegúrate que la ruta sea correcta
+const User = require('../models/user');
 
-// Middleware para asegurarte que el usuario esté autenticado
-function asegurarAutenticado(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
+// Middleware de autenticación correcto
+function isAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) return next();
   res.redirect('/login');
 }
 
 // Mostrar el perfil
-router.get('/', asegurarAutenticado, async (req, res) => {
+router.get('/', isAuthenticated, async (req, res) => {
   const usuario = await User.findById(req.user._id);
   res.render('perfil', { usuario });
 });
 
-// Mostrar el formulario de edición
-router.get('/editar', asegurarAutenticado, async (req, res) => {
+// Formulario para editar el perfil
+router.get('/editar', isAuthenticated, async (req, res) => {
   const usuario = await User.findById(req.user._id);
   res.render('editarPerfil', { usuario });
 });
 
 // Guardar los cambios del perfil
-router.post('/editar', asegurarAutenticado, async (req, res) => {
-  const {
-    name,
-    email,
-    phoneNumber,
-    shippingAddresses = [],
-    paymentMethods = []
-  } = req.body;
-
+// Guardar los cambios del perfil
+router.post('/editar', isAuthenticated, async (req, res) => {
   try {
-    // Construir el objeto de actualización
-    const update = {
+    if (!req.isAuthenticated()) {
+      return res.redirect('/login');
+    }
+
+    const {
       name,
-      email,
       phoneNumber,
-      shippingAddresses: Array.isArray(shippingAddresses)
-        ? shippingAddresses
-        : Object.values(shippingAddresses),
-      paymentMethods: Array.isArray(paymentMethods)
-        ? paymentMethods
-        : Object.values(paymentMethods)
+      addressLine1,
+      addressLine2,
+      city,
+      state,
+      postalCode,
+      country,
+      paymentMethods = []
+    } = req.body;
+
+    const usuario = await User.findById(req.user._id);
+    if (!usuario) return res.status(404).send('Usuario no encontrado');
+
+    usuario.name = name;
+    usuario.phoneNumber = phoneNumber;
+
+    // Dirección
+    const direccion = {
+      addressLine1,
+      addressLine2,
+      city,
+      state,
+      postalCode,
+      country,
+      isDefault: true
     };
 
-    await User.findByIdAndUpdate(req.user._id, update, { new: true });
+    if (usuario.shippingAddresses.length > 0) {
+      usuario.shippingAddresses[0] = direccion;
+    } else {
+      usuario.shippingAddresses.push(direccion);
+    }
 
+    // Filtrar métodos de pago válidos
+    const parsedPaymentMethods = Object.values(paymentMethods).filter(pm => (
+      pm.cardType && pm.cardNumber && pm.expiryDate && pm.cvv && pm.cardholderName
+    ));
+
+    usuario.paymentMethods = parsedPaymentMethods;
+
+    await usuario.save();
     res.redirect('/perfil');
   } catch (error) {
     console.error('Error actualizando el perfil:', error);
-    res.status(500).send('Ocurrió un error al actualizar el perfil.');
+    res.status(500).send('Error al actualizar el perfil');
   }
 });
+
+
 
 module.exports = router;
