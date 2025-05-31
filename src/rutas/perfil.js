@@ -20,8 +20,35 @@ router.get('/editar', isAuthenticated, async (req, res) => {
   const usuario = await User.findById(req.user._id);
   res.render('editarPerfil', { usuario });
 });
+//Formulario para agregar metodos de pago
+router.get('/agregar-metodo-pago', isAuthenticated, (req, res) => {
+  res.render('agregarMetodoPago', { layout: 'layout/layout.ejs' });
+});
+router.post('/agregar-metodo-pago', isAuthenticated, async (req, res) => {
+  try {
+    const usuario = await User.findById(req.user._id);
+    if (!usuario) return res.status(404).send('Usuario no encontrado');
 
-// Guardar los cambios del perfil
+    const { cardType, cardNumber, expiryDate, cvv, cardholderName } = req.body;
+
+    usuario.paymentMethods.push({
+      cardType,
+      cardNumber,
+      expiryDate,
+      cvv,
+      cardholderName,
+      isDefault: usuario.paymentMethods.length === 0 // El primero que agregue será el predeterminado
+    });
+
+    await usuario.save();
+
+    res.redirect('/perfil');
+  } catch (error) {
+    console.error('Error al guardar método de pago:', error);
+    res.status(500).send('Error al guardar el método de pago');
+  }
+});
+
 // Guardar los cambios del perfil
 router.post('/editar', isAuthenticated, async (req, res) => {
   try {
