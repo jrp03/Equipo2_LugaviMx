@@ -79,6 +79,56 @@ router.post('/editar', isAuthenticated, async (req, res) => {
   }
 });
 
+router.post('/agregar-metodo-pago', isAuthenticated, async (req, res) => {
+  try {
+    const usuario = await User.findById(req.user._id);
+    if (!usuario) return res.status(404).send('Usuario no encontrado');
+
+    const { cardType, cardNumber, expiryDate, cvv, cardholderName } = req.body;
+
+    usuario.paymentMethods.push({
+      cardType,
+      cardNumber,
+      expiryDate,
+      cvv,
+      cardholderName,
+      isDefault: usuario.paymentMethods.length === 0
+    });
+
+    await usuario.save();
+    res.redirect('/perfil');
+  } catch (error) {
+    console.error('Error al guardar método de pago:', error);
+    res.status(500).send('Error al guardar el método de pago');
+  }
+});
+
+
+router.post('/eliminar-metodo-pago/:index', isAuthenticated, async (req, res) => {
+  try {
+    const index = parseInt(req.params.index);
+    const usuario = await User.findById(req.user._id);
+
+    if (!usuario) return res.status(404).send('Usuario no encontrado');
+
+    if (isNaN(index) || index < 0 || index >= usuario.paymentMethods.length) {
+      return res.status(400).send('Índice inválido');
+    }
+
+    usuario.paymentMethods.splice(index, 1);
+    await usuario.save();
+
+    res.redirect('/perfil');
+  } catch (error) {
+    console.error('Error al eliminar método de pago:', error);
+    res.status(500).send('Error al eliminar el método de pago');
+  }
+});
+
+router.get('/agregar-metodo-pago', isAuthenticated, (req, res) => {
+  res.render('agregarMetodoPago', { layout: 'layout/layout.ejs' });
+});
+
 
 
 module.exports = router;

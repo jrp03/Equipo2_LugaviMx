@@ -43,23 +43,30 @@
           </div>
 
           <div class="col-md-6">
-            <h5>Métodos de pago</h5>
-            <% if (usuario.paymentMethods && usuario.paymentMethods.length > 0) { %>
-              <% usuario.paymentMethods.forEach((pago, index) => { %>
-                <div class="border rounded p-3 mb-3">
-                  <p><strong><%= pago.cardType %></strong> terminada en **** <%= pago.cardNumber.slice(-4) %></p>
-                  <p><strong>Vence:</strong> <%= pago.expiryDate %></p>
-                  <p><strong>Nombre:</strong> <%= pago.cardholderName %></p>
-                  <% if (pago.isDefault) { %>
-                    <span class="badge bg-success">Predeterminado</span>
-                  <% } %>
-                </div>
-              <% }) %>
-            <% } else { %>
-              <p class="text-muted">No hay métodos de pago registrados.</p>
-            <% } %>
-          </div>
-        </div>
+<h5>Métodos de pago</h5>
+
+<% if (usuario.paymentMethods && usuario.paymentMethods.length > 0) { %>
+  <% usuario.paymentMethods.forEach((pago, index) => { %>
+    <div class="border rounded p-3 mb-3">
+      <p><strong><%= pago.cardType.toUpperCase() %></strong> terminada en **** <%= pago.cardNumber.slice(-4) %></p>
+      <p><strong>Vence:</strong> <%= pago.expiryDate %></p>
+      <p><strong>Nombre:</strong> <%= pago.cardholderName %></p>
+      <% if (pago.isDefault) { %>
+        <span class="badge bg-success">Predeterminado</span>
+      <% } %>
+
+      <!-- Formulario para eliminar -->
+      <form action="/perfil/eliminar-metodo-pago/<%= index %>" method="POST" class="mt-2">
+        <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+      </form>
+    </div>
+  <% }) %>
+<% } else { %>
+  <p class="text-muted">No hay métodos de pago registrados.</p>
+<% } %>
+
+<a href="/perfil/agregar-metodo-pago" class="btn btn-success mt-3">Agregar otra tarjeta</a>
+
 <a href="/perfil/editar" class="btn btn-warning mt-3">Editar perfil</a>
 <a href="/" class="btn btn-primary mt-3 ms-2">Volver al inicio</a>
       </div>
