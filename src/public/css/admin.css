@@ -1,0 +1,139 @@
+/* ===== Estilos Generales para el Panel Admin ===== */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to right, #c59d5f, #9c7b35);
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== Barra de bienvenida personalizada (visible) ===== */
+.admin-welcome-bar {
+  background-color: transparent;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.admin-welcome-text {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #f8f9fa;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 8px;
+  letter-spacing: 0.5px;
+}
+
+
+/* ===== Tarjetas de resumen ===== */
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+  padding: 1.5rem;
+  background-color: #fff;
+  text-align: center;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+.card h5 {
+  font-weight: 600;
+  color: #333;
+}
+
+.card span {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #000;
+}
+
+/* ===== Botones dentro de tarjetas ===== */
+.card a.btn {
+  background-color: #6610f2;
+  color: white !important;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card a.btn:hover {
+  background-color: #520dc2;
+  color: #fff !important;
+}
+
+/* ===== Botones personalizados (si se usan) ===== */
+.btn-admin {
+  background-color: #6610f2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  transition: background 0.2s ease-in-out;
+}
+
+.btn-admin:hover {
+  background-color: #520dc2;
+}
+
+/* ===== Tabla de gestión ===== */
+.table-admin {
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.table-admin thead {
+  background-color: #6610f2;
+  color: white;
+}
+
+.table-admin th, .table-admin td {
+  padding: 12px 15px;
+  vertical-align: middle;
+}
+
+/* ===== Enlaces activos y hover ===== */
+a.nav-link.active, .nav-link:hover {
+  color: #6610f2 !important;
+  font-weight: bold;
+}
+
+/* ===== Menú lateral ===== */
+.sidebar {
+  background-color: #fff;
+  border-right: 1px solid #ddd;
+  min-height: 100vh;
+  padding-top: 20px;
+}
+
+/* ===== Contenedor de gráficas (opcional) ===== */
+.chart-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .card {
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+

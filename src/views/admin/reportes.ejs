@@ -1,0 +1,66 @@
+<% layout('adminLayout') %>
+
+
+<div class="container mt-5">
+  <h2 class="mb-4">Reportes y Estadísticas</h2>
+
+  <div class="row">
+    <div class="col-md-6 mb-4">
+      <div class="card p-3 shadow-sm">
+        <h5 class="text-center">Ventas Totales por Mes</h5>
+        <canvas id="ventasPorMes"></canvas>
+      </div>
+    </div>
+    <div class="col-md-6 mb-4">
+      <div class="card p-3 shadow-sm">
+        <h5 class="text-center">Productos más Vendidos</h5>
+        <canvas id="productosVendidos"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ventasPorMes = document.getElementById('ventasPorMes').getContext('2d');
+  const productosVendidos = document.getElementById('productosVendidos').getContext('2d');
+
+  new Chart(ventasPorMes, {
+    type: 'bar',
+    data: {
+      labels: <%- JSON.stringify(meses) %>,
+      datasets: [{
+        label: 'Ventas ($)',
+        data: <%- JSON.stringify(ventasTotales) %>,
+        backgroundColor: 'rgba(54, 162, 235, 0.7)'
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: true },
+        title: { display: true, text: 'Ventas por mes (estimado)' }
+      }
+    }
+  });
+
+  new Chart(productosVendidos, {
+    type: 'pie',
+    data: {
+      labels: <%- JSON.stringify(productosNombres) %>,
+      datasets: [{
+        label: 'Cantidad vendida',
+        data: <%- JSON.stringify(productosCantidades) %>,
+        backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745', '#6610f2']
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: { display: true, text: 'Top productos vendidos' }
+      }
+    }
+  });
+</script>
+

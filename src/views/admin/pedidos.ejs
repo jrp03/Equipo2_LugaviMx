@@ -1,0 +1,44 @@
+<% layout('adminLayout') %>
+
+<link rel="stylesheet" href="/css/admin.css">
+
+<div class="container mt-5">
+  <h1 class="mb-4 text-center">Gestión de Pedidos</h1>
+
+  <% if (pedidos.length === 0) { %>
+    <div class="alert alert-info text-center">
+      No hay pedidos registrados aún.
+    </div>
+  <% } else { %>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover shadow-sm bg-white">
+        <thead class="table-dark text-center">
+          <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Fecha</th>
+            <th>Monto</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% pedidos.forEach(pedido => { %>
+            <tr>
+              <td><%= pedido._id %></td>
+              <td><%= pedido.usuario?.name || 'Sin nombre' %></td>
+              <td><%= moment(pedido.createdAt).format('DD/MM/YYYY HH:mm') %></td>
+              <td>$<%= pedido.total.toFixed(2) %></td>
+              <td><span class="badge bg-<%= pedido.estado === 'entregado' ? 'success' : 'warning' %> text-uppercase">
+                <%= pedido.estado %>
+              </span></td>
+              <td class="text-center">
+                <a href="/admin/pedidos/<%= pedido._id %>" class="btn btn-sm btn-outline-primary">Ver Detalles</a>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>

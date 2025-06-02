@@ -1,0 +1,52 @@
+<% layout('layout/layout') %>
+
+<link rel="stylesheet" href="/css/admin.css">
+
+<div class="container mt-5">
+  <h1 class="mb-4 text-center">Gestión de Usuarios</h1>
+
+  <% if (usuarios.length === 0) { %>
+    <div class="alert alert-info text-center">
+      No hay usuarios registrados aún.
+    </div>
+  <% } else { %>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover bg-white shadow-sm">
+        <thead class="table-dark text-center">
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Fecha de Registro</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% usuarios.forEach(usuario => { %>
+            <tr>
+              <td><%= usuario._id %></td>
+              <td><%= usuario.name %></td>
+              <td><%= usuario.email %></td>
+              <td>
+                <span class="badge bg-<%= usuario.rol === 'admin' ? 'danger' : 'secondary' %> text-uppercase">
+                  <%= usuario.rol || 'usuario' %>
+                </span>
+              </td>
+              <td><%= moment(usuario.createdAt).format('DD/MM/YYYY HH:mm') %></td>
+              <td class="text-center">
+                <form action="/admin/usuarios/<%= usuario._id %>/rol" method="POST" class="d-inline">
+                  <select name="rol" class="form-select form-select-sm d-inline w-auto">
+                    <option value="usuario" <%= usuario.rol === 'usuario' ? 'selected' : '' %>>Usuario</option>
+                    <option value="admin" <%= usuario.rol === 'admin' ? 'selected' : '' %>>Administrador</option>
+                  </select>
+                  <button type="submit" class="btn btn-sm btn-outline-primary">Actualizar</button>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>

@@ -82,4 +82,5 @@ categoria: {
   versionKey: false,
 });
 
-module.exports = mongoose.model('Producto', productoSchema);
+// ✅ Evita error de sobreescritura del modelo
+module.exports = mongoose.models.Producto || mongoose.model('Producto', productoSchema);

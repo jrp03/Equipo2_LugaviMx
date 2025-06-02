@@ -1,0 +1,57 @@
+<% layout('adminLayout') %>
+
+<link rel="stylesheet" href="/css/admin.css">
+
+<div class="container mt-5">
+  <h1 class="mb-4 text-center">Gestión de Productos</h1>
+
+  <div class="text-end mb-3">
+    <a href="/admin/productos/nuevo" class="btn btn-success">+ Nuevo Producto</a>
+  </div>
+
+  <% if (productos.length === 0) { %>
+    <div class="alert alert-warning text-center">
+      No hay productos registrados actualmente.
+    </div>
+  <% } else { %>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover bg-white shadow-sm">
+        <thead class="table-dark text-center">
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Imagen</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% productos.forEach(producto => { %>
+            <tr>
+              <td><%= producto._id %></td>
+              <td><%= producto.nombre %></td>
+              <td><%= producto.categoria %></td>
+              <td>$<%= producto.precio.toFixed(2) %></td>
+              <td><%= producto.stock %></td>
+              <td>
+                <% if (producto.imagen) { %>
+                  <img src="<%= producto.imagen %>" alt="Imagen producto" width="60">
+                <% } else { %>
+                  <span class="text-muted">Sin imagen</span>
+                <% } %>
+              </td>
+              <td class="text-center">
+                <a href="/admin/productos/<%= producto._id %>/editar" class="btn btn-sm btn-outline-primary">Editar</a>
+                <form action="/admin/productos/<%= producto._id %>?_method=DELETE" method="POST" class="d-inline">
+                  <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Eliminar este producto?')">Eliminar</button>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>
