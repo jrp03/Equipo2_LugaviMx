@@ -1,74 +1,74 @@
 <% layout('layout/layout.ejs') %>
+<link rel="stylesheet" href="/css/perfil.css">
 
-<div class="container mt-5">
+<div class="container mt-4">
   <% if (usuario) { %>
-    <div class="card shadow-lg">
-      <div class="card-body">
-        
-        <div class="d-flex align-items-center">
-          <div class="me-4">
-            <% if (usuario.profilePicture) { %>
-              <img src="<%= usuario.profilePicture %>" alt="Foto de perfil" class="rounded-circle" width="120" height="120">
-            <% } else { %>
-              <img src="asset/usuario.png" class="rounded-circle" width="120" height="120">
-            <% } %>
-          </div>
-          <div>
-            <h3 class="mb-0"><%= usuario.name %></h3>
-            <p class="text-muted mb-1"><%= usuario.email %></p>
-            <% if (usuario.phoneNumber) { %>
-              <p class="mb-0"><strong>Teléfono:</strong> <%= usuario.phoneNumber %></p>
-            <% } %>
-          </div>
+    <div class="perfil-wrapper">
+
+      <!-- Columna Izquierda: Detalles del Usuario -->
+      <div class="perfil-columna">
+        <div class="card-usuario">
+          <img src="<%= usuario.profilePicture || '/asset/usuario.png' %>" alt="Foto de perfil" class="avatar-img">
+          <h3 class="mb-0 text-uppercase"><%= usuario.name %></h3>
+        <p class="correo-usuario"><%= usuario.email %></p>
+
+          <% if (usuario.phoneNumber) { %>
+            <p><strong>Teléfono:</strong> <%= usuario.phoneNumber %></p>
+          <% } %>
+          <div class="btn-perfil-grupo mt-3">
+  <a href="/perfil/editar" class="btn btn-azul">Editar perfil</a>
+  <a href="/" class="btn btn-azul ms-2">Volver al inicio</a>
+</div>
+
+        </div>
+      </div>
+
+      <!-- Columna Derecha: Métodos de pago y direcciones -->
+      <div class="perfil-columna">
+
+        <!-- Métodos de Pago -->
+        <div class="section-box">
+          <h5>Métodos de pago</h5>
+
+          <% if (usuario.paymentMethods && usuario.paymentMethods.length > 0) { %>
+            <% usuario.paymentMethods.forEach((pago, index) => { %>
+              <div class="card-metodo">
+                <p><strong><%= pago.cardType.toUpperCase() %></strong> terminada en **** <%= pago.cardNumber.slice(-4) %></p>
+                <p><strong>Vence:</strong> <%= pago.expiryDate %></p>
+                <p><strong>Nombre:</strong> <%= pago.cardholderName %></p>
+                <% if (pago.isDefault) { %>
+                  <span class="badge bg-success">Predeterminada</span>
+                <% } %>
+                <form action="/perfil/eliminar-metodo-pago/<%= index %>" method="POST" class="mt-2 d-inline">
+                  <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                </form>
+              </div>
+            <% }) %>
+          <% } else { %>
+            <p class="text-muted">No hay métodos de pago registrados.</p>
+          <% } %>
+
+          <a href="/perfil/agregar-metodo-pago" class="btn btn-success btn-agregar">+ Agregar tarjeta</a>
         </div>
 
-        <hr class="my-4">
+        <!-- Direcciones -->
+        <div class="section-box">
+          <h5>Direcciones de envío</h5>
+          <% if (usuario.shippingAddresses && usuario.shippingAddresses.length > 0) { %>
+            <% usuario.shippingAddresses.forEach((direccion) => { %>
+              <div class="card-direccion">
+                <p><%= direccion.addressLine1 %> <%= direccion.addressLine2 || '' %></p>
+                <p><%= direccion.city %>, <%= direccion.state %>, <%= direccion.postalCode %>, <%= direccion.country %></p>
+                <% if (direccion.isDefault) { %>
+                  <span class="badge bg-success">Predeterminada</span>
+                <% } %>
+              </div>
+            <% }) %>
+          <% } else { %>
+            <p class="text-muted">No hay direcciones registradas.</p>
+          <% } %>
+        </div>
 
-        <div class="row">
-          <div class="col-md-6">
-            <h5>Direcciones de envío</h5>
-            <% if (usuario.shippingAddresses && usuario.shippingAddresses.length > 0) { %>
-              <% usuario.shippingAddresses.forEach((direccion, index) => { %>
-                <div class="border rounded p-3 mb-3">
-                  <p><%= direccion.addressLine1 %> <%= direccion.addressLine2 || '' %></p>
-                  <p><%= direccion.city %>, <%= direccion.state %>, <%= direccion.postalCode %>, <%= direccion.country %></p>
-                  <% if (direccion.isDefault) { %>
-                    <span class="badge bg-success">Predeterminada</span>
-                  <% } %>
-                </div>
-              <% }) %>
-            <% } else { %>
-              <p class="text-muted">No hay direcciones registradas.</p>
-            <% } %>
-          </div>
-
-          <div class="col-md-6">
-<h5>Métodos de pago</h5>
-
-<% if (usuario.paymentMethods && usuario.paymentMethods.length > 0) { %>
-  <% usuario.paymentMethods.forEach((pago, index) => { %>
-    <div class="border rounded p-3 mb-3">
-      <p><strong><%= pago.cardType.toUpperCase() %></strong> terminada en **** <%= pago.cardNumber.slice(-4) %></p>
-      <p><strong>Vence:</strong> <%= pago.expiryDate %></p>
-      <p><strong>Nombre:</strong> <%= pago.cardholderName %></p>
-      <% if (pago.isDefault) { %>
-        <span class="badge bg-success">Predeterminado</span>
-      <% } %>
-
-      <!-- Formulario para eliminar -->
-      <form action="/perfil/eliminar-metodo-pago/<%= index %>" method="POST" class="mt-2">
-        <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-      </form>
-    </div>
-  <% }) %>
-<% } else { %>
-  <p class="text-muted">No hay métodos de pago registrados.</p>
-<% } %>
-
-<a href="/perfil/agregar-metodo-pago" class="btn btn-success mt-3">Agregar otra tarjeta</a>
-
-<a href="/perfil/editar" class="btn btn-warning mt-3">Editar perfil</a>
-<a href="/" class="btn btn-primary mt-3 ms-2">Volver al inicio</a>
       </div>
     </div>
   <% } else { %>
