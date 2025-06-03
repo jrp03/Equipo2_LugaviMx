@@ -45,14 +45,17 @@ router.post('/agregar-metodo-pago', isAuthenticated, async (req, res) => {
 
     const { cardType, cardNumber, expiryDate, cvv, cardholderName } = req.body;
 
-    usuario.paymentMethods.push({
-      cardType,
-      cardNumber,
-      expiryDate,
-      cvv,
-      cardholderName,
-      isDefault: usuario.paymentMethods.length === 0 // El primero que agregue será el predeterminado
-    });
+    const cleanCardNumber = cardNumber.replace(/\s+/g, '');//Esta linea es para limpiar el espacio que le puse a el numero de tarjeta
+
+ usuario.paymentMethods.push({
+  cardType,
+  cardNumber: cleanCardNumber,
+  expiryDate,
+  cvv,
+  cardholderName,
+  isDefault: usuario.paymentMethods.length === 0
+});
+
 
     await usuario.save();
 

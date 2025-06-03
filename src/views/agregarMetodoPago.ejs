@@ -20,7 +20,17 @@
 
         <div class="mb-3">
           <label class="form-label">Número de tarjeta</label>
-          <input type="text" class="form-control" name="cardNumber" placeholder="1234 5678 9012 3456" required>
+          <input type="text"
+       class="form-control"
+       name="cardNumber"
+       id="cardNumber"
+       placeholder="1234 5678 9012 3456"
+       maxlength="19"
+       inputmode="numeric"
+       pattern="\d{4} \d{4} \d{4} \d{4}"
+       required>
+<small class="form-text text-muted">16 dígitos, solo números. Se insertarán espacios automáticamente.</small>
+
         </div>
 
         <div class="mb-3">
@@ -42,6 +52,27 @@
           <a href="/perfil" class="btn btn-outline-secondary">Cancelar</a>
           <button type="submit" class="btn btn-success">Guardar Método</button>
         </div>
+        <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const cardInput = document.getElementById('cardNumber');
+
+  cardInput.addEventListener('input', () => {
+    let value = cardInput.value.replace(/\D/g, ''); // Solo números
+    value = value.substring(0, 16); // Máximo 16 dígitos
+
+    const spaced = value.match(/.{1,4}/g); // Divide en grupos de 4
+    cardInput.value = spaced ? spaced.join(' ') : '';
+  });
+
+  cardInput.addEventListener('keydown', (e) => {
+    const key = e.key;
+    if (!/\d/.test(key) && key !== 'Backspace' && key !== 'ArrowLeft' && key !== 'ArrowRight') {
+      e.preventDefault(); // Bloquea todo excepto números y navegación
+    }
+  });
+});
+</script>
+
       </form>
     </div>
   </div>
