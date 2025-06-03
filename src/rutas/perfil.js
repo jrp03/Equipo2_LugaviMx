@@ -2,6 +2,20 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
+const multer = require('multer');
+const path = require('path');
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, '../public/uploads/perfiles'));
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, 'perfil-' + uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({ storage: storage });
 
 // Middleware de autenticación correcto
 function isAuthenticated(req, res, next) {
@@ -50,7 +64,7 @@ router.post('/agregar-metodo-pago', isAuthenticated, async (req, res) => {
 });
 
 // Guardar los cambios del perfil
-router.post('/editar', isAuthenticated, async (req, res) => {
+router.post('/editar', isAuthenticated, upload.single('profilePicture'), async (req, res) => {
   try {
     if (!req.isAuthenticated()) {
       return res.redirect('/login');
@@ -74,6 +88,11 @@ router.post('/editar', isAuthenticated, async (req, res) => {
     usuario.name = name;
     usuario.phoneNumber = phoneNumber;
 
+    // ✅ Guardar imagen si se subió
+    if (req.file) {
+      usuario.profilePicture = '/uploads/perfiles/' + req.file.filename;
+    }
+
     // Dirección
     const direccion = {
       addressLine1,
@@ -91,7 +110,7 @@ router.post('/editar', isAuthenticated, async (req, res) => {
       usuario.shippingAddresses.push(direccion);
     }
 
-    // Filtrar métodos de pago válidos
+    // Métodos de pago válidos
     const parsedPaymentMethods = Object.values(paymentMethods).filter(pm => (
       pm.cardType && pm.cardNumber && pm.expiryDate && pm.cvv && pm.cardholderName
     ));
@@ -105,6 +124,7 @@ router.post('/editar', isAuthenticated, async (req, res) => {
     res.status(500).send('Error al actualizar el perfil');
   }
 });
+
 
 router.post('/agregar-metodo-pago', isAuthenticated, async (req, res) => {
   try {

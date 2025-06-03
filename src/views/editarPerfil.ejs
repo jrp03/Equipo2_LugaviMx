@@ -6,7 +6,8 @@
       <h3 class="mb-0">Editar Perfil</h3>
     </div>
     <div class="card-body">
-      <form action="/perfil/editar" method="POST">
+      <form action="/perfil/editar" method="POST" enctype="multipart/form-data">
+
         
         <!-- Sección Información Personal -->
         <div class="mb-4">
@@ -100,72 +101,11 @@
           <% } %>
         </div>
 
-        <!-- Sección Métodos de Pago -->
-        <div class="mb-4">
-          <h5 class="mb-3 border-bottom pb-2">Métodos de Pago</h5>
-          
-          <% if (usuario.paymentMethods && usuario.paymentMethods.length > 0) { %>
-            <% usuario.paymentMethods.forEach(function (pm, index) { %>
-              <div class="mb-3 border rounded p-3 bg-light">
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label class="form-label">Tipo de tarjeta</label>
-                    <input type="text" class="form-control" name="paymentMethods[<%= index %>][cardType]" value="<%= pm.cardType %>">
-                  </div>
-                  
-                  <div class="col-md-6 mb-3">
-                    <label class="form-label">Número de tarjeta</label>
-                    <input type="text" class="form-control" name="paymentMethods[<%= index %>][cardNumber]" value="<%= pm.cardNumber %>">
-                  </div>
-                  
-                  <div class="col-md-3 mb-3">
-                    <label class="form-label">Fecha expiración (MM/AA)</label>
-                    <input type="text" class="form-control" name="paymentMethods[<%= index %>][expiryDate]" value="<%= pm.expiryDate %>">
-                  </div>
-                  
-                  <div class="col-md-3 mb-3">
-                    <label class="form-label">CVV</label>
-                    <input type="text" class="form-control" name="paymentMethods[<%= index %>][cvv]" value="<%= pm.cvv %>">
-                  </div>
-                  
-                  <div class="col-md-6 mb-3">
-                    <label class="form-label">Nombre en la tarjeta</label>
-                    <input type="text" class="form-control" name="paymentMethods[<%= index %>][cardholderName]" value="<%= pm.cardholderName %>">
-                  </div>
-                </div>
-              </div>
-            <% }) %>
-          <% } else { %>
-            <div class="mb-3 border rounded p-3 bg-light">
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Tipo de tarjeta</label>
-                  <input type="text" class="form-control" name="paymentMethods[0][cardType]" placeholder="Visa, Mastercard, etc.">
-                </div>
-                
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Número de tarjeta</label>
-                  <input type="text" class="form-control" name="paymentMethods[0][cardNumber]" placeholder="1234 5678 9012 3456">
-                </div>
-                
-                <div class="col-md-3 mb-3">
-                  <label class="form-label">Fecha expiración (MM/AA)</label>
-                  <input type="text" class="form-control" name="paymentMethods[0][expiryDate]" placeholder="MM/AA">
-                </div>
-                
-                <div class="col-md-3 mb-3">
-                  <label class="form-label">CVV</label>
-                  <input type="text" class="form-control" name="paymentMethods[0][cvv]" placeholder="123">
-                </div>
-                
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Nombre en la tarjeta</label>
-                  <input type="text" class="form-control" name="paymentMethods[0][cardholderName]" placeholder="Nombre como aparece en la tarjeta">
-                </div>
-              </div>
-            </div>
-          <% } %>
-        </div>
+<div class="mb-3">
+  <label for="profilePicture" class="form-label">Foto de perfil</label>
+  <input type="file" class="form-control" id="profilePicture" name="profilePicture" accept="image/*">
+</div>
+
 
         <!-- Botones -->
         <div class="d-flex justify-content-between mt-4">
