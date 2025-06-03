@@ -35,12 +35,29 @@
 
         <div class="mb-3">
           <label class="form-label">Fecha de expiración (MM/AA)</label>
-          <input type="text" class="form-control" name="expiryDate" placeholder="MM/AA" required>
+          <input type="text"
+       class="form-control"
+       name="expiryDate"
+       id="expiryDate"
+       placeholder="MM/AA"
+       maxlength="5"
+       required
+       pattern="(0[1-9]|1[0-2])\/\d{2}">
+<small class="form-text text-muted">Formato válido: MM/AA</small>
         </div>
 
         <div class="mb-3">
           <label class="form-label">CVV</label>
-          <input type="text" class="form-control" name="cvv" placeholder="123" required>
+          <input type="text"
+       class="form-control"
+       name="cvv"
+       id="cvv"
+       placeholder="123"
+       maxlength="4"
+       pattern="\d{3,4}"
+       required>
+<small class="form-text text-muted">Solo 3 o 4 dígitos</small>
+
         </div>
 
         <div class="mb-3">
@@ -71,6 +88,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+</script>
+<script>
+  const expiryInput = document.getElementById('expiryDate');
+
+  expiryInput.addEventListener('input', () => {
+    let value = expiryInput.value.replace(/[^\d]/g, '');
+
+    if (value.length >= 2) {
+      value = value.slice(0, 2) + '/' + value.slice(2, 4);
+    }
+    expiryInput.value = value.slice(0, 5);
+  });
+
+  expiryInput.addEventListener('keydown', (e) => {
+    const key = e.key;
+    if (!/\d/.test(key) && key !== 'Backspace' && key !== 'ArrowLeft' && key !== 'ArrowRight' && key !== '/') {
+      e.preventDefault();
+    }
+  });
+</script>
+<script>
+  const cvvInput = document.getElementById('cvv');
+
+  cvvInput.addEventListener('input', () => {
+    let value = cvvInput.value.replace(/\D/g, '');
+    value = value.slice(0, 4); // máximo 4 dígitos
+    cvvInput.value = value;
+  });
+
+  cvvInput.addEventListener('keydown', (e) => {
+    const key = e.key;
+    if (!/\d/.test(key) && key !== 'Backspace' && key !== 'ArrowLeft' && key !== 'ArrowRight') {
+      e.preventDefault();
+    }
+  });
 </script>
 
       </form>
