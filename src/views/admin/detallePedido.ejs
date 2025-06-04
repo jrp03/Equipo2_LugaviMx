@@ -1,0 +1,27 @@
+<h5><strong>Cliente:</strong> <%= pedido.usuario?.name || 'Sin nombre' %></h5>
+<p><strong>Correo:</strong> <%= pedido.usuario?.email || 'No disponible' %></p>
+<p><strong>Fecha:</strong> <%= pedido.fecha.toLocaleString('es-MX') %></p>
+<p><strong>Estado:</strong> <%= pedido.estado %></p>
+<p><strong>Total:</strong> $<%= pedido.total.toFixed(2) %></p>
+
+<h5 class="mt-4">Artículos</h5>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Producto</th>
+      <th>Cantidad</th>
+      <th>Precio Unitario</th>
+      <th>Subtotal</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% pedido.productos.forEach(item => { %>
+      <tr>
+        <td><%= item.producto?.nombre || 'Producto eliminado' %></td>
+        <td><%= item.cantidad %></td>
+        <td>$<%= item.precio.toFixed(2) %></td>
+        <td>$<%= (item.precio * item.cantidad).toFixed(2) %></td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>

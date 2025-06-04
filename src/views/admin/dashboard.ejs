@@ -1,4 +1,5 @@
-<% layout('layout/layout') %>
+<% layout('layout/adminLayout.ejs') %>
+
 
 <link rel="stylesheet" href="/css/adminDashboard.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
@@ -7,7 +8,7 @@
 <div class="admin-welcome-bar">
   <div class="container text-center">
     <p class="admin-welcome-text">
-      Bienvenido, <strong><%= user.name || 'Administrador General' %></strong> (<%= user.role || 'Administrador' %>)
+      Bienvenido, <strong><%= user.name || 'Administrador General' %></strong> (<%= user.rol || 'Administrador' %>)
     </p>
   </div>
 </div>

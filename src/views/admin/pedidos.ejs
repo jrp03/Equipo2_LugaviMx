@@ -1,44 +1,214 @@
-<% layout('adminLayout') %>
+<% layout('layout/adminLayout.ejs') %>
 
 <link rel="stylesheet" href="/css/admin.css">
 
 <div class="container mt-5">
   <h1 class="mb-4 text-center">Gestión de Pedidos</h1>
 
-  <% if (pedidos.length === 0) { %>
-    <div class="alert alert-info text-center">
-      No hay pedidos registrados aún.
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex align-items-center">
+      <label for="filtroEstado" class="me-2 fw-bold">Filtrar por estado:</label>
+      <select id="filtroEstado" class="form-select form-select-sm me-2">
+        <option value="todos">Todos</option>
+        <option value="pendiente">Pendiente</option>
+        <option value="procesando">Procesando</option>
+        <option value="enviado">Enviado</option>
+        <option value="entregado">Entregado</option>
+        <option value="cancelado">Cancelado</option>
+      </select>
     </div>
-  <% } else { %>
-    <div class="table-responsive">
-      <table class="table table-bordered table-hover shadow-sm bg-white">
-        <thead class="table-dark text-center">
-          <tr>
-            <th>ID</th>
-            <th>Cliente</th>
-            <th>Fecha</th>
-            <th>Monto</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% pedidos.forEach(pedido => { %>
-            <tr>
-              <td><%= pedido._id %></td>
-              <td><%= pedido.usuario?.name || 'Sin nombre' %></td>
-              <td><%= moment(pedido.createdAt).format('DD/MM/YYYY HH:mm') %></td>
-              <td>$<%= pedido.total.toFixed(2) %></td>
-              <td><span class="badge bg-<%= pedido.estado === 'entregado' ? 'success' : 'warning' %> text-uppercase">
-                <%= pedido.estado %>
-              </span></td>
-              <td class="text-center">
-                <a href="/admin/pedidos/<%= pedido._id %>" class="btn btn-sm btn-outline-primary">Ver Detalles</a>
-              </td>
-            </tr>
-          <% }); %>
-        </tbody>
-      </table>
+
+    <div>
+      <a id="btnExportExcel" href="/admin/pedidos/exportar-excel" class="btn btn-success me-2">
+        <i class="bi bi-file-earmark-excel"></i> Exportar a Excel
+      </a>
+      <a id="btnExportPDF" href="/admin/pedidos/exportar-pdf" class="btn btn-danger">
+        <i class="bi bi-file-earmark-pdf"></i> Exportar a PDF
+      </a>
     </div>
-  <% } %>
+  </div>
+
+  <div id="tablaPedidosContainer"></div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="detallePedidoModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Detalles del Pedido</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body" id="modalBodyContent">
+        <p>Cargando...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment/locale/es.js"></script>
+<script>
+  moment.locale('es');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const filtro = document.getElementById('filtroEstado');
+    const contenedor = document.getElementById('tablaPedidosContainer');
+
+    filtro.addEventListener('change', () => {
+      cargarPedidos(filtro.value);
+    });
+
+    cargarPedidos('todos'); // inicial
+
+    async function cargarPedidos(estado) {
+      try {
+        const res = await fetch(`/admin/api/pedidos?estado=${estado}`);
+        const pedidos = await res.json();
+
+        if (!Array.isArray(pedidos)) throw new Error('Respuesta inválida');
+
+        if (pedidos.length === 0) {
+          contenedor.innerHTML = `<div class="alert alert-info text-center">No hay pedidos para ese estado.</div>`;
+          return;
+        }
+
+        contenedor.innerHTML = `
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover shadow-sm bg-white">
+              <thead class="table-dark text-center">
+                <tr>
+                  <th>ID</th>
+                  <th>Cliente</th>
+                  <th>Fecha</th>
+                  <th>Monto</th>
+                  <th>Estado</th>
+                  <th>Comentario</th>
+                  <th>Notificar</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${pedidos.map(p => `
+                  <tr>
+                    <td>${p._id}</td>
+                    <td>${p.usuario?.name || 'Sin nombre'}</td>
+                    <td>${moment(p.createdAt).format('LLL')}</td>
+                    <td>$${p.total.toFixed(2)}</td>
+                    <td>
+                      <span class="badge text-uppercase ${obtenerClaseEstado(p.estado)}">${p.estado}</span>
+                      <select onchange="cambiarEstadoPedido('${p._id}', this.value)" class="form-select form-select-sm mt-1">
+                        ${['pendiente', 'procesando', 'enviado', 'entregado', 'cancelado'].map(op => `
+                          <option value="${op}" ${p.estado === op ? 'selected' : ''}>${op.charAt(0).toUpperCase() + op.slice(1)}</option>
+                        `).join('')}
+                      </select>
+                    </td>
+                    <td>
+                      <input type="text" class="form-control form-control-sm" id="comentario-${p._id}" value="${p.comentario || ''}" onchange="guardarComentario('${p._id}')">
+                    </td>
+                    <td class="text-center">
+                      <input type="checkbox" id="notificar-${p._id}" ${p.notificarCliente ? 'checked' : ''} onchange="guardarNotificacion('${p._id}')">
+                    </td>
+                    <td class="text-center">
+                      <button class="btn btn-sm btn-outline-info" onclick="verDetallesPedido('${p._id}')">Ver Detalles</button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+      } catch (err) {
+        console.error(err);
+        contenedor.innerHTML = `<div class="alert alert-danger">Error al cargar pedidos.</div>`;
+      }
+    }
+
+    function obtenerClaseEstado(estado) {
+      switch (estado) {
+        case 'pendiente': return 'bg-warning text-dark';
+        case 'procesando': return 'bg-info text-dark';
+        case 'enviado': return 'bg-primary';
+        case 'entregado': return 'bg-success';
+        case 'cancelado': return 'bg-danger';
+        default: return 'bg-secondary';
+      }
+    }
+  });
+
+  async function verDetallesPedido(id) {
+    try {
+      const res = await fetch(`/admin/pedidos/${id}`);
+      if (!res.ok) throw new Error('Error al obtener el pedido');
+      const pedido = await res.json();
+
+      const productosHTML = pedido.productos.map(p =>
+        p.producto && p.producto.nombre
+          ? `<li>${p.producto.nombre} x ${p.cantidad} - $${(p.precioUnitario || 0).toFixed(2)}</li>`
+          : `<li class="text-danger"><em>Producto eliminado</em> x ${p.cantidad} - $${(p.precioUnitario || 0).toFixed(2)}</li>`
+      ).join('');
+
+      const body = document.getElementById('modalBodyContent');
+      body.innerHTML = `
+        <p><strong>Cliente:</strong> ${pedido.usuario?.name || 'Sin nombre'} (${pedido.usuario?.email || ''})</p>
+        <p><strong>Fecha:</strong> ${moment(pedido.createdAt).format('LLLL')}</p>
+        <p><strong>Total:</strong> $${pedido.total.toFixed(2)}</p>
+        <hr>
+        <h6>Productos:</h6>
+        <ul>${productosHTML}</ul>
+        <hr>
+        <p><strong>Comentario:</strong> ${pedido.comentario || '—'}</p>
+        <p><strong>Envío:</strong> ${pedido.direccionEnvio?.addressLine1 || '-'}, ${pedido.direccionEnvio?.city || '-'}, ${pedido.direccionEnvio?.state || '-'}</p>
+      `;
+
+      const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('detallePedidoModal'));
+      modal.show();
+    } catch (err) {
+      console.error('❌ Error al abrir el modal:', err);
+      alert('No se pudo cargar el pedido');
+    }
+  }
+
+  async function cambiarEstadoPedido(id, estado) {
+    try {
+      const res = await fetch(`/admin/pedidos/${id}/estado`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ estado })
+      });
+      if (!res.ok) throw new Error();
+    } catch (err) {
+      alert('Error al cambiar estado');
+    }
+  }
+
+  async function guardarComentario(id) {
+    const comentario = document.getElementById(`comentario-${id}`).value;
+    try {
+      const res = await fetch(`/admin/pedidos/${id}/comentario`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ comentario })
+      });
+      if (!res.ok) throw new Error();
+    } catch (err) {
+      alert('Error al guardar el comentario');
+    }
+  }
+
+  async function guardarNotificacion(id) {
+    const notificar = document.getElementById(`notificar-${id}`).checked;
+    try {
+      const res = await fetch(`/admin/pedidos/${id}/comentario`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ notificarCliente: notificar })
+      });
+      if (!res.ok) throw new Error();
+    } catch (err) {
+      alert('Error al guardar la notificación');
+    }
+  }
+</script>
+
+<div class="toast-container" id="toastContainer"></div>

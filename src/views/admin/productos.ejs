@@ -1,57 +1,77 @@
-<% layout('adminLayout') %>
-
-<link rel="stylesheet" href="/css/admin.css">
+<% layout('layout/adminLayout.ejs') %>
 
 <div class="container mt-5">
-  <h1 class="mb-4 text-center">Gestión de Productos</h1>
+  <h2 class="text-center mb-4">Gestión de Productos</h2>
 
-  <div class="text-end mb-3">
+  <!-- FILTROS -->
+  <form action="/admin/productos" method="GET" class="row g-2 mb-4 justify-content-center">
+    <div class="col-md-4">
+      <input type="text" class="form-control" name="busqueda" placeholder="Buscar por nombre" value="<%= typeof busqueda !== 'undefined' ? busqueda : '' %>">
+    </div>
+    <div class="col-md-4">
+      <select class="form-select" name="categoria">
+        <option value="">Todas las categorías</option>
+        <% categoriasUnicas.forEach(c => { %>
+          <option value="<%= c %>" <%= categoria === c ? 'selected' : '' %>><%= c %></option>
+        <% }) %>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-primary w-100" type="submit">Filtrar</button>
+    </div>
+    <div class="col-md-2">
+      <a href="/admin/productos" class="btn btn-secondary w-100">Limpiar</a>
+    </div>
+  </form>
+
+  <div class="d-flex justify-content-end mb-3">
     <a href="/admin/productos/nuevo" class="btn btn-success">+ Nuevo Producto</a>
   </div>
 
-  <% if (productos.length === 0) { %>
-    <div class="alert alert-warning text-center">
-      No hay productos registrados actualmente.
-    </div>
-  <% } else { %>
-    <div class="table-responsive">
-      <table class="table table-bordered table-hover bg-white shadow-sm">
-        <thead class="table-dark text-center">
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Categoría</th>
-            <th>Precio</th>
-            <th>Stock</th>
-            <th>Imagen</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% productos.forEach(producto => { %>
-            <tr>
-              <td><%= producto._id %></td>
-              <td><%= producto.nombre %></td>
-              <td><%= producto.categoria %></td>
-              <td>$<%= producto.precio.toFixed(2) %></td>
-              <td><%= producto.stock %></td>
-              <td>
-                <% if (producto.imagen) { %>
-                  <img src="<%= producto.imagen %>" alt="Imagen producto" width="60">
-                <% } else { %>
-                  <span class="text-muted">Sin imagen</span>
-                <% } %>
-              </td>
-              <td class="text-center">
-                <a href="/admin/productos/<%= producto._id %>/editar" class="btn btn-sm btn-outline-primary">Editar</a>
-                <form action="/admin/productos/<%= producto._id %>?_method=DELETE" method="POST" class="d-inline">
-                  <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Eliminar este producto?')">Eliminar</button>
-                </form>
-              </td>
-            </tr>
-          <% }); %>
-        </tbody>
-      </table>
-    </div>
-  <% } %>
+  <table class="table table-bordered table-striped table-hover align-middle text-center">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Categoría</th>
+        <th>Precio</th>
+        <th>Stock</th>
+        <th>Imagen</th>
+        <th>Destacado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% productos.forEach(producto => { %>
+        <tr>
+          <td><%= producto._id %></td>
+          <td><%= producto.nombre %></td>
+          <td><%= producto.categoria %></td>
+          <td>$<%= producto.precio.toFixed(2) %></td>
+          <td><%= producto.stock %></td>
+          <td>
+            <% if (producto.imagenes && producto.imagenes.length > 0) { %>
+              <img src="<%= producto.imagenes[0] %>" alt="Imagen" style="width: 60px;">
+            <% } else { %>
+              <span class="text-muted">Sin imagen</span>
+            <% } %>
+          </td>
+          <td>
+            <% if (producto.destacado) { %>
+              <span class="badge bg-warning text-dark">⭐ Destacado</span>
+            <% } else { %>
+              <span class="text-muted">—</span>
+            <% } %>
+          </td>
+          <td>
+            <a href="/admin/productos/<%= producto._id %>/editar" class="btn btn-sm btn-outline-primary me-1">Editar</a>
+            <form action="/admin/productos/<%= producto._id %>/eliminar" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar producto?');">
+              <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
 </div>
+

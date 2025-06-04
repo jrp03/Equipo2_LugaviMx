@@ -1,0 +1,36 @@
+<% layout('layout/adminLayout.ejs') %>
+
+<div class="container mt-5">
+  <h2>Detalles del Pedido</h2>
+  <hr>
+
+  <h5><strong>Cliente:</strong> <%= pedido.usuario?.name || 'Sin nombre' %></h5>
+  <h5><strong>Correo:</strong> <%= pedido.usuario?.email || 'N/A' %></h5>
+  <h5><strong>Fecha:</strong> <%= pedido.fecha.toLocaleString('es-MX') %></h5>
+  <h5><strong>Estado:</strong> <%= pedido.estado %></h5>
+  <h5><strong>Monto Total:</strong> $<%= pedido.total.toFixed(2) %></h5>
+
+  <h4 class="mt-4">Artículos:</h4>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Precio Unitario</th>
+        <th>Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% pedido.productos.forEach(item => { %>
+        <tr>
+          <td><%= item.producto?.nombre || 'Producto eliminado' %></td>
+          <td><%= item.cantidad %></td>
+          <td>$<%= item.precio.toFixed(2) %></td>
+          <td>$<%= (item.cantidad * item.precio).toFixed(2) %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <a href="/admin/pedidos" class="btn btn-secondary">← Volver a pedidos</a>
+</div>

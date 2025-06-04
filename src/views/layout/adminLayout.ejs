@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel de Administración - Lugavi MX</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap & Estilos -->
+  <link rel="stylesheet" href="https://bootswatch.com/5/pulse/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/admin.css">
+
+  <style>
+    .sidebar {
+      min-height: 100vh;
+      background-color: #fff;
+      border-right: 1px solid #e4e4e4;
+    }
+    .sidebar a {
+      display: block;
+      padding: 12px 20px;
+      color: #333;
+      text-decoration: none;
+      border-left: 4px solid transparent;
+    }
+    .sidebar a:hover, .sidebar a.active {
+      background-color: #f0f0f0;
+      border-left: 4px solid #6610f2;
+      color: #6610f2;
+      font-weight: bold;
+    }
+    .topbar {
+      background-color: #6610f2;
+      color: white;
+      padding: 12px 20px;
+    }
+  </style>
+</head>
+<body>
+
+<% var active = typeof active !== 'undefined' ? active : ''; %>
+
+  <div class="d-flex">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="text-center py-4">
+        <h4 class="text-uppercase">Admin</h4>
+      </div>
+      <a href="/admin" class="<%= (active === 'dashboard') ? 'active' : '' %>"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a>
+      <a href="/admin/productos" class="<%= (active === 'productos') ? 'active' : '' %>"><i class="fas fa-boxes me-2"></i> Productos</a>
+      <a href="/admin/pedidos" class="<%= (active === 'pedidos') ? 'active' : '' %>"><i class="fas fa-clipboard-list me-2"></i> Pedidos</a>
+      <a href="/admin/usuarios" class="<%= (active === 'usuarios') ? 'active' : '' %>"><i class="fas fa-users me-2"></i> Usuarios</a>
+      <a href="/admin/reportes" class="<%= (active === 'reportes') ? 'active' : '' %>"><i class="fas fa-chart-bar me-2"></i> Reportes</a>
+      <a href="/Salir"><i class="fas fa-sign-out-alt me-2"></i> Cerrar sesión</a>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="flex-grow-1">
+      <div class="topbar">
+        Bienvenido, <%= user.name %> (Administrador)
+      </div>
+
+      <div class="container mt-4">
+        <%- body %>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ Bootstrap Bundle JS para activar modales, tooltips, etc. -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+

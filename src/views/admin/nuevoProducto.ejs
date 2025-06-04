@@ -1,0 +1,103 @@
+<% layout('layout/adminLayout.ejs') %>
+
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">Agregar Nuevo Producto</h2>
+  <form action="/admin/productos/nuevo" method="POST" enctype="multipart/form-data" class="bg-light p-4 rounded shadow">
+    
+    <!-- Nombre -->
+    <div class="mb-3">
+      <label for="nombre" class="form-label">Nombre del producto</label>
+      <input type="text" class="form-control" id="nombre" name="nombre" required>
+    </div>
+
+    <!-- Descripción -->
+    <div class="mb-3">
+      <label for="descripcion" class="form-label">Descripción</label>
+      <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
+    </div>
+
+    <!-- Categoría -->
+    <div class="mb-3">
+      <label for="categoria" class="form-label">Categoría</label>
+      <select class="form-select" id="categoria" name="categoria" required>
+        <option value="">Seleccione una categoría</option>
+        <option value="Vestidos Midi">Vestidos Midi</option>
+        <option value="Vestidos Maxi">Vestidos Maxi</option>
+        <option value="Vestidos Mini">Vestidos Mini</option>
+        <option value="Vestidos de Fiesta">Vestidos de Fiesta</option>
+        <option value="Vestidos de Noche">Vestidos de Noche</option>
+        <option value="Vestidos de Cóctel">Vestidos de Cóctel</option>
+        <option value="Vestidos de Día">Vestidos de Día</option>
+        <option value="Vestidos con Encaje">Vestidos con Encaje</option>
+        <option value="Vestidos Estampados">Vestidos Estampados</option>
+        <option value="Vestidos Lisos">Vestidos Lisos</option>
+        <option value="Vestidos de Algodón">Vestidos de Algodón</option>
+        <option value="Vestidos de Seda">Vestidos de Seda</option>
+        <option value="Vestidos de novia">Vestidos de novia</option>
+        <option value="Otros">Otros</option>
+      </select>
+    </div>
+
+    <!-- Subcategoría -->
+    <div class="mb-3">
+      <label for="subcategoria" class="form-label">Subcategoría (opcional)</label>
+      <input type="text" class="form-control" id="subcategoria" name="subcategoria">
+    </div>
+
+    <!-- Color -->
+    <div class="mb-3">
+      <label for="color" class="form-label">Color</label>
+      <input type="text" class="form-control" id="color" name="color" required>
+    </div>
+
+    <!-- Talla -->
+    <div class="mb-3">
+      <label for="talla" class="form-label">Talla</label>
+      <select class="form-select" id="talla" name="talla" required>
+        <option value="">Seleccione una talla</option>
+        <option value="XS">XS</option>
+        <option value="S">S</option>
+        <option value="M">M</option>
+        <option value="L">L</option>
+        <option value="XL">XL</option>
+        <option value="XXL">XXL</option>
+        <option value="Unitalla">Unitalla</option>
+      </select>
+    </div>
+
+    <!-- Precio y Stock -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="precio" class="form-label">Precio</label>
+        <input type="number" step="0.01" class="form-control" id="precio" name="precio" required>
+      </div>
+      <div class="col-md-6">
+        <label for="stock" class="form-label">Stock</label>
+        <input type="number" class="form-control" id="stock" name="stock" required>
+      </div>
+    </div>
+
+    <!-- Imagen -->
+    <div class="mb-3">
+      <label for="imagen" class="form-label">Imagen del producto</label>
+      <input type="file" class="form-control" id="imagen" name="imagen" required>
+      <small class="text-muted">Solo se permite una imagen por producto (por ahora)</small>
+    </div>
+
+    <!-- Botones -->
+    <button type="submit" class="btn btn-primary">Guardar Producto</button>
+    <a href="/admin/productos" class="btn btn-secondary ms-2">Cancelar</a>
+  </form>
+</div>
+
+<!-- Producto destacado -->
+<div class="form-check mb-3">
+  <input class="form-check-input" type="checkbox" id="destacado" name="destacado" value="true">
+  <label class="form-check-label" for="destacado">
+    Marcar como producto destacado
+  </label>
+</div>
+<div class="form-check mb-3">
+  <input class="form-check-input" type="checkbox" id="envioGratis" name="envioGratis" value="true">
+  <label class="form-check-label" for="envioGratis">Envío gratis</label>
+</div>

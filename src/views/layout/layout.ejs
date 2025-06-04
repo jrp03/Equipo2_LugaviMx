@@ -1,173 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <title>Login con Node</title> -->
-    <link rel="stylesheet" href="https://bootswatch.com/5/pulse/bootstrap.css">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://bootswatch.com/5/pulse/bootstrap.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 
-    <style>
-        /* Estilos para los iconos del navbar */
-        .navbar-icons {
-            display: flex;
-            align-items: center;
-        }
+  <style>
+    .navbar-icons {
+      display: flex;
+      align-items: center;
+    }
 
-        .navbar-icons a {
-            position: relative; /* Para posicionar el badge */
-            display: inline-block;
-            margin-left: 15px; /* Espacio entre los iconos */
-            color: white; /* Color de los iconos */
-            text-decoration: none; /* Quita el subrayado de los enlaces */
-            transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out; /* Transición suave */
-        }
+    .navbar-icons a {
+      position: relative;
+      display: inline-block;
+      margin-left: 15px;
+      color: white;
+      text-decoration: none;
+      transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+    }
 
-        .navbar-icons i {
-            font-size: 1.5rem; /* Tamaño de los iconos */
-            display: block; /* Asegura que el icono ocupe todo el espacio disponible */
-        }
+    .navbar-icons i {
+      font-size: 1.5rem;
+      display: block;
+    }
 
-        /* Badge para el carrito de compras */
-        .cart-badge {
-            position: absolute;
-            top: -8px; /* Ajusta la posición vertical */
-            right: -8px; /* Ajusta la posición horizontal */
-            background-color: #dc3545; /* Rojo (puedes cambiarlo) */
-            color: white;
-            font-size: 0.75rem;
-            padding: 2px 5px;
-            border-radius: 50%; /* Hace que el badge sea circular */
-        }
+    .cart-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: #dc3545;
+      color: white;
+      font-size: 0.75rem;
+      padding: 2px 5px;
+      border-radius: 50%;
+    }
 
-        /* Efecto Hover */
-        .navbar-icons a:hover {
-            transform: scale(1.1); /* Aumenta ligeramente el tamaño al pasar el mouse */
-            opacity: 0.8; /* Reduce ligeramente la opacidad */
-        }
+    .navbar-icons a:hover {
+      transform: scale(1.1);
+      opacity: 0.8;
+    }
 
-        .navbar-icons a:active {
-            transform: scale(0.95); /* Reduce ligeramente el tamaño al hacer click */
-            opacity: 0.6; /* Reduce ligeramente la opacidad */
-        }
-    </style>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
+    .navbar-icons a:active {
+      transform: scale(0.95);
+      opacity: 0.6;
+    }
+  </style>
 </head>
 <body>
 
 <nav class="navbar bg-body-tertiary fixed-top" style="background-color: #333333;" data-bs-theme="dark">
-    <div class="container-fluid">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <!-- Botón Hamburguesa a la izquierda -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <a class="navbar-brand mx-auto" href="/">
+      <img src="/asset/Logo.svg" alt="Logo" height="40" />
+    </a>
 
-        <!-- Logo Centrado -->
-        <a class="navbar-brand mx-auto" href="/">
-            <img src="/asset/Logo.svg" alt="Logo" height="40">
-        </a>
-
-        <!-- Iconos a la Derecha -->
-        <div class="navbar-icons">
-           
-            <a href="/carrito">
-                <i class="fas fa-shopping-cart"></i>
-                <span class="cart-badge"><%= cartItemCount %></span>
-            </a>
-            <a href="<% if (user) { %>/perfil<% } else { %>/login<% } %>">
-                <i class="fas fa-user"></i>
-            </a>
-        </div>
-
-
-        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
-             aria-labelledby="offcanvasNavbarLabel" style="background-color: #333333; color: white;">
-            <!-- Estilo para el offcanvas y offcanvas-start -->
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasNavbarLabel" style="color: white;">Menú</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
-                        aria-label="Close"></button> <!-- btn-close-white para el tema oscuro -->
-            </div>
-            <div class="offcanvas-body">
-                <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Inicio</a>
-                    </li>
-                    <!-- alineación a la izquierda dentro del offcanvas -->
-                    <% if (user) { %>
-                    <li class="nav-item">
-                    <a class="nav-link" href="/formulario">Agregar Productos</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="/perfil">Perfil</a>
-                    </li>
-                    <% if (user.rol === 'admin') { %>
-                    <li class="nav-item">
-                    <a class="nav-link" href="/admin">
-                    <i class="bi bi-speedometer2"></i> Panel de Administración
-                    </a>
-                    </li>
-                    <% } %>
-                    <li class="nav-item">
-                    <a class="nav-link" href="/Salir">Salir</a>
-                    </li>
-                    <% } else { %>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/login">Ingresar</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/registro">Registro</a>
-                        </li>
-                    <% } %>
-                </ul>
-                <!-- Opcional: Puedes añadir un formulario de búsqueda aquí si lo necesitas -->
-                <!-- <form class="d-flex mt-3" role="search">
-                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                  <button class="btn btn-outline-success" type="submit">Search</button>
-                </form> -->
-            </div>
-        </div>
-        <!-- Espacio reservado para que el logo no se pegue al botón -->
-        <div></div>
+    <div class="navbar-icons">
+      <a href="/carrito">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-badge"><%= cartItemCount %></span>
+      </a>
+      <a href="<% if (user) { %>/perfil<% } else { %>/login<% } %>">
+        <i class="fas fa-user"></i>
+      </a>
     </div>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-color: #333333; color: white;">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel" style="color: white;">Menú</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Inicio</a>
+          </li>
+
+          <% if (user) { %>
+            <% if (user.rol === 'admin') { %>
+              <li class="nav-item">
+                <a class="nav-link" href="/formulario">Agregar Productos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/admin"><i class="bi bi-speedometer2"></i> Panel de Administración</a>
+              </li>
+            <% } %>
+            <li class="nav-item">
+              <a class="nav-link" href="/perfil">Perfil</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/Salir">Salir</a>
+            </li>
+          <% } else { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/login">Ingresar</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/registro">Registro</a>
+            </li>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+  </div>
 </nav>
 
 <div style="position: fixed; top: 20px; right: 20px; z-index: 1050; width: auto;">
-    <% if (mensajeLogin.length > 0) { %>
-        <div class="alert alert-dismissible alert-primary alert-fade show" role="alert">
-            <strong>¡Vaya!</strong> <%= mensajeLogin %> intente nuevamente.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <% } %>
-    <% if (mensajeRegistro.length > 0) { %>
-        <div class="alert alert-dismissible alert-primary alert-fade show" role="alert">
-            <strong>¡Vaya!</strong> <%= mensajeRegistro %> intente nuevamente.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <% } %>
+  <% if (mensajeLogin.length > 0) { %>
+    <div class="alert alert-dismissible alert-primary alert-fade show" role="alert">
+      <strong>¡Vaya!</strong> <%= mensajeLogin %> intente nuevamente.
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% } %>
+  <% if (mensajeRegistro.length > 0) { %>
+    <div class="alert alert-dismissible alert-primary alert-fade show" role="alert">
+      <strong>¡Vaya!</strong> <%= mensajeRegistro %> intente nuevamente.
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% } %>
 </div>
 
 <div class="container" style="margin-top: 80px;">
-    <!-- Ajuste para evitar la superposición del navbar fijo -->
-    <%- body %>
+  <%- body %>
 </div>
 
 <script>
-    // Animación de salida automática después de 5 segundos
-    setTimeout(() => {
-        const alerts = document.querySelectorAll('.alert-fade.show');
-        alerts.forEach(alert => {
-            alert.classList.remove('show');
-            alert.classList.add('hide');
-            setTimeout(() => alert.remove(), 600);
-        });
-    }, 4000);
+  setTimeout(() => {
+    const alerts = document.querySelectorAll('.alert-fade.show');
+    alerts.forEach(alert => {
+      alert.classList.remove('show');
+      alert.classList.add('hide');
+      setTimeout(() => alert.remove(), 600);
+    });
+  }, 4000);
 </script>
 
 </body>

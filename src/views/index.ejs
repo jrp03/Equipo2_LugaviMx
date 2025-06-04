@@ -3,87 +3,112 @@
 <link rel="stylesheet" href="css/index.css">
 
 <div class="slider">
-    <div class="slider-content">
-        <div class="container">
-            <div class="slider-cards">
-                <div class="slider-card">
-                    <div class="slider-rigth">
-                        <img src="uploads/imagen-1748325679619-878967185.jpg" alt="">
-                    </div>
-                    <div class="slider-left">
-                        <div class="slider-card-text">
-                            <h1>¡Bienvenido a nuestra tienda de Moda!</h1>
-                            <div>
-                                <p>Descubre las últimas tendencias en ropa y accesorios</p> 
-                                <p>Encuentra el estilo perfecto para cada ocasión</p>
-                                <p>Compra ahora y disfruta de envío gratis en pedidos seleccionados</p>
-                            </div>
-                            <a href="/productos" class="btn btn-primary">Explorar Productos</a>
-                        </div>
-                    </div>
-                </div>
+  <div class="slider-content">
+    <div class="container">
+      <div class="slider-cards">
+        <div class="slider-card">
+          <div class="slider-rigth">
+            <img src="/uploads/productos/1749015008910.jpg" alt="">
+          </div>
+          <div class="slider-left">
+            <div class="slider-card-text">
+              <h1>¡Bienvenido a nuestra tienda de Moda!</h1>
+              <p>Descubre las últimas tendencias en ropa y accesorios</p>
+              <p>Encuentra el estilo perfecto para cada ocasión</p>
+              <p>Compra ahora y disfruta de envío gratis en pedidos seleccionados</p>
+              <a href="#productos" class="btn btn-primary">Explorar Productos</a>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
-<div class="content">
-    <div>
-        <h1>Nuestros Productos</h1>
-        <div class="card-container border-bottom">
-            <% productos.forEach(producto => { %>
-            <div class="cards">
-                <img src="<%= producto.imagenes[0] %>" alt="<%= producto.nombre %>">
-                <h2><%= producto.nombre %></h2>
-                <p><%= producto.descripcion %></p>
-                <p>Color: <%= producto.color %></p>
-                
-                <div class="card-footer">
-                    <p class="precio">$<%= producto.precio %></p>
-                    <div class="cantidad-container">
-                        <div class="cantidad">
-                            <label for="cantidad">Cantidad:</label>
-                            <input type="number" id="cantidad-<%= producto._id %>" value="1" min="1">
-                        </div>
-                        <button class="btn btn-ver-detalles" data-producto='<%= JSON.stringify(producto) %>'>
-                            Ver Detalles
-                        </button>
-                    </div>
-                    <button class="btn btn-carrito" data-id="<%= producto._id %>">Añadir al carrito</button>
-                </div>
-            </div>
-            <% }); %>
-        </div>
-    </div>
-    <div>
-        <h3>Vestidos elegantes</h3>
-        <div class="scroll-container border-bottom" >
-            <div class="scroll-content" id="scroll-content">
-                <% productos.forEach(producto => { %>
-                <div class="cards">
-                    <img src="<%= producto.imagenes[0] %>" alt="<%= producto.nombre %>">
-                    <h2><%= producto.nombre %></h2>
-                    <p><%= producto.descripcion %></p>
-                    <p>Color: <%= producto.color %></p>
-                    <p class="precio">$<%= producto.precio %></p>
 
-                    <div class="card-footer">
-                        <div class="cantidad-container">
-                            <div class="cantidad">
-                                <label for="cantidad">Cantidad:</label>
-                                <input type="number" id="cantidad-<%= producto._id %>" value="1" min="1">
-                            </div>
-                            <button class="btn btn-ver-detalles" data-producto='<%= JSON.stringify(producto) %>'>
-                                Ver Detalles
-                            </button>
-                        </div>
-                        <button class="btn btn-carrito" data-id="<%= producto._id %>">Añadir al carrito</button>
-                    </div>
-                </div>
-                <% }); %>
+<div class="content">
+  <div>
+    <div id="productos">
+  <h1>Nuestros Productos</h1>
+    <div class="card-container border-bottom">
+      <% productos.forEach(producto => { %>
+        <div class="cards">
+          <% if (producto.destacado) { %>
+            <div class="destacado-ribbon">Destacado</div>
+          <% } %>
+          <img src="<%= producto.imagenes[0] %>" alt="<%= producto.nombre %>">
+          <h2><%= producto.nombre %></h2>
+          <p><%= producto.descripcion %></p>
+          <p>Color: <%= producto.color %></p>
+          <div class="card-footer">
+            <p class="precio">$<%= producto.precio %></p>
+            <div class="cantidad-container">
+              <div class="cantidad">
+                <label for="cantidad">Cantidad:</label>
+                <input type="number" id="cantidad-<%= producto._id %>" value="1" min="1">
+              </div>
+              <button class="btn btn-ver-detalles" data-producto='<%= JSON.stringify(producto) %>'>
+                Ver Detalles
+              </button>
             </div>
+            <button class="btn btn-carrito" data-id="<%= producto._id %>">Añadir al carrito</button>
+          </div>
         </div>
-    </div>  
+      <% }); %>
+    </div>
+  </div>
+
+  <div>
+    <h3>Vestidos elegantes</h3>
+    <div class="scroll-container border-bottom">
+      <div class="scroll-content" id="scroll-content">
+        <% productos.forEach(producto => { %>
+          <div class="cards">
+            <% if (producto.destacado) { %>
+              <div class="destacado-ribbon">Destacado</div>
+            <% } %>
+            <img src="<%= producto.imagenes[0] %>" alt="<%= producto.nombre %>">
+            <h2><%= producto.nombre %></h2>
+            <p><%= producto.descripcion %></p>
+            <p>Color: <%= producto.color %></p>
+            <p class="precio">$<%= producto.precio %></p>
+            <div class="card-footer">
+              <div class="cantidad-container">
+                <div class="cantidad">
+                  <label for="cantidad">Cantidad:</label>
+                  <input type="number" id="cantidad-<%= producto._id %>" value="1" min="1">
+                </div>
+                <button class="btn btn-ver-detalles" data-producto='<%= JSON.stringify(producto) %>'>
+                  Ver Detalles
+                </button>
+              </div>
+              <button class="btn btn-carrito" data-id="<%= producto._id %>">Añadir al carrito</button>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+  </div>  
 </div>
+
+<style>
+.destacado-ribbon {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: gold;
+  color: black;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border-radius: 3px;
+  box-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+  z-index: 10;
+}
+.cards {
+  position: relative;
+}
+</style>
+
 
     
 <script>
