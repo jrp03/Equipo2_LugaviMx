@@ -1,4 +1,3 @@
-
 const express = require('express');
 const router = express.Router();
 const path = require('path');
@@ -10,11 +9,9 @@ const { isAuthenticated, isAdmin } = require('../middlewares/auth');
 const ExcelJS = require('exceljs');
 const PDFDocument = require('pdfkit');
 
-// Configuración de subida de imágenes
+// === Configuración de subida de imágenes ===
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'public/uploads/productos/');
-  },
+  destination: (req, file, cb) => cb(null, 'public/uploads/productos/'),
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase().replace(/\.+/g, '.');
     cb(null, Date.now() + ext);
@@ -43,133 +40,7 @@ router.get('/admin', isAuthenticated, isAdmin, async (req, res) => {
   }
 });
 
-
-/* === Productos === */
-router.get('/admin/productos', isAuthenticated, isAdmin, async (req, res) => {
-  try {
-    const { busqueda, categoria } = req.query;
-    const query = {};
-    if (busqueda) query.nombre = { $regex: busqueda, $options: 'i' };
-    if (categoria) query.categoria = categoria;
-
-    const productos = await Product.find(query);
-    const categoriasUnicas = await Product.distinct('categoria');
-
-    res.render('admin/productos', {
-      productos,
-      categoriasUnicas,
-      busqueda,
-      categoria,
-      active: 'productos'
-    });
-  } catch (error) {
-    res.status(500).send('Error al filtrar productos');
-  }
-});
-
-router.get('/admin/productos/nuevo', isAuthenticated, isAdmin, (req, res) => {
-  res.render('admin/nuevoProducto', { active: 'productos' });
-});
-
-router.post('/admin/productos/nuevo', isAuthenticated, isAdmin, upload.single('imagen'), async (req, res) => {
-  try {
-    const { nombre, descripcion, precio, stock, categoria, subcategoria, talla, color, destacado } = req.body;
-    const imagenRuta = req.file ? '/uploads/productos/' + req.file.filename : null;
-    if (!imagenRuta) return res.status(400).send('Debes subir al menos una imagen');
-
-    const nuevoProducto = new Product({
-      nombre,
-      descripcion,
-      precio,
-      stock,
-      categoria,
-      subcategoria: subcategoria || '',
-      tallas: talla ? [talla] : ['Unitalla'],
-      color: color || 'No especificado',
-      imagenes: [imagenRuta],
-      destacado: destacado === 'true',
-      envioGratis: false
-    });
-
-    await nuevoProducto.save();
-    res.redirect('/admin/productos');
-  } catch (error) {
-    res.status(500).send('Error al guardar producto');
-  }
-});
-
-router.post('/admin/productos/:id/eliminar', isAuthenticated, isAdmin, async (req, res) => {
-  try {
-    await Product.findByIdAndDelete(req.params.id);
-    res.redirect('/admin/productos');
-  } catch {
-    res.status(500).send('Error al eliminar producto');
-  }
-});
-
-router.get('/admin/productos/:id/editar', isAuthenticated, isAdmin, async (req, res) => {
-  const producto = await Product.findById(req.params.id);
-  if (!producto) return res.status(404).send('Producto no encontrado');
-  res.render('admin/editarProducto', { producto, active: 'productos' });
-});
-
-router.post('/admin/productos/:id/editar', isAuthenticated, isAdmin, upload.single('imagen'), async (req, res) => {
-  const { nombre, descripcion, precio, stock, categoria, subcategoria, talla, color, destacado } = req.body;
-  const producto = await Product.findById(req.params.id);
-  if (!producto) return res.status(404).send('Producto no encontrado');
-
-  producto.nombre = nombre;
-  producto.descripcion = descripcion;
-  producto.precio = precio;
-  producto.stock = stock;
-  producto.categoria = categoria;
-  producto.subcategoria = subcategoria || '';
-  producto.tallas = talla ? [talla] : ['Unitalla'];
-  producto.color = color;
-  producto.destacado = destacado === 'true';
-
-  if (req.file) producto.imagenes = ['/uploads/productos/' + req.file.filename];
-
-  await producto.save();
-  res.redirect('/admin/productos');
-});
-
-/* === Pedidos === */
-router.get('/admin/pedidos', isAuthenticated, isAdmin, async (req, res) => {
-  const filtro = {};
-  if (req.query.estado && req.query.estado !== 'todos') filtro.estado = req.query.estado;
-
-  const pedidos = await Pedido.find(filtro).populate('usuario');
-  res.render('admin/pedidos', {
-    pedidos,
-    estadoSeleccionado: req.query.estado || 'todos',
-    active: 'pedidos'
-  });
-});
-
-router.get('/admin/pedidos/:id', isAuthenticated, isAdmin, async (req, res) => {
-  const pedido = await Pedido.findById(req.params.id)
-    .populate('usuario')
-    .populate('productos.producto');
-
-  if (!pedido) return res.status(404).json({ error: 'Pedido no encontrado' });
-  res.json(pedido);
-});
-
-router.post('/admin/pedidos/:id/estado', isAuthenticated, isAdmin, async (req, res) => {
-  await Pedido.findByIdAndUpdate(req.params.id, { estado: req.body.estado });
-  res.status(200).json({ success: true });
-});
-
-router.post('/admin/pedidos/:id/comentario', isAuthenticated, isAdmin, async (req, res) => {
-  const update = {};
-  if (req.body.comentario !== undefined) update.comentario = req.body.comentario;
-  if (req.body.notificarCliente !== undefined) update.notificarCliente = req.body.notificarCliente;
-
-  await Pedido.findByIdAndUpdate(req.params.id, update);
-  res.status(200).json({ success: true });
-});
-
+/* === Exportaciones === */
 router.get('/admin/pedidos/exportar-excel', isAuthenticated, isAdmin, async (req, res) => {
   const pedidos = await Pedido.find().populate('usuario');
   const workbook = new ExcelJS.Workbook();
@@ -219,6 +90,117 @@ router.get('/admin/pedidos/exportar-pdf', isAuthenticated, isAdmin, async (req, 
 
   doc.end();
 });
+
+/* === Productos === */
+router.get('/admin/productos', isAuthenticated, isAdmin, async (req, res) => {
+  const { busqueda, categoria } = req.query;
+  const query = {};
+  if (busqueda) query.nombre = { $regex: busqueda, $options: 'i' };
+  if (categoria) query.categoria = categoria;
+
+  const productos = await Product.find(query);
+  const categoriasUnicas = await Product.distinct('categoria');
+
+  res.render('admin/productos', {
+    productos,
+    categoriasUnicas,
+    busqueda,
+    categoria,
+    active: 'productos'
+  });
+});
+
+router.get('/admin/productos/nuevo', isAuthenticated, isAdmin, (req, res) => {
+  res.render('admin/nuevoProducto', { active: 'productos' });
+});
+
+router.post('/admin/productos/nuevo', isAuthenticated, isAdmin, upload.single('imagen'), async (req, res) => {
+  try {
+    const { nombre, descripcion, precio, stock, categoria, subcategoria, talla, color, destacado } = req.body;
+    const imagenRuta = req.file ? '/uploads/productos/' + req.file.filename : null;
+    if (!imagenRuta) return res.status(400).send('Debes subir al menos una imagen');
+
+    const nuevoProducto = new Product({
+      nombre,
+      descripcion,
+      precio,
+      stock,
+      categoria,
+      subcategoria: subcategoria || '',
+      tallas: talla ? [talla] : ['Unitalla'],
+      color: color || 'No especificado',
+      imagenes: [imagenRuta],
+      destacado: destacado === 'true',
+      envioGratis: false
+    });
+
+    await nuevoProducto.save();
+    res.redirect('/admin/productos');
+  } catch (error) {
+    res.status(500).send('Error al guardar producto');
+  }
+});
+
+router.post('/admin/productos/:id/eliminar', isAuthenticated, isAdmin, async (req, res) => {
+  try {
+    const producto = await Product.findByIdAndDelete(req.params.id);
+    if (!producto) return res.status(404).send('Producto no encontrado');
+    res.redirect('/admin/productos');
+  } catch {
+    res.status(500).send('Error al eliminar producto');
+  }
+});
+
+router.get('/admin/productos/:id/editar', isAuthenticated, isAdmin, async (req, res) => {
+  const producto = await Product.findById(req.params.id);
+  if (!producto) return res.status(404).send('Producto no encontrado');
+  res.render('admin/editarProducto', { producto, active: 'productos' });
+});
+
+router.post('/admin/productos/:id/editar', isAuthenticated, isAdmin, upload.single('imagen'), async (req, res) => {
+  const { nombre, descripcion, precio, stock, categoria, subcategoria, talla, color, destacado } = req.body;
+  const producto = await Product.findById(req.params.id);
+  if (!producto) return res.status(404).send('Producto no encontrado');
+
+  producto.nombre = nombre;
+  producto.descripcion = descripcion;
+  producto.precio = precio;
+  producto.stock = stock;
+  producto.categoria = categoria;
+  producto.subcategoria = subcategoria || '';
+  producto.tallas = talla ? [talla] : ['Unitalla'];
+  producto.color = color;
+  producto.destacado = destacado === 'true';
+
+  if (req.file) producto.imagenes = ['/uploads/productos/' + req.file.filename];
+
+  await producto.save();
+  res.redirect('/admin/productos');
+});
+
+/* === Pedidos === */
+router.get('/admin/pedidos', isAuthenticated, isAdmin, async (req, res) => {
+  try {
+    const filtro = {};
+    if (req.query.estado && req.query.estado !== 'todos') filtro.estado = req.query.estado;
+
+    const pedidos = await Pedido.find(filtro).populate('usuario');
+    res.render('admin/pedidos', {
+      pedidos,
+      estadoSeleccionado: req.query.estado || 'todos',
+      active: 'pedidos'
+    });
+  } catch (error) {
+    console.error('Error al cargar vista de pedidos:', error);
+    res.render('admin/pedidos', {
+      pedidos: [],
+      estadoSeleccionado: 'todos',
+      active: 'pedidos',
+      error: 'Error al cargar pedidos.'
+    });
+  }
+});
+
 router.get('/admin/api/pedidos', isAuthenticated, isAdmin, async (req, res) => {
   const filtro = {};
   if (req.query.estado && req.query.estado !== 'todos') {
@@ -229,9 +211,32 @@ router.get('/admin/api/pedidos', isAuthenticated, isAdmin, async (req, res) => {
     const pedidos = await Pedido.find(filtro).populate('usuario');
     res.json(pedidos);
   } catch (error) {
-    console.error('Error al cargar pedidos:', error);
+    console.error('Error al obtener pedidos desde API:', error);
     res.status(500).json({ error: 'Error al obtener pedidos' });
   }
+});
+
+router.get('/admin/pedidos/:id', isAuthenticated, isAdmin, async (req, res) => {
+  const pedido = await Pedido.findById(req.params.id)
+    .populate('usuario')
+    .populate('productos.producto');
+
+  if (!pedido) return res.status(404).json({ error: 'Pedido no encontrado' });
+  res.json(pedido);
+});
+
+router.post('/admin/pedidos/:id/estado', isAuthenticated, isAdmin, async (req, res) => {
+  await Pedido.findByIdAndUpdate(req.params.id, { estado: req.body.estado });
+  res.status(200).json({ success: true });
+});
+
+router.post('/admin/pedidos/:id/comentario', isAuthenticated, isAdmin, async (req, res) => {
+  const update = {};
+  if (req.body.comentario !== undefined) update.comentario = req.body.comentario;
+  if (req.body.notificarCliente !== undefined) update.notificarCliente = req.body.notificarCliente;
+
+  await Pedido.findByIdAndUpdate(req.params.id, update);
+  res.status(200).json({ success: true });
 });
 
 /* === Usuarios === */
@@ -250,9 +255,7 @@ router.get('/admin/usuarios', isAuthenticated, isAdmin, async (req, res) => {
     ];
   }
 
-  if (mensaje === 'filtro') {
-    mensajeExito = '✅ Filtros aplicados correctamente';
-  }
+  if (mensaje === 'filtro') mensajeExito = '✅ Filtros aplicados correctamente';
 
   const usuarios = await User.find(filtro);
 
@@ -292,21 +295,6 @@ router.post('/admin/usuarios/:id/editar', isAuthenticated, isAdmin, async (req, 
   const { name, email, phoneNumber } = req.body;
   await User.findByIdAndUpdate(req.params.id, { name, email, phoneNumber });
   res.redirect('/admin/usuarios');
-});
-// Ruta para obtener pedidos filtrados (usada por el JS de pedidos.ejs)
-router.get('/admin/api/pedidos', isAuthenticated, isAdmin, async (req, res) => {
-  const filtro = {};
-  if (req.query.estado && req.query.estado !== 'todos') {
-    filtro.estado = req.query.estado;
-  }
-
-  try {
-    const pedidos = await Pedido.find(filtro).populate('usuario');
-    res.json(pedidos);
-  } catch (error) {
-    console.error('Error al obtener pedidos:', error);
-    res.status(500).json({ error: 'Error al obtener pedidos' });
-  }
 });
 
 module.exports = router;
