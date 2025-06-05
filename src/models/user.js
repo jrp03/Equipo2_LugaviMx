@@ -21,8 +21,12 @@ const userSchema = new Schema({
   },
   rol: {
     type: String,
-    enum: ['usuario', 'admin'],
-    default: 'usuario'
+    enum: ['cliente', 'admin'],
+    default: 'cliente' // 👈 Valor predeterminado
+  },
+  activo: {
+    type: Boolean,
+    default: true
   },
   phoneNumber: {
     type: String,
@@ -42,9 +46,9 @@ const userSchema = new Schema({
   paymentMethods: [{
     type: new Schema({
       cardType: { type: String, required: true, enum: ['visa', 'mastercard', 'amex'] },
-      cardNumber: { type: String, required: true },
+      cardNumber: { type: String, required: true, select: false },
       expiryDate: { type: String, required: true },
-      cvv: { type: String, required: true },
+      cvv: { type: String, required: true, select: false },
       cardholderName: { type: String, required: true, trim: true },
       billingAddress: {
         addressLine1: { type: String, trim: true },
@@ -63,13 +67,13 @@ const userSchema = new Schema({
   }
 }, { timestamps: true });
 
-// Métodos
+// Métodos para encriptar y comparar contraseñas
 userSchema.methods.encriptarContraseña = function(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-}
+};
 
 userSchema.methods.compararContraseña = function(password) {
   return bcrypt.compareSync(password, this.password);
-}
+};
 
 module.exports = mongoose.model('User', userSchema);

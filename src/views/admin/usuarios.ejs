@@ -1,10 +1,75 @@
 <% layout('layout/adminLayout.ejs') %>
-
-
 <link rel="stylesheet" href="/css/admin.css">
 
 <div class="container mt-5">
   <h1 class="mb-4 text-center">Gestión de Usuarios</h1>
+
+    <!-- Toast de mensajes -->
+<% if (mensajeExito) { %>
+  <div class="toast-container position-fixed top-0 end-0 p-3">
+    <div class="toast align-items-center text-bg-success border-0 show" role="alert">
+      <div class="d-flex">
+        <div class="toast-body">
+          <%= mensajeExito %>
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.toast').forEach(toast => {
+      new bootstrap.Toast(toast, { delay: 3000 }).show();
+    });
+  </script>
+<% } %>
+
+
+  <!-- Tarjetas de estadísticas -->
+  <div class="row mb-4 text-center">
+    <div class="col-md-4">
+      <div class="card">
+        <h5>Usuarios Totales</h5>
+        <span><%= usuarios.length %></span>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card">
+        <h5>Activos</h5>
+        <span><%= usuarios.filter(u => u.activo).length %></span>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card">
+        <h5>Suspendidos</h5>
+        <span><%= usuarios.filter(u => !u.activo).length %></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros de búsqueda -->
+  <form method="GET" action="/admin/usuarios" class="row mb-4 g-2 align-items-center">
+    <div class="col-md-4">
+      <input type="text" name="busqueda" value="<%= busqueda || '' %>" class="form-control" placeholder="Buscar por nombre o email">
+    </div>
+    <div class="col-md-3">
+      <select name="rol" class="form-select">
+        <option value="">Todos los roles</option>
+        <option value="cliente" <%= rol === 'cliente' ? 'selected' : '' %>>Cliente</option>
+        <option value="admin" <%= rol === 'admin' ? 'selected' : '' %>>Administrador</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <select name="estado" class="form-select">
+        <option value="">Todos los estados</option>
+        <option value="activo" <%= estado === 'activo' ? 'selected' : '' %>>Activo</option>
+        <option value="suspendido" <%= estado === 'suspendido' ? 'selected' : '' %>>Suspendido</option>
+      </select>
+    </div>
+    <div class="col-md-2 d-grid">
+      <button type="submit" class="btn btn-admin">Filtrar</button>
+    </div>
+  </form>
 
   <% if (usuarios.length === 0) { %>
     <div class="alert alert-info text-center">
@@ -12,20 +77,21 @@
     </div>
   <% } else { %>
     <div class="table-responsive">
-      <table class="table table-bordered table-hover bg-white shadow-sm">
-        <thead class="table-dark text-center">
+      <table class="table table-bordered table-hover bg-white shadow-sm text-center">
+        <thead class="table-dark">
           <tr>
             <th>ID</th>
             <th>Nombre</th>
             <th>Email</th>
             <th>Rol</th>
-            <th>Fecha de Registro</th>
+            <th>Estado</th>
+            <th>Fecha Registro</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
           <% usuarios.forEach(usuario => { %>
-            <tr>
+            <tr class="<%= usuario.activo ? '' : 'table-warning' %>">
               <td><%= usuario._id %></td>
               <td><%= usuario.name %></td>
               <td><%= usuario.email %></td>
@@ -34,15 +100,40 @@
                   <%= usuario.rol || 'usuario' %>
                 </span>
               </td>
+              <td>
+                <span class="badge <%= usuario.activo ? 'bg-success' : 'bg-danger' %>">
+                  <%= usuario.activo ? 'Activo' : 'Suspendido' %>
+                </span>
+              </td>
               <td><%= moment(usuario.createdAt).format('DD/MM/YYYY HH:mm') %></td>
-              <td class="text-center">
-                <form action="/admin/usuarios/<%= usuario._id %>/rol" method="POST" class="d-inline">
-                  <select name="rol" class="form-select form-select-sm d-inline w-auto">
-                    <option value="usuario" <%= usuario.rol === 'usuario' ? 'selected' : '' %>>Usuario</option>
-                    <option value="admin" <%= usuario.rol === 'admin' ? 'selected' : '' %>>Administrador</option>
-                  </select>
-                  <button type="submit" class="btn btn-sm btn-outline-primary">Actualizar</button>
-                </form>
+              <td>
+                <div class="d-flex flex-column gap-1">
+                  <!-- Cambiar rol -->
+                  <form action="/admin/usuarios/<%= usuario._id %>/rol" method="POST" class="d-flex align-items-center gap-1">
+                    <select name="rol" class="form-select form-select-sm w-auto">
+                      <option value="cliente" <%= usuario.rol === 'cliente' ? 'selected' : '' %>>Cliente</option>
+                      <option value="admin" <%= usuario.rol === 'admin' ? 'selected' : '' %>>Administrador</option>
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-outline-primary">Actualizar</button>
+                  </form>
+
+                  <!-- Ver pedidos -->
+                  <a href="/admin/usuarios/<%= usuario._id %>/pedidos" class="btn btn-sm btn-outline-info">
+                    Ver pedidos
+                  </a>
+
+                  <!-- Editar usuario -->
+                  <a href="/admin/usuarios/<%= usuario._id %>/editar" class="btn btn-sm btn-outline-secondary">
+                    Editar
+                  </a>
+
+                  <!-- Suspender / Reactivar -->
+                  <form action="/admin/usuarios/<%= usuario._id %>/suspender" method="POST">
+                    <button type="submit" class="btn btn-sm <%= usuario.activo ? 'btn-warning' : 'btn-success' %>">
+                      <%= usuario.activo ? 'Suspender' : 'Reactivar' %>
+                    </button>
+                  </form>
+                </div>
               </td>
             </tr>
           <% }); %>
@@ -51,3 +142,10 @@
     </div>
   <% } %>
 </div>
+
+<script>
+  // Mostrar automáticamente el toast (si existe)
+  document.querySelectorAll('.toast').forEach(toast => {
+    new bootstrap.Toast(toast, { delay: 3500 }).show();
+  });
+</script>

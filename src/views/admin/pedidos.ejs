@@ -64,7 +64,9 @@
     async function cargarPedidos(estado) {
       try {
         const res = await fetch(`/admin/api/pedidos?estado=${estado}`);
+        if (!res.ok) throw new Error('No se pudo cargar los pedidos');
         const pedidos = await res.json();
+
 
         if (!Array.isArray(pedidos)) throw new Error('Respuesta inválida');
 

@@ -1,67 +1,162 @@
 <% layout('layout/adminLayout.ejs') %>
 
-
-
 <div class="container mt-5">
-  <h2 class="mb-4">Reportes y Estadísticas</h2>
+  <h1 class="mb-4 text-center">📊 Reportes y Estadísticas</h1>
 
-  <div class="row">
-    <div class="col-md-6 mb-4">
-      <div class="card p-3 shadow-sm">
-        <h5 class="text-center">Ventas Totales por Mes</h5>
-        <canvas id="ventasPorMes"></canvas>
+  <!-- Filtros -->
+  <form class="row g-3 mb-4" method="GET" action="/admin/reportes">
+    <div class="col-md-4">
+      <label for="fechaInicio" class="form-label">Desde</label>
+      <input type="date" id="fechaInicio" name="inicio" value="<%= inicio || '' %>" class="form-control">
+    </div>
+    <div class="col-md-4">
+      <label for="fechaFin" class="form-label">Hasta</label>
+      <input type="date" id="fechaFin" name="fin" value="<%= fin || '' %>" class="form-control">
+    </div>
+    <div class="col-md-4 d-flex align-items-end">
+      <button type="submit" class="btn btn-primary w-100">Aplicar Filtros</button>
+    </div>
+  </form>
+
+  <!-- Exportar -->
+  <div class="mb-4 d-flex justify-content-end gap-2">
+    <a href="/admin/reportes/exportar-excel?inicio=<%= inicio %>&fin=<%= fin %>&exportado=excel" class="btn btn-success">
+      <i class="bi bi-file-earmark-excel"></i> Exportar a Excel
+    </a>
+    <a href="/admin/reportes/exportar-pdf?inicio=<%= inicio %>&fin=<%= fin %>&exportado=pdf" class="btn btn-danger">
+      <i class="bi bi-file-earmark-pdf"></i> Exportar a PDF
+    </a>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-lg-6 mb-4">
+      <div class="chart-container">
+        <h5 class="text-center">🗖️ Ventas por mes</h5>
+        <canvas id="ventasMesChart"></canvas>
       </div>
     </div>
-    <div class="col-md-6 mb-4">
-      <div class="card p-3 shadow-sm">
-        <h5 class="text-center">Productos más Vendidos</h5>
-        <canvas id="productosVendidos"></canvas>
+
+    <div class="col-lg-6 mb-4">
+      <div class="chart-container">
+        <h5 class="text-center">🔥 Productos más vendidos</h5>
+        <canvas id="productosVendidosChart"></canvas>
+      </div>
+    </div>
+
+    <div class="col-lg-6 mb-4">
+      <div class="chart-container">
+        <h5 class="text-center">📦 Estado de Pedidos</h5>
+        <canvas id="estadosPedidosChart"></canvas>
+      </div>
+    </div>
+
+    <div class="col-lg-6 mb-4">
+      <div class="chart-container">
+        <h5 class="text-center">👤 Usuarios más activos</h5>
+        <canvas id="usuariosActivosChart"></canvas>
       </div>
     </div>
   </div>
 </div>
 
+<!-- Toast de mensajes -->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+  <% if (mensajeExito) { %>
+    <div class="toast align-items-center text-bg-success border-0 show" role="alert">
+      <div class="d-flex">
+        <div class="toast-body">
+          <%= mensajeExito %>
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+      </div>
+    </div>
+  <% } %>
+</div>
+
 <!-- Chart.js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  const ventasPorMes = document.getElementById('ventasPorMes').getContext('2d');
-  const productosVendidos = document.getElementById('productosVendidos').getContext('2d');
-
-  new Chart(ventasPorMes, {
-    type: 'bar',
+  new Chart(document.getElementById('ventasMesChart').getContext('2d'), {
+    type: 'line',
     data: {
       labels: <%- JSON.stringify(meses) %>,
       datasets: [{
         label: 'Ventas ($)',
         data: <%- JSON.stringify(ventasTotales) %>,
-        backgroundColor: 'rgba(54, 162, 235, 0.7)'
+        borderColor: '#6610f2',
+        backgroundColor: 'rgba(102, 16, 242, 0.2)',
+        fill: true,
+        borderWidth: 2
       }]
     },
     options: {
       responsive: true,
-      plugins: {
-        legend: { display: true },
-        title: { display: true, text: 'Ventas por mes (estimado)' }
-      }
+      plugins: { legend: { display: false } }
     }
   });
 
-  new Chart(productosVendidos, {
-    type: 'pie',
+  new Chart(document.getElementById('productosVendidosChart').getContext('2d'), {
+    type: 'bar',
     data: {
       labels: <%- JSON.stringify(productosNombres) %>,
       datasets: [{
         label: 'Cantidad vendida',
         data: <%- JSON.stringify(productosCantidades) %>,
-        backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745', '#6610f2']
+        backgroundColor: 'rgba(13, 110, 253, 0.7)'
+      }]
+    },
+    options: {
+      responsive: true,
+      indexAxis: 'y',
+      plugins: { legend: { display: false } }
+    }
+  });
+
+  new Chart(document.getElementById('estadosPedidosChart').getContext('2d'), {
+    type: 'doughnut',
+    data: {
+      labels: <%- JSON.stringify(estados) %>,
+      datasets: [{
+        label: 'Pedidos',
+        data: <%- JSON.stringify(cantidadesPorEstado) %>,
+        backgroundColor: ['#198754', '#ffc107', '#0dcaf0', '#dc3545', '#6c757d']
       }]
     },
     options: {
       responsive: true,
       plugins: {
-        title: { display: true, text: 'Top productos vendidos' }
+        legend: { position: 'bottom' }
       }
     }
   });
+
+  new Chart(document.getElementById('usuariosActivosChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: <%- JSON.stringify(nombresUsuariosActivos || []) %>,
+      datasets: [{
+        label: 'Pedidos realizados',
+        data: <%- JSON.stringify(cantidadPedidosPorUsuario || []) %>,
+        backgroundColor: 'rgba(255, 99, 132, 0.7)'
+      }]
+    },
+    options: {
+      responsive: true,
+      indexAxis: 'y',
+      plugins: { legend: { display: false } }
+    }
+  });
+
+  // Mostrar toast automáticamente
+  document.querySelectorAll('.toast').forEach(toast => {
+    new bootstrap.Toast(toast, { delay: 3000 }).show();
+  });
 </script>
+
+<script>
+  console.log("Meses:", <%- JSON.stringify(meses) %>);
+  console.log("Ventas:", <%- JSON.stringify(ventasTotales) %>);
+  console.log("Usuarios más activos:", <%- JSON.stringify(nombresUsuariosActivos || []) %>);
+</script>
+
 
