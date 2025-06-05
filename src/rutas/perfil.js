@@ -1,10 +1,11 @@
-// src/rutas/perfil.js
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
+const Pedido = require('../models/order');
 const multer = require('multer');
 const path = require('path');
 
+// Configuración para subir imágenes de perfil
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, '../public/uploads/perfiles'));
@@ -14,65 +15,78 @@ const storage = multer.diskStorage({
     cb(null, 'perfil-' + uniqueSuffix + path.extname(file.originalname));
   }
 });
-
 const upload = multer({ storage: storage });
 
-// Middleware de autenticación correcto
+// Middleware de autenticación
 function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()) return next();
   res.redirect('/login');
 }
 
-// Mostrar el perfil
+// Mostrar el perfil con pedidos
 router.get('/', isAuthenticated, async (req, res) => {
-  const usuario = await User.findById(req.user._id);
-  res.render('perfil', { usuario });
+  try {
+    const usuario = await User.findById(req.user._id).lean();
+    const pedidos = await Pedido.find({ usuario: req.user._id }).populate('productos.producto').lean();
+
+    res.render('perfil', {
+      usuario,
+      pedidos,
+      exito: req.flash('exito'),
+      error: req.flash('error')
+    });
+  } catch (error) {
+    console.error('Error al cargar perfil:', error);
+    req.flash('error', 'Error al cargar el perfil');
+    res.redirect('/');
+  }
 });
 
-// Formulario para editar el perfil
+// Formulario para editar perfil
 router.get('/editar', isAuthenticated, async (req, res) => {
   const usuario = await User.findById(req.user._id);
   res.render('editarPerfil', { usuario });
 });
-//Formulario para agregar metodos de pago
+
+// Formulario para agregar método de pago
 router.get('/agregar-metodo-pago', isAuthenticated, (req, res) => {
   res.render('agregarMetodoPago', { layout: 'layout/layout.ejs' });
 });
+
+// Guardar nuevo método de pago
 router.post('/agregar-metodo-pago', isAuthenticated, async (req, res) => {
   try {
     const usuario = await User.findById(req.user._id);
-    if (!usuario) return res.status(404).send('Usuario no encontrado');
+    if (!usuario) {
+      req.flash('error', 'Usuario no encontrado');
+      return res.redirect('/perfil');
+    }
 
     const { cardType, cardNumber, expiryDate, cvv, cardholderName } = req.body;
+    const cleanCardNumber = cardNumber.replace(/\s+/g, '');
 
-    const cleanCardNumber = cardNumber.replace(/\s+/g, '');//Esta linea es para limpiar el espacio que le puse a el numero de tarjeta
-
- usuario.paymentMethods.push({
-  cardType,
-  cardNumber: cleanCardNumber,
-  expiryDate,
-  cvv,
-  cardholderName,
-  isDefault: usuario.paymentMethods.length === 0
-});
-
+    usuario.paymentMethods.push({
+      cardType,
+      cardNumber: cleanCardNumber,
+      expiryDate,
+      cvv,
+      cardholderName,
+      isDefault: usuario.paymentMethods.length === 0
+    });
 
     await usuario.save();
-
+    req.flash('exito', 'Método de pago agregado correctamente');
     res.redirect('/perfil');
   } catch (error) {
     console.error('Error al guardar método de pago:', error);
-    res.status(500).send('Error al guardar el método de pago');
+    req.flash('error', 'Error al guardar el método de pago');
+    res.redirect('/perfil');
   }
 });
 
-// Guardar los cambios del perfil
+// Guardar cambios de perfil
 router.post('/editar', isAuthenticated, upload.single('profilePicture'), async (req, res) => {
   try {
-    if (!req.isAuthenticated()) {
-      return res.redirect('/login');
-    }
-
     const {
       name,
       phoneNumber,
@@ -81,22 +95,22 @@ router.post('/editar', isAuthenticated, upload.single('profilePicture'), async (
       city,
       state,
       postalCode,
-      country,
-      paymentMethods = []
+      country
     } = req.body;
 
     const usuario = await User.findById(req.user._id);
-    if (!usuario) return res.status(404).send('Usuario no encontrado');
+    if (!usuario) {
+      req.flash('error', 'Usuario no encontrado');
+      return res.redirect('/perfil');
+    }
 
     usuario.name = name;
     usuario.phoneNumber = phoneNumber;
 
-    // ✅ Guardar imagen si se subió
     if (req.file) {
       usuario.profilePicture = '/uploads/perfiles/' + req.file.filename;
     }
 
-    // Dirección
     const direccion = {
       addressLine1,
       addressLine2,
@@ -113,72 +127,69 @@ router.post('/editar', isAuthenticated, upload.single('profilePicture'), async (
       usuario.shippingAddresses.push(direccion);
     }
 
-    // Métodos de pago válidos
-    const parsedPaymentMethods = Object.values(paymentMethods).filter(pm => (
-      pm.cardType && pm.cardNumber && pm.expiryDate && pm.cvv && pm.cardholderName
-    ));
-
-    usuario.paymentMethods = parsedPaymentMethods;
-
     await usuario.save();
+    req.flash('exito', 'Perfil actualizado correctamente');
     res.redirect('/perfil');
   } catch (error) {
     console.error('Error actualizando el perfil:', error);
-    res.status(500).send('Error al actualizar el perfil');
-  }
-});
-
-
-router.post('/agregar-metodo-pago', isAuthenticated, async (req, res) => {
-  try {
-    const usuario = await User.findById(req.user._id);
-    if (!usuario) return res.status(404).send('Usuario no encontrado');
-
-    const { cardType, cardNumber, expiryDate, cvv, cardholderName } = req.body;
-
-    usuario.paymentMethods.push({
-      cardType,
-      cardNumber,
-      expiryDate,
-      cvv,
-      cardholderName,
-      isDefault: usuario.paymentMethods.length === 0
-    });
-
-    await usuario.save();
+    req.flash('error', 'Error al actualizar el perfil');
     res.redirect('/perfil');
-  } catch (error) {
-    console.error('Error al guardar método de pago:', error);
-    res.status(500).send('Error al guardar el método de pago');
   }
 });
 
-
+// Eliminar método de pago
 router.post('/eliminar-metodo-pago/:index', isAuthenticated, async (req, res) => {
   try {
     const index = parseInt(req.params.index);
     const usuario = await User.findById(req.user._id);
 
-    if (!usuario) return res.status(404).send('Usuario no encontrado');
+    if (!usuario) {
+      req.flash('error', 'Usuario no encontrado');
+      return res.redirect('/perfil');
+    }
 
     if (isNaN(index) || index < 0 || index >= usuario.paymentMethods.length) {
-      return res.status(400).send('Índice inválido');
+      req.flash('error', 'Índice inválido');
+      return res.redirect('/perfil');
     }
 
     usuario.paymentMethods.splice(index, 1);
     await usuario.save();
 
+    req.flash('exito', 'Método de pago eliminado');
     res.redirect('/perfil');
   } catch (error) {
     console.error('Error al eliminar método de pago:', error);
-    res.status(500).send('Error al eliminar el método de pago');
+    req.flash('error', 'Error al eliminar el método de pago');
+    res.redirect('/perfil');
   }
 });
 
-router.get('/agregar-metodo-pago', isAuthenticated, (req, res) => {
-  res.render('agregarMetodoPago', { layout: 'layout/layout.ejs' });
+// Cancelar pedido si está pendiente
+router.post('/cancelar-pedido/:id', isAuthenticated, async (req, res) => {
+  try {
+    const pedido = await Pedido.findOne({ _id: req.params.id, usuario: req.user._id });
+
+    if (!pedido) {
+      req.flash('error', 'Pedido no encontrado');
+      return res.redirect('/perfil');
+    }
+
+    if (pedido.estado === 'pendiente') {
+      pedido.estado = 'cancelado';
+      await pedido.save();
+      req.flash('exito', 'Pedido cancelado correctamente');
+    } else {
+      req.flash('error', 'El pedido no puede cancelarse');
+    }
+
+    res.redirect('/perfil');
+  } catch (error) {
+    console.error('Error al cancelar pedido:', error);
+    req.flash('error', 'Error al cancelar el pedido');
+    res.redirect('/perfil');
+  }
 });
 
-
-
 module.exports = router;
+

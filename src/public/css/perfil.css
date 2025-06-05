@@ -1,9 +1,13 @@
+/* === ESTILOS GENERALES === */
 body {
   background: linear-gradient(to right, #243949, #517fa4);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #fff;
+  margin: 0;
+  padding: 0;
 }
 
+/* === CONTENEDOR PRINCIPAL === */
 .perfil-wrapper {
   display: flex;
   gap: 2rem;
@@ -11,11 +15,13 @@ body {
   flex-wrap: wrap;
 }
 
+/* === COLUMNAS === */
 .perfil-columna {
   flex: 1;
   min-width: 320px;
 }
 
+/* === TARJETA DE USUARIO === */
 .card-usuario {
   background: rgba(255, 255, 255, 0.1);
   padding: 2rem;
@@ -39,6 +45,7 @@ body {
   font-weight: bold;
 }
 
+/* === SECCIONES === */
 .section-box {
   background: rgba(255, 255, 255, 0.1);
   padding: 1.5rem;
@@ -54,6 +61,8 @@ body {
   margin-bottom: 1rem;
 }
 
+/* === TARJETAS DE CONTENIDO === */
+.card,
 .card-metodo,
 .card-direccion {
   background-color: rgba(255, 255, 255, 0.15);
@@ -61,26 +70,46 @@ body {
   border-radius: 10px;
   margin-bottom: 1rem;
   color: #fff;
-  transition: transform 0.2s, background-color 0.2s;
+  transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
+.card:hover,
 .card-metodo:hover,
 .card-direccion:hover {
   background-color: rgba(255, 255, 255, 0.25);
   transform: translateY(-3px);
 }
 
+.card p,
+.card ul,
 .card-metodo p,
 .card-direccion p {
   margin-bottom: 0.5rem;
+  color: #fff;
 }
 
+/* === ETIQUETAS (BADGES) === */
 .badge.bg-success {
   background-color: #28a745 !important;
 }
 
-.btn-agregar,
-.btn-azul {
+.badge.bg-warning {
+  background-color: #ffc107 !important;
+  color: #000 !important;
+}
+
+.badge.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+/* === BOTONES === */
+.btn {
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.btn-azul,
+.btn-agregar {
   background-color: #007bff;
   border: none;
   padding: 0.5rem 1rem;
@@ -89,30 +118,70 @@ body {
   border-radius: 5px;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s ease;
 }
 
-
-.btn-agregar:hover,
-.btn-editar:hover {
+.btn-azul:hover,
+.btn-agregar:hover {
   background-color: #0056b3;
+}
+
+.btn-rojo {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-rojo:hover {
+  background-color: #c82333;
 }
 
 .btn-eliminar {
   background-color: #dc3545;
+  border: none;
+  color: white;
+  padding: 0.4rem 0.9rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
 }
 
 .btn-eliminar:hover {
   background-color: #a71d2a;
 }
 
-/* Espaciado entre botones */
-.btn {
-  margin-right: 0.5rem;
-  margin-bottom: 0.5rem;
+/* === GRUPO DE BOTONES EN PERFIL === */
+.btn-perfil-grupo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
-/* RESPONSIVO */
+.btn-perfil-grupo .btn {
+  margin: 0;
+}
+
+/* === TOASTS === */
+.toast-container .toast {
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.25);
+}
+
+/* === CORREO DE USUARIO === */
+.correo-usuario {
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  word-break: break-word;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* === RESPONSIVO === */
 @media screen and (max-width: 768px) {
   .perfil-wrapper {
     flex-direction: column;
@@ -129,39 +198,10 @@ body {
   .card-usuario {
     padding: 1.5rem;
   }
+
+  .btn-perfil-grupo {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 }
 
-.btn-perfil-grupo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.btn-perfil-grupo .btn {
-  margin: 0;
-}
-
-.correo-usuario {
-  color: #ffffff;
-  font-size: 1rem;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-  word-break: break-word;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-}
-
-.btn-rojo {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  text-decoration: none;
-  border-radius: 5px;
-  transition: background-color 0.2s ease;
-}
-
-.btn-rojo:hover {
-  background-color: #c82333;
-}

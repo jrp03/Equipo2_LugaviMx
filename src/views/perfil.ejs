@@ -1,36 +1,97 @@
 <% layout('layout/layout.ejs') %>
 <link rel="stylesheet" href="/css/perfil.css">
 
+<!-- Toasts de mensajes -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1055;">
+  <% if (exito && exito.length > 0) { %>
+    <div class="toast align-items-center text-white bg-success border-0 show" role="alert" data-bs-delay="4000" data-bs-autohide="true">
+      <div class="d-flex">
+        <div class="toast-body"><%= exito[0] %></div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+      </div>
+    </div>
+  <% } %>
+  <% if (error && error.length > 0) { %>
+    <div class="toast align-items-center text-white bg-danger border-0 show" role="alert" data-bs-delay="4000" data-bs-autohide="true">
+      <div class="d-flex">
+        <div class="toast-body"><%= error[0] %></div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+      </div>
+    </div>
+  <% } %>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const toastElList = [].slice.call(document.querySelectorAll('.toast'));
+    toastElList.forEach(toastEl => new bootstrap.Toast(toastEl).show());
+  });
+</script>
+
 <div class="container mt-4">
   <% if (usuario) { %>
     <div class="perfil-wrapper">
 
-      <!-- Columna Izquierda: Detalles del Usuario -->
+      <!-- Columna Izquierda -->
       <div class="perfil-columna">
         <div class="card-usuario">
           <img src="<%= usuario.profilePicture || '/asset/usuario.png' %>" alt="Foto de perfil" class="avatar-img">
           <h3 class="mb-0 text-uppercase"><%= usuario.name %></h3>
-        <p class="correo-usuario"><%= usuario.email %></p>
-
+          <p class="correo-usuario"><%= usuario.email %></p>
           <% if (usuario.phoneNumber) { %>
             <p><strong>Teléfono:</strong> <%= usuario.phoneNumber %></p>
           <% } %>
-<div class="btn-perfil-grupo mt-3">
-  <a href="/perfil/editar" class="btn btn-azul">Editar perfil</a>
-  <a href="/" class="btn btn-azul ms-2">Volver al inicio</a>
-  <a href="/Salir" class="btn btn-rojo ms-2">Cerrar sesión</a> 
-</div>
+          <div class="btn-perfil-grupo mt-3">
+            <a href="/perfil/editar" class="btn btn-azul">Editar perfil</a>
+            <a href="/" class="btn btn-azul ms-2">Volver al inicio</a>
+            <a href="/Salir" class="btn btn-rojo ms-2">Cerrar sesión</a>
+          </div>
+        </div>
 
+        <div class="section-box mt-4">
+          <h5>Mis pedidos</h5>
+          <% if (pedidos && pedidos.length > 0) { %>
+            <% pedidos.forEach(pedido => { %>
+              <div class="card shadow-sm p-3 mb-3">
+                <p><strong>Fecha:</strong> <%= new Date(pedido.createdAt).toLocaleDateString('es-MX') %></p>
+                <p><strong>Estado:</strong> 
+                  <span class="badge 
+                    <%= pedido.estado === 'pendiente' ? 'bg-warning text-dark' : pedido.estado === 'cancelado' ? 'bg-danger' : 'bg-success' %>">
+                    <%= pedido.estado %>
+                  </span>
+                </p>
+                <p><strong>Total:</strong> $<%= pedido.total.toFixed(2) %></p>
+
+                <% if (pedido.productos && pedido.productos.length > 0) { %>
+                  <div class="mt-2">
+                    <strong>Productos:</strong>
+                    <ul>
+                      <% pedido.productos.forEach(item => { %>
+                        <li>
+                          <%= item.producto?.nombre || 'Producto eliminado' %> - Cantidad: <%= item.cantidad %> - Precio: $<%= item.precioUnitario.toFixed(2) %>
+                        </li>
+                      <% }) %>
+                    </ul>
+                  </div>
+                <% } %>
+
+                <% if (pedido.estado === 'pendiente') { %>
+                  <form action="/perfil/cancelar-pedido/<%= pedido._id %>" method="POST">
+                    <button type="submit" class="btn btn-sm btn-danger mt-2">Cancelar pedido</button>
+                  </form>
+                <% } %>
+              </div>
+            <% }) %>
+          <% } else { %>
+            <p class="text-muted">No tienes pedidos realizados aún.</p>
+          <% } %>
         </div>
       </div>
 
-      <!-- Columna Derecha: Métodos de pago y direcciones -->
+      <!-- Columna Derecha -->
       <div class="perfil-columna">
-
-        <!-- Métodos de Pago -->
         <div class="section-box">
           <h5>Métodos de pago</h5>
-
           <% if (usuario.paymentMethods && usuario.paymentMethods.length > 0) { %>
             <% usuario.paymentMethods.forEach((pago, index) => { %>
               <div class="card-metodo">
@@ -48,11 +109,9 @@
           <% } else { %>
             <p class="text-muted">No hay métodos de pago registrados.</p>
           <% } %>
-
           <a href="/perfil/agregar-metodo-pago" class="btn btn-success btn-agregar">+ Agregar tarjeta</a>
         </div>
 
-        <!-- Direcciones -->
         <div class="section-box">
           <h5>Direcciones de envío</h5>
           <% if (usuario.shippingAddresses && usuario.shippingAddresses.length > 0) { %>
@@ -69,7 +128,6 @@
             <p class="text-muted">No hay direcciones registradas.</p>
           <% } %>
         </div>
-
       </div>
     </div>
   <% } else { %>
@@ -77,3 +135,7 @@
     <a href="/" class="btn btn-primary">Volver al inicio</a>
   <% } %>
 </div>
+
+
+
+

@@ -1,3 +1,4 @@
+// models/order.js
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
@@ -74,7 +75,6 @@ const pedidoSchema = new Schema({
     }
   },
 
-  // ✅ Nuevos campos añadidos:
   comentario: {
     type: String,
     default: ''
