@@ -606,29 +606,26 @@ db.pedidos.find({clienteId: Object ("682a6405ce995e6863cf5482"}))
 // Consulta de pagos.
 db.pagos.find()
  ```
+## 7. Mantenimiento y Actualizaciones
 
-# **7. Vista formulario actualización de productos**  
+El sistema **Lugavi MX** ha sido diseñado con un enfoque modular y escalable, lo que facilita su mantenimiento y evolución continua. El equipo de desarrollo implementa un modelo de mantenimiento preventivo, correctivo y adaptativo conforme a las necesidades del negocio y de los usuarios finales.
 
-En esta sección se muestra el formulario en el cual el admid puede realizar la consulta para la manipulación de los datos de la clase Productos.
+**Tipos de mantenimiento aplicados:**
 
-### **Formulario**
+- **Correctivo:** Se corrigen errores detectados durante las pruebas o reportados por usuarios, tales como fallos de validación, botones que no responden o errores de visualización en dispositivos móviles.
+- **Preventivo:** Se realizan ajustes proactivos al código para evitar posibles errores futuros. Esto incluye la refactorización de controladores, mejoras en validaciones y actualización de dependencias vulnerables.
+- **Adaptativo:** Se integra nueva funcionalidad o se modifican componentes existentes para adaptarse a cambios en los requisitos, como nuevos métodos de pago, ajustes en el diseño o cambios en la estructura de la base de datos.
 
-![](src/public/asset/Vista_formulario.png)
+**Actualizaciones del sistema:**
 
-Los campos del formulario se enlista nombre de producto, descripcion del producto, precio y stock. Se observa una lista desplegable de la categoria del producto y un botón para añadir la imagen del producto. Debajo se muestran los botones para agregar el producto, editar uno existe o eliminar.
+- Las versiones del sistema se gestionan mediante el repositorio en GitHub.
+- Cada funcionalidad nueva o corrección se desarrolla en una rama específica, y se realiza revisión por pares antes de integrarla a la rama principal.
+- Las actualizaciones mayores incluyen mejoras en el perfil del usuario, control de roles, generación de PDF para facturas, y mejoras en la interfaz de administración.
+- Se mantiene una bitácora de cambios en el archivo `CHANGELOG.md` del repositorio.
 
-### **Lista de Producto**
+---
 
-![](src/public/asset/Vista_Guardar.png)
-
-En la siguiente vista se enlistan los productos que se han almacenado en la base de datos. De lado derecho se añaden los botones para actualizar o eliminar el producto de la lista. Si se selecciona Editar, se re direcciona a la página de actualización. Si se selecciona eliminar, el producto será eliminado de la lista automáticamente. 
-
-### **Lista de Producto**
-
-![](src/public/asset/Vista_Editar.png)
-
-En la funcion editar se mostrará el nombre y precio del articulo seleccionado. Para actualizar, se llena los campos con la nueva informacion y los datos se sobrescribirán con los viejos. 
-
+## 8. Puebas
 # Informe de Pruebas y Evaluación de Código y Métricas de Calidad
 
 ## 1. Portada
@@ -812,3 +809,77 @@ El sistema fue desarrollado bajo una arquitectura modular y organizada, facilita
 
 - 🔄 El sistema es **apto para una prueba piloto controlada**.
 - 🚫 Aún **no se recomienda su despliegue en entorno productivo final**, hasta corregir los detalles pendientes relacionados con validación, usabilidad móvil y retroalimentación visual.
+# **7. Vista formulario actualización de productos**  
+
+En esta sección se muestra el formulario en el cual el admid puede realizar la consulta para la manipulación de los datos de la clase Productos.
+
+### **Formulario**
+
+![](src/public/asset/Vista_formulario.png)
+
+Los campos del formulario se enlista nombre de producto, descripcion del producto, precio y stock. Se observa una lista desplegable de la categoria del producto y un botón para añadir la imagen del producto. Debajo se muestran los botones para agregar el producto, editar uno existe o eliminar.
+
+### **Lista de Producto**
+
+![](src/public/asset/Vista_Guardar.png)
+
+En la siguiente vista se enlistan los productos que se han almacenado en la base de datos. De lado derecho se añaden los botones para actualizar o eliminar el producto de la lista. Si se selecciona Editar, se re direcciona a la página de actualización. Si se selecciona eliminar, el producto será eliminado de la lista automáticamente. 
+
+### **Lista de Producto**
+
+![](src/public/asset/Vista_Editar.png)
+
+En la funcion editar se mostrará el nombre y precio del articulo seleccionado. Para actualizar, se llena los campos con la nueva informacion y los datos se sobrescribirán con los viejos. 
+
+## 9. Seguridad
+
+La seguridad es un pilar fundamental en el desarrollo de **Lugavi MX**, considerando tanto la protección de los datos personales del usuario como la integridad del sistema.
+
+**Mecanismos de seguridad implementados:**
+
+- **Autenticación segura:**  
+  - Inicio de sesión mediante sesiones con `express-session`.
+  - Cifrado de contraseñas usando `bcryptjs`.
+  - Middleware personalizado `isAuthenticated` para proteger rutas privadas.
+
+- **Control de acceso por roles:**  
+  - Middleware `isAdmin` para limitar el acceso a rutas administrativas.
+  - Interfaz de administración protegida por sesión activa.
+
+- **Validación de entradas:**  
+  - Prevención de inyecciones y datos maliciosos usando validaciones en formularios.
+  - Uso sugerido de bibliotecas como `express-validator` o `Joi`.
+
+- **Protección de información sensible:**  
+  - Variables sensibles almacenadas en archivo `.env`.
+  - URI de conexión a base de datos protegida y segura.
+
+- **Manejo de errores y logs:**  
+  - Captura de errores y logs detallados en el backend.
+  - Retroalimentación al usuario en fallos de autenticación o formularios.
+
+---
+
+## 10. Referencias y Recursos
+
+Durante el desarrollo de **Lugavi MX**, se utilizaron diversas tecnologías, recursos académicos y herramientas de desarrollo. A continuación, se enumeran las principales:
+
+### Recursos Tecnológicos
+
+- [Node.js](https://nodejs.org/) – Entorno de ejecución para JavaScript en backend.
+- [Express.js](https://expressjs.com/) – Framework web para Node.js.
+- [MongoDB](https://www.mongodb.com/) – Base de datos NoSQL utilizada como almacenamiento principal.
+- [Mongoose](https://mongoosejs.com/) – ODM para MongoDB.
+- [Bootstrap](https://getbootstrap.com/) – Framework CSS para diseño responsive.
+- [JavaScript](https://developer.mozilla.org/es/docs/Web/JavaScript)
+
+### Herramientas de Desarrollo
+
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [GitHub (Repositorio Lugavi MX)](https://github.com/jrp03/Equipo2_LugaviMx)
+- [MongoDB Compass](https://www.mongodb.com/products/compass)
+- [Postman](https://www.postman.com/)
+
+### Prototipado y Diseño
+
+- [Figma - Prototipo Lugavi MX](https://www.figma.com/design/ADwX8H0A2Rza4qLYJAlc0n/DESARROLLO--IMPLEMENTACION--SISTEMAS?node-id=2-2&t=3SwVMCX2I30e7ssr-0)
