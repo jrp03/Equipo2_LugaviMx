@@ -178,7 +178,30 @@ body {
   font-weight: 500;
   margin-bottom: 0.5rem;
   word-break: break-word;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* === CAMPOS DE FORMULARIO (mejor legibilidad) === */
+input,
+select,
+textarea,
+.form-control {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  color: #fff !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 6px;
+}
+
+.form-control::placeholder {
+  color: #ccc;
+}
+
+.form-control:focus {
+  background-color: rgba(255, 255, 255, 0.35);
+  color: #fff;
+  border-color: #66afe9;
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(102, 175, 233, 0.4);
 }
 
 /* === RESPONSIVO === */

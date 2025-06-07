@@ -33,27 +33,39 @@ label {
 }
 
 .form-control {
-  background-color: rgba(255,255,255,0.15);
-  border: 1px solid rgba(255,255,255,0.2);
+  background-color: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   color: #fff;
+  border-radius: 6px;
 }
 
 .form-control::placeholder {
-  color: #ccc;
+  color: #e0e0e0;
 }
 
 .form-control:focus {
-  background-color: rgba(255,255,255,0.2);
+  background-color: rgba(255, 255, 255, 0.3);
   color: #fff;
-  border-color: #007bff;
+  border-color: #66afe9;
   outline: none;
-  box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+  box-shadow: 0 0 0 0.2rem rgba(102,175,233,0.4);
 }
 
+/* Especial para <select> (asegura visibilidad) */
+select.form-control {
+  background-color: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Hint text */
 small.form-text {
   color: #ccc;
 }
 
+/* Botones */
 .btn-primary,
 .btn-success,
 .btn-outline-secondary {
@@ -74,6 +86,7 @@ small.form-text {
 .btn-success {
   background-color: #28a745;
   border: none;
+  color: #fff;
 }
 
 .btn-success:hover {
@@ -95,4 +108,8 @@ small.form-text {
   .card-body {
     padding: 1rem;
   }
+}
+select option {
+  background-color: #ffffff;
+  color: #000000;
 }

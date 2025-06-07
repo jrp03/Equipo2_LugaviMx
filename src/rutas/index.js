@@ -10,6 +10,10 @@ const User = require('../models/user');
 const carritoRoutes = require('./carrito');
 const perfilRoutes = require('./perfil');
 
+// Middleware necesario para procesar formularios
+router.use(express.urlencoded({ extended: true }));
+router.use(express.json());
+
 // Configuración de almacenamiento de imágenes
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, path.join(__dirname, '../public/uploads/')),

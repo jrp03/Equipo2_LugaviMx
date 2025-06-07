@@ -94,22 +94,33 @@
           <h5>Métodos de pago</h5>
           <% if (usuario.paymentMethods && usuario.paymentMethods.length > 0) { %>
             <% usuario.paymentMethods.forEach((pago, index) => { %>
-              <div class="card-metodo">
-                <p><strong><%= pago.cardType.toUpperCase() %></strong> terminada en **** <%= pago.cardNumber.slice(-4) %></p>
-                <p><strong>Vence:</strong> <%= pago.expiryDate %></p>
-                <p><strong>Nombre:</strong> <%= pago.cardholderName %></p>
-                <% if (pago.isDefault) { %>
-                  <span class="badge bg-success">Predeterminada</span>
-                <% } %>
-                <form action="/perfil/eliminar-metodo-pago/<%= index %>" method="POST" class="mt-2 d-inline">
-                  <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-                </form>
-              </div>
+              <% if (pago && pago.cardNumber && pago.cardType) { %>
+                <div class="card-metodo d-flex justify-content-between align-items-start flex-wrap">
+                  <div>
+                    <p><strong><%= pago.cardType.toUpperCase() %></strong> terminada en **** <%= pago.cardNumber.slice(-4) %></p>
+                    <p><strong>Vence:</strong> <%= pago.expiryDate || 'N/D' %></p>
+                    <p><strong>Nombre:</strong> <%= pago.cardholderName || 'N/D' %></p>
+                    <% if (pago.isDefault) { %>
+                      <span class="badge bg-success">Predeterminada</span>
+                    <% } %>
+                  </div>
+                  <div class="text-end mt-2">
+                    <a href="/perfil/editar-metodo-pago/<%= index %>" class="btn btn-sm btn-primary me-2">Editar</a>
+                    <form action="/perfil/eliminar-metodo-pago/<%= index %>" method="POST" class="d-inline">
+                      <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Seguro que deseas eliminar este método de pago?')">Eliminar</button>
+                    </form>
+                  </div>
+                </div>
+              <% } else { %>
+                <div class="card-metodo bg-danger-subtle text-white p-2 rounded">
+                  <p>Este método de pago no es válido o está incompleto.</p>
+                </div>
+              <% } %>
             <% }) %>
           <% } else { %>
             <p class="text-muted">No hay métodos de pago registrados.</p>
           <% } %>
-          <a href="/perfil/agregar-metodo-pago" class="btn btn-success btn-agregar">+ Agregar tarjeta</a>
+          <a href="/perfil/agregar-metodo-pago" class="btn btn-success btn-agregar mt-2">+ Agregar tarjeta</a>
         </div>
 
         <div class="section-box">
@@ -135,7 +146,3 @@
     <a href="/" class="btn btn-primary">Volver al inicio</a>
   <% } %>
 </div>
-
-
-
-

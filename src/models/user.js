@@ -22,7 +22,7 @@ const userSchema = new Schema({
   rol: {
     type: String,
     enum: ['cliente', 'admin'],
-    default: 'cliente' // 👈 Valor predeterminado
+    default: 'cliente'
   },
   activo: {
     type: Boolean,
@@ -46,9 +46,9 @@ const userSchema = new Schema({
   paymentMethods: [{
     type: new Schema({
       cardType: { type: String, required: true, enum: ['visa', 'mastercard', 'amex'] },
-      cardNumber: { type: String, required: true, select: false },
+      cardNumber: { type: String, required: true }, // se mantiene visible internamente
       expiryDate: { type: String, required: true },
-      cvv: { type: String, required: true, select: false },
+      cvv: { type: String, required: false, select: false }, // ✅ ahora no es obligatorio
       cardholderName: { type: String, required: true, trim: true },
       billingAddress: {
         addressLine1: { type: String, trim: true },
