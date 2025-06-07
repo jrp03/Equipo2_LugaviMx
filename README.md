@@ -468,7 +468,7 @@ Filtros laterales por: Categoría, Precio, Color, Talla.
  Botones para modificar información y cambiar contraseña. 
  Sección de direcciones de envío (añadir, modificar, eliminar).
 
-** Vista formulario actualización de productos**  
+### **Vista formulario actualización de productos**  
 
 En esta sección se muestra el formulario en el cual el admid puede realizar la consulta para la manipulación de los datos de la clase Productos.
 
@@ -645,26 +645,8 @@ El sistema **Lugavi MX** ha sido diseñado con un enfoque modular y escalable, l
 
 ---
 
-## 8. Puebas
+## 8. Pruebas
 # Informe de Pruebas y Evaluación de Código y Métricas de Calidad
-
-## 1. Portada
-
-- **Nombre del Proyecto:** Plataforma de Comercio Electrónico para Lugavi MX  
-- **Fecha de Elaboración del Informe:** 25 de Mayo de 2025  
-- **Integrantes del Equipo:**
-  - Barraza Hernández Henrry Josué
-  - Cabanillas Pacheco María Jose
-  - Ortiz Burgueño Linda Faviola
-  - Ortiz Ortiz Jesús Manuel
-  - Pérez Melgoza Jorge Román
-  - Quintero Andrade Álvaro Gabriel
-  - Rivera García Blanca Angélica
-  - Santoyo Terrazas Nadia Guadalupe
-
----
-
-## 2. Resumen
 
 ### Objetivo del informe
 
@@ -692,7 +674,7 @@ Se realizaron 22 casos de prueba enfocados en validaciones, experiencia de usuar
 
 ---
 
-## 3. Pruebas Realizadas
+## Pruebas Realizadas
 
 ### 3.1 Tipos de Pruebas Ejecutadas
 
@@ -713,7 +695,7 @@ Se realizaron 22 casos de prueba enfocados en validaciones, experiencia de usuar
 - VS Code + consola de Node.js
 - Flatpickr
 
-### 3.2 Cobertura de Pruebas
+### Cobertura de Pruebas
 
 - **Cobertura estimada:** 90%
 - Funcionalidades probadas:
@@ -731,9 +713,9 @@ Se realizaron 22 casos de prueba enfocados en validaciones, experiencia de usuar
 
 ---
 
-## 4. Resultados de las Pruebas
+## Resultados de las Pruebas
 
-### 4.1 Defectos Encontrados
+### Defectos Encontrados
 
 - **Total de defectos:** 7  
   - Corregidos: 5  
@@ -764,7 +746,7 @@ Se realizaron 22 casos de prueba enfocados en validaciones, experiencia de usuar
 - Mínimo: 45 minutos (CSS)
 - Máximo: 3 horas (lógica de botón)
 
-### 4.2 Evidencias
+### Evidencias
 
 #### Capturas de pantalla
 
@@ -784,7 +766,7 @@ Se realizaron 22 casos de prueba enfocados en validaciones, experiencia de usuar
 
 ---
 
-## 5. Análisis y Recomendaciones
+## Análisis y Recomendaciones
 
 ### Tendencias
 
@@ -816,7 +798,7 @@ Esto demuestra una mejora en la calidad del código y del proceso de validación
 
 ---
 
-## 6. Conclusiones
+## Conclusiones
 
 ### ¿Cumple el software con los requisitos de calidad?
 
