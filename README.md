@@ -467,7 +467,28 @@ Filtros laterales por: Categoría, Precio, Color, Talla.
  Visualización de datos personales. 
  Botones para modificar información y cambiar contraseña. 
  Sección de direcciones de envío (añadir, modificar, eliminar).
-          
+
+** Vista formulario actualización de productos**  
+
+En esta sección se muestra el formulario en el cual el admid puede realizar la consulta para la manipulación de los datos de la clase Productos.
+
+### **Formulario**
+
+![](src/public/asset/Vista_formulario.png)
+
+Los campos del formulario se enlista nombre de producto, descripcion del producto, precio y stock. Se observa una lista desplegable de la categoria del producto y un botón para añadir la imagen del producto. Debajo se muestran los botones para agregar el producto, editar uno existe o eliminar.
+
+### **Lista de Producto**
+
+![](src/public/asset/Vista_Guardar.png)
+
+En la siguiente vista se enlistan los productos que se han almacenado en la base de datos. De lado derecho se añaden los botones para actualizar o eliminar el producto de la lista. Si se selecciona Editar, se re direcciona a la página de actualización. Si se selecciona eliminar, el producto será eliminado de la lista automáticamente. 
+
+### **Lista de Producto**
+
+![](src/public/asset/Vista_Editar.png)
+
+En la funcion editar se mostrará el nombre y precio del articulo seleccionado. Para actualizar, se llena los campos con la nueva informacion y los datos se sobrescribirán con los viejos.           
 # **6. Base de Datos**  
   
 **Modelo de datos:**
@@ -621,7 +642,6 @@ El sistema **Lugavi MX** ha sido diseñado con un enfoque modular y escalable, l
 - Las versiones del sistema se gestionan mediante el repositorio en GitHub.
 - Cada funcionalidad nueva o corrección se desarrolla en una rama específica, y se realiza revisión por pares antes de integrarla a la rama principal.
 - Las actualizaciones mayores incluyen mejoras en el perfil del usuario, control de roles, generación de PDF para facturas, y mejoras en la interfaz de administración.
-- Se mantiene una bitácora de cambios en el archivo `CHANGELOG.md` del repositorio.
 
 ---
 
@@ -809,27 +829,7 @@ El sistema fue desarrollado bajo una arquitectura modular y organizada, facilita
 
 - 🔄 El sistema es **apto para una prueba piloto controlada**.
 - 🚫 Aún **no se recomienda su despliegue en entorno productivo final**, hasta corregir los detalles pendientes relacionados con validación, usabilidad móvil y retroalimentación visual.
-# **7. Vista formulario actualización de productos**  
 
-En esta sección se muestra el formulario en el cual el admid puede realizar la consulta para la manipulación de los datos de la clase Productos.
-
-### **Formulario**
-
-![](src/public/asset/Vista_formulario.png)
-
-Los campos del formulario se enlista nombre de producto, descripcion del producto, precio y stock. Se observa una lista desplegable de la categoria del producto y un botón para añadir la imagen del producto. Debajo se muestran los botones para agregar el producto, editar uno existe o eliminar.
-
-### **Lista de Producto**
-
-![](src/public/asset/Vista_Guardar.png)
-
-En la siguiente vista se enlistan los productos que se han almacenado en la base de datos. De lado derecho se añaden los botones para actualizar o eliminar el producto de la lista. Si se selecciona Editar, se re direcciona a la página de actualización. Si se selecciona eliminar, el producto será eliminado de la lista automáticamente. 
-
-### **Lista de Producto**
-
-![](src/public/asset/Vista_Editar.png)
-
-En la funcion editar se mostrará el nombre y precio del articulo seleccionado. Para actualizar, se llena los campos con la nueva informacion y los datos se sobrescribirán con los viejos. 
 
 ## 9. Seguridad
 
