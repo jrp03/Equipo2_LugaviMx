@@ -1,0 +1,109 @@
+
+
+<style>
+    footer{
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        background:#101624;
+    }
+    .footer-content{
+            /* display: flex; */
+        /* flex-direction: row; */
+        display: grid;
+        grid-template-columns: auto auto auto;
+        color: #fff;
+        max-width: 1600px;
+        margin: auto;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+    .footer-card{
+        padding: 10px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        gap: 10px;
+        
+    }
+    .footer-card h3{
+        font-weight: bolder;
+    }
+    .footer-card p {
+        font-size: 13px;
+        margin-bottom: 8px;
+        text-align: start;
+    }
+    .footer-card form{
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        display: flex;
+        flex-direction: column;
+    }
+    .footer-card form input[type="email"],
+    .footer-card form input[type="submit"] {
+        width: 100%;
+    }
+    .footer-card form input[type="submit"] {
+        background: #007BFF;
+        border: none;
+        color:#fff;
+        padding: 5px;
+    }
+    .footer-bottom {
+        display: flex;
+        justify-content: center;
+        color:#ffff;
+    }
+    @media screen and (max-width: 800px) {
+        .footer-content{
+            display: flex;
+            padding: 20px;
+            justify-content: center;
+        }
+        .footer-card{
+            max-width: 500px;
+            width: 100%;
+        }
+    }
+</style>    
+<footer>
+    <div class="footer-content">
+        <div class="footer-card">
+            <h3>Contacto</h3>
+
+            <p>
+                contacto@lugavimx.com
+            </p>
+            <p>
+                +52 55 1234 5678
+            </p>
+            <p>
+                Av. Reforma 123, Col. Centro, CDMX, México, C.P. 06000
+            </p>
+            <p>
+                CDMX, México, C.P. 06000
+            </p>
+
+        </div>
+        <div class="footer-card">
+            <h3>Sígenos</h3>
+
+            <p>
+                Instagram / Facebook / TikTok
+            </p>
+        </div>
+        <div class="footer-card">
+            <h3>Subscribete</h3>
+            <form action="">
+                <input type="email" placeholder="examaple@gmail.com">
+                <input type="submit" value="Subscribirme">
+            </form>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 LugaviMX. Todos los derechos reservados.</p>
+    </div>
+</footer>
