@@ -49,6 +49,76 @@
       transform: scale(0.95);
       opacity: 0.6;
     }
+
+    footer{
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        background:#101624;
+        width: 100%; /* Asegura que el footer ocupe todo el ancho */
+    }
+    .footer-content{
+        display: grid;
+        grid-template-columns: auto auto auto;
+        color: #fff;
+        /* max-width: 1600px;  Elimina esta restricción */
+        /* margin: auto;  Elimina el margen automático que centraba el contenido */
+        width: 100%; /* Asegura que el contenido ocupe todo el ancho del footer */
+        flex-wrap: wrap;
+        padding: 0 20px; /* Añade un padding horizontal para separar el contenido de los bordes */
+        box-sizing: border-box; /* Importante para que el padding no aumente el ancho total */
+    }
+    .footer-card{
+        padding: 10px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        gap: 10px;
+
+    }
+    .footer-card h3{
+        font-weight: bolder;
+    }
+    .footer-card p {
+        font-size: 13px;
+        margin-bottom: 8px;
+        text-align: start;
+    }
+    .footer-card form{
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        display: flex;
+        flex-direction: column;
+    }
+    .footer-card form input[type="email"],
+    .footer-card form input[type="submit"] {
+        width: 100%;
+    }
+    .footer-card form input[type="submit"] {
+        background: #007BFF;
+        border: none;
+        color:#fff;
+        padding: 5px;
+    }
+    .footer-bottom {
+        display: flex;
+        justify-content: center;
+        color:#ffff;
+        padding: 10px; /* Espacio arriba y abajo del texto */
+    }
+    @media screen and (max-width: 800px) {
+        .footer-content{
+            display: flex;
+            padding: 20px;
+            justify-content: center;
+        }
+        .footer-card{
+            max-width: 500px;
+            width: 100%;
+        }
+    }
   </style>
 </head>
 <body>
@@ -135,6 +205,47 @@
   </div>
 </div>
 
+<% if (mostrarFooter === true) { %>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-card">
+                <h3>Contacto</h3>
+
+                <p>
+                    contacto@lugavimx.com
+                </p>
+                <p>
+                    +52 55 1234 5678
+                </p>
+                <p>
+                    Av. Reforma 123, Col. Centro, CDMX, México, C.P. 06000
+                </p>
+                <p>
+                    CDMX, México, C.P. 06000
+                </p>
+
+            </div>
+            <div class="footer-card">
+                <h3>Sígenos</h3>
+
+                <p>
+                    Instagram / Facebook / TikTok
+                </p>
+            </div>
+            <div class="footer-card">
+                <h3>Subscribete</h3>
+                <form action="">
+                    <input type="email" placeholder="examaple@gmail.com">
+                    <input type="submit" value="Subscribirme">
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 LugaviMX. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+<% } %>
+
 <script>
   setTimeout(() => {
     const alerts = document.querySelectorAll('.alert-fade.show');
@@ -146,6 +257,5 @@
   }, 4000);
 </script>
 
-<%- include('../partials/foother'); %>
 </body>
 </html>

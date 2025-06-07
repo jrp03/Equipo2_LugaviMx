@@ -72,6 +72,7 @@ app.use((req, res, next) => {
   app.locals.mensajeRegistro = req.flash('mensajeRegistro');
   app.locals.mensajeLogin = req.flash('mensajeLogin');
   app.locals.user = req.user;
+  app.locals.mostrarFooter = false;
   app.locals.moment = moment; // ✅ Agrega esto
   next();
 });
