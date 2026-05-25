@@ -1,4 +1,4 @@
-# **Documentación del  Sistema mayo 2026** 
+## **Documentación del  Sistema mayo 2026** 
   
 ## Información del Producto  
   
